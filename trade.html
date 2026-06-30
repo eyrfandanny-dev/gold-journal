@@ -137,22 +137,25 @@
             </div>
 
             <!-- Interactive Matrix Calendar Card -->
-            <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">P&L Calendar Map</h3>
-                    <div class="flex items-center space-x-2">
-                        <button id="prev-month-btn" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 p-1 px-2.5 rounded text-xs font-bold transition cursor-pointer">◀</button>
-                        <span id="calendar-title-text" class="text-xs font-bold font-mono text-zinc-200 min-w-[90px] text-center uppercase tracking-wide">...</span>
-                        <button id="next-month-btn" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 p-1 px-2.5 rounded text-xs font-bold transition cursor-pointer">▶</button>
-                    </div>
-                </div>
+            <div id="resizable-calendar-card" class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1 resize-x overflow-hidden group relative" style="min-width: 280px; max-width: 100%;">
+    
+    <div class="absolute bottom-1 right-1 text-zinc-700 pointer-events-none text-[10px] select-none opacity-40 group-hover:opacity-100 transition-opacity">◢</div>
+    
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">P&L Calendar Map</h3>
+        <div class="flex items-center space-x-2">
+            <button id="prev-month-btn" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 p-1 px-2.5 rounded text-xs font-bold transition cursor-pointer">◀</button>
+            <span id="calendar-title-text" class="text-xs font-bold font-mono text-zinc-200 min-w-[90px] text-center uppercase tracking-wide">...</span>
+            <button id="next-month-btn" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 p-1 px-2.5 rounded text-xs font-bold transition cursor-pointer">▶</button>
+        </div>
+    </div>
                 <!-- Days Framework -->
                 <div class="grid grid-cols-7 gap-1 text-center text-[9px] uppercase font-bold text-zinc-500 mb-2 tracking-wider">
-                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-                </div>
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+    </div>
                 <!-- Dynamic Dates Injection Frame Grid Matrix -->
-                <div id="calendar-days-grid" class="grid grid-cols-7 gap-1.5 flex-1"></div>
-            </div>
+               <div id="calendar-days-grid" class="grid grid-cols-7 gap-1.5 flex-1 content-start"></div>
+</div>
         </section>
 
         <!-- Main Workspace Grid Layout -->
@@ -364,6 +367,7 @@
         let currentCalendarDate = new Date();
         let chartDataPointsReference = [];
 
+
         // DOM Inputs Hook Up Setup
         const accountSelect = document.getElementById('account-select');
         const addAccountBtn = document.getElementById('add-account-btn');
@@ -442,6 +446,22 @@
             targetInput.value = accountMeta.target || 1000;
             webhookInput.value = accountMeta.webhookUrl || '';
 
+// --- RESIZABLE CALENDAR STORAGE ENGINE ---
+        const resizableCalendarCard = document.getElementById('resizable-calendar-card');
+
+        // 1. Immediately read memory on boot to check if you have an active preferred size
+        const savedCalendarWidth = localStorage.getItem('eg_journal_calendar_width');
+        if (savedCalendarWidth) {
+            resizableCalendarCard.style.width = savedCalendarWidth;
+        }
+
+        // 2. Listen for mouse-up release on the drag handle to capture and lock coordinates permanently
+        resizableCalendarCard.addEventListener('mouseup', () => {
+            // Save current width setting to local state memory
+            const adjustedWidth = resizableCalendarCard.style.width;
+            localStorage.setItem('eg_journal_calendar_width', adjustedWidth);
+        });
+            
             rebuildAccountSelectMenuOptions();
             renderJournal();
             calculateCompoundingMatrixTable();
