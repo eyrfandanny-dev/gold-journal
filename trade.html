@@ -1149,18 +1149,24 @@
 
         syncBtn.addEventListener('click', () => { triggerSilentBackgroundSync(); });
 
-        // PULL DATA FROM SHEETS WITH DYNAMIC ACCOUNT PARAMS
+       // PULL DATA FROM SHEETS WITH DYNAMIC ACCOUNT PARAMS
         pullBtn.addEventListener('click', async () => {
             let baseUrl = webhookInput.value.trim();
-            if (!baseUrl || baseUrl === "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") return alert("Please enter a valid Webhook URL first.");
-            pullBtn.disabled = true; pullBtn.textContent = "Pulling...";
+            if (!baseUrl || baseUrl === "" || baseUrl === "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") {
+                return alert("Please configure or paste a valid Webhook URL first.");
+            }
+            
+            pullBtn.disabled = true; 
+            pullBtn.textContent = "Pulling...";
 
+            // Clean up the URL format if it's missing the multi-user path segment
             if (baseUrl.includes("script.google.com") && !baseUrl.includes("/a/*/")) {
                 baseUrl = baseUrl.replace("script.google.com/", "script.google.com/a/*/");
             }
 
-            // Append account param hook text
-            const url = baseUrl + (baseUrl.includes("?") ? "&" : "?") + "accountPrefix=" + encodeURIComponent(activeAccountName);
+            // Append account prefix parameter cleanly
+            const separator = baseUrl.includes("?") ? "&" : "?";
+            const url = baseUrl + separator + "accountPrefix=" + encodeURIComponent(activeAccountName);
 
             try {
                 const response = await fetch(url);
@@ -1182,10 +1188,14 @@
                     localStorage.setItem(keyPrefix + '_withdrawals', JSON.stringify(withdrawals));
                     renderJournal();
                 }
-            } catch (err) { console.error(err); alert("Failed to fetch data array matrices."); }
-            finally { pullBtn.disabled = false; pullBtn.textContent = "📥 Pull From Sheets"; }
+            } catch (err) { 
+                console.error(err); 
+                alert("Failed to fetch data. Make sure your Apps Script deployment is set to access: 'Anyone'."); 
+            } finally { 
+                pullBtn.disabled = false; 
+                pullBtn.textContent = "📥 Pull From Sheets"; 
+            }
         });
-
         // AUTOMATIC BACKGROUND RETRIEVAL LOOP (Auto-Fetch every 30s)
         setInterval(async () => {
             if (editIdInput.value !== "") return;
