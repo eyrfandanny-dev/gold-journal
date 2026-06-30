@@ -907,7 +907,7 @@
                     }
                 }
             } catch (err) {}
-        }, 30000);
+        }, 5000);
 
         window.addEventListener('resize', drawEquityCurveChart);
         function escapeHTML(str) { return str.replace(/[&<>'"]/g, t => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[t] || t)); }
