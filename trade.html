@@ -240,16 +240,16 @@
     </div>
 
     <script>
- // Database States
+        // Database States
         let trades = JSON.parse(localStorage.getItem('elite_gold_trades')) || [];
         let withdrawals = JSON.parse(localStorage.getItem('elite_gold_withdrawals')) || [];
         let accountMeta = JSON.parse(localStorage.getItem('elite_gold_meta')) || { deposit: 0, bonus: 0, target: 1000 };
 
         let currentCalendarDate = new Date();
-        let chartDataPointsReference = []; 
+        let chartDataPointsReference = [];
 
         // --- HARDCODED FIXED WEBHOOK URL LINK ---
-        const FIXED_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec"; 
+        const FIXED_WEBHOOK_URL = "PASTE_YOUR_LINK_HERE"; 
 
         // DOM Inputs Initialization Hooks
         const depositInput = document.getElementById('deposit-input');
@@ -261,15 +261,14 @@
         bonusInput.value = accountMeta.bonus || '';
         targetInput.value = accountMeta.target || 1000;
         
-        // Force the box to always use your fixed URL link
+        // Lock URL link down permanently
         webhookInput.value = FIXED_WEBHOOK_URL;
-        webhookInput.readOnly = true; // Makes it locked so you don't accidentally edit it
+        webhookInput.readOnly = true;
 
         // UI Architecture Structural Anchors
         const tradeForm = document.getElementById('trade-form');
         const withdrawalForm = document.getElementById('withdrawal-form');
         const editIdInput = document.getElementById('edit-id');
-        const formTitle = document.getElementById('form-title');
         const submitBtn = document.getElementById('submit-btn');
         const cancelEditBtn = document.getElementById('cancel-edit-btn');
         const logsContainer = document.getElementById('logs-container');
@@ -672,13 +671,13 @@
         prevMonthBtn.addEventListener('click', () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1); renderPerformanceCalendar(); });
         nextMonthBtn.addEventListener('click', () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1); renderPerformanceCalendar(); });
 
-        // CRUCIAL: Saves config data locally WITHOUT triggering a loop reset error
+        // Saves configuration parameter markers safely without loop triggers
         function saveAccountMeta() {
             accountMeta = {
                 deposit: parseFloat(depositInput.value) || 0,
                 bonus: parseFloat(bonusInput.value) || 0,
                 target: parseFloat(targetInput.value) || 1000,
-                webhookUrl: webhookInput.value.trim()
+                webhookUrl: FIXED_WEBHOOK_URL
             };
             localStorage.setItem('elite_gold_meta', JSON.stringify(accountMeta));
         }
@@ -687,7 +686,6 @@
         function handleMetaInputChange() {
             saveAccountMeta();
             
-            // Fast recalculate values on page metrics instantly without drawing form items over again
             let totalPnl = trades.reduce((sum, t) => sum + parseFloat(t.pnl), 0);
             let totalWithdrawals = withdrawals.reduce((sum, w) => sum + parseFloat(w.amount), 0);
             balanceEl.textContent = `$${(accountMeta.deposit + accountMeta.bonus + totalPnl - totalWithdrawals).toFixed(2)}`;
@@ -696,7 +694,7 @@
             metaTimeout = setTimeout(() => { triggerSilentBackgroundSync(); }, 1500);
         }
 
-        [depositInput, bonusInput, targetInput, webhookInput].forEach(element => {
+        [depositInput, bonusInput, targetInput].forEach(element => {
             element.addEventListener('input', handleMetaInputChange);
         });
 
@@ -754,7 +752,7 @@
             triggerSilentBackgroundSync();
         });
 
-        // Delete Handlers
+        // Delete Structural Handlers
         window.deleteTrade = function(id) {
             if(confirm("Delete this metric print?")) {
                 if(editIdInput.value === id) resetFormMode();
@@ -790,7 +788,6 @@
                 document.getElementById('custom-date').value = `${year}-${month}-${day}T${hours}:${minutes}`;
             }
             document.getElementById('notes').value = targetTrade.notes;
-            formTitle.firstElementChild.textContent = "Modify Gold Entry";
             submitBtn.textContent = "Update Entry";
             cancelEditBtn.classList.remove('hidden');
             
@@ -800,52 +797,45 @@
             window.scrollTo({ top: tradeForm.offsetTop - 20, behavior: 'smooth' });
         }
 
-        function resetFormMode() {
-            editIdInput.value = ""; tradeForm.reset();
-            formTitle.firstElementChild.textContent = "Log Gold Print";
-            submitBtn.textContent = "Commit Entry";
-            cancelEditBtn.classList.add('hidden');
-        }
-        cancelEditBtn.addEventListener('click', resetFormMode);
-
+        // Clean layout text modifier resets manually to clear out nonexistent ID errors
         clearBtn.addEventListener('click', () => {
             if (confirm('Permanently wipe complete transaction footprints and withdrawals?')) {
-                // 1. Reset all active database tracking states
                 trades = []; 
                 withdrawals = [];
                 accountMeta = { deposit: 0, bonus: 0, target: 1000 };
                 
-                // 2. Clear out the browser local storages
                 localStorage.removeItem('elite_gold_trades');
                 localStorage.removeItem('elite_gold_withdrawals');
                 localStorage.setItem('elite_gold_meta', JSON.stringify(accountMeta));
                 
-                // 3. Reset the screen fields back to blank configurations
                 depositInput.value = '';
                 bonusInput.value = '';
                 targetInput.value = 1000;
                 
-                // 4. Reset the standard logging form fields manually to avoid loop crashes
                 document.getElementById('edit-id').value = "";
                 tradeForm.reset();
-                formTitle.firstElementChild.textContent = "Log Gold Print";
                 submitBtn.textContent = "Commit Entry";
                 cancelEditBtn.classList.add('hidden');
                 
-                // 5. Re-render the fresh blank dashboard states
                 renderJournal();
-                
-                // 6. Force push this blank slate to cleanly wipe out your Google Sheet tabs
                 triggerSilentBackgroundSync();
                 
                 alert("Database matrix completely wiped! Your Google Sheet has been cleanly reset to match your fresh start.");
             }
         });
 
+        function resetFormMode() {
+            document.getElementById('edit-id').value = ""; 
+            tradeForm.reset();
+            submitBtn.textContent = "Commit Entry";
+            cancelEditBtn.classList.add('hidden');
+        }
+        cancelEditBtn.addEventListener('click', resetFormMode);
+
         // BACKGROUND TRANSMISSION ENGINE (AUTO SYNC)
         async function triggerSilentBackgroundSync() {
-            const url = webhookInput.value.trim();
-            if (!url) return;
+            const url = FIXED_WEBHOOK_URL;
+            if (!url || url === "PASTE_YOUR_LINK_HERE") return;
 
             syncIndicator.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
             syncStatusText.textContent = "Syncing...";
@@ -874,12 +864,12 @@
             }
         }
 
-        syncBtn.addEventListener('click', () => { if (webhookInput.value.trim()) triggerSilentBackgroundSync(); });
+        syncBtn.addEventListener('click', () => { triggerSilentBackgroundSync(); });
 
         // PULL DATA FROM SHEETS
         pullBtn.addEventListener('click', async () => {
-            let url = webhookInput.value.trim();
-            if (!url) return alert("Configure Webhook URL.");
+            let url = FIXED_WEBHOOK_URL;
+            if (!url || url === "PASTE_YOUR_LINK_HERE") return alert("Configure FIXED_WEBHOOK_URL inside code.");
             pullBtn.disabled = true; pullBtn.textContent = "Pulling...";
 
             if (url.includes("script.google.com") && !url.includes("/a/*/")) {
@@ -905,14 +895,15 @@
                     localStorage.setItem('elite_gold_withdrawals', JSON.stringify(withdrawals));
                     renderJournal();
                 }
-            } catch (err) { console.error(err); alert("Failed to fetch data."); }
+            } catch (err) { console.error(err); alert("Failed to fetch data array matrices."); }
             finally { pullBtn.disabled = false; pullBtn.textContent = "📥 Pull From Sheets"; }
         });
 
         // AUTOMATIC BACKGROUND RETRIEVAL LOOP (Auto-Fetch every 30s)
         setInterval(async () => {
-            if (editIdInput.value !== "" || !webhookInput.value.trim()) return;
-            let url = webhookInput.value.trim();
+            if (editIdInput.value !== "") return;
+            let url = FIXED_WEBHOOK_URL;
+            if (!url || url === "PASTE_YOUR_LINK_HERE") return;
             if (url.includes("script.google.com") && !url.includes("/a/*/")) url = url.replace("script.google.com/", "script.google.com/a/*/");
 
             try {
