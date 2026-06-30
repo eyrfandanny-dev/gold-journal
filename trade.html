@@ -808,28 +808,37 @@
         }
         cancelEditBtn.addEventListener('click', resetFormMode);
 
-        cclearBtn.addEventListener('click', () => {
+        clearBtn.addEventListener('click', () => {
             if (confirm('Permanently wipe complete transaction footprints and withdrawals?')) {
-                // Clear out only the trading statistics, leaving the hardcoded URL safe
+                // 1. Reset all active database tracking states
                 trades = []; 
                 withdrawals = [];
                 accountMeta = { deposit: 0, bonus: 0, target: 1000 };
                 
+                // 2. Clear out the browser local storages
                 localStorage.removeItem('elite_gold_trades');
                 localStorage.removeItem('elite_gold_withdrawals');
                 localStorage.setItem('elite_gold_meta', JSON.stringify(accountMeta));
                 
+                // 3. Reset the screen fields back to blank configurations
                 depositInput.value = '';
                 bonusInput.value = '';
                 targetInput.value = 1000;
-                resetFormMode(); 
+                
+                // 4. Reset the standard logging form fields manually to avoid loop crashes
+                document.getElementById('edit-id').value = "";
+                tradeForm.reset();
+                formTitle.firstElementChild.textContent = "Log Gold Print";
+                submitBtn.textContent = "Commit Entry";
+                cancelEditBtn.classList.add('hidden');
+                
+                // 5. Re-render the fresh blank dashboard states
                 renderJournal();
                 
-                // Keep the indicator ready since the URL is still perfectly intact
-                syncIndicator.className = "w-2 h-2 rounded-full bg-zinc-600";
-                syncStatusText.textContent = "Memory wiped. Enter fresh configurations to sync.";
+                // 6. Force push this blank slate to cleanly wipe out your Google Sheet tabs
+                triggerSilentBackgroundSync();
                 
-                alert("Local data reset! Enter your new initial settings and log your first trade to cleanly restart your Google Sheet.");
+                alert("Database matrix completely wiped! Your Google Sheet has been cleanly reset to match your fresh start.");
             }
         });
 
