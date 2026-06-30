@@ -17,6 +17,7 @@
                     <select id="account-select" class="bg-zinc-900 border border-zinc-800 text-amber-400 font-black px-3 py-1.5 rounded-lg text-xs tracking-wide uppercase focus:outline-none focus:border-amber-500 cursor-pointer"></select>
                     <button id="add-account-btn" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 font-bold px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider cursor-pointer transition">➕ Add Account</button>
                     <button id="delete-account-btn" class="bg-zinc-950 hover:bg-rose-950/40 border border-zinc-900 text-zinc-600 hover:text-rose-400 font-bold px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider cursor-pointer transition">🗑️ Remove Active</button>
+                    <button id="force-clear-cache-btn" class="text-[10px] text-zinc-700 hover:text-amber-500/60 ml-2 transition underline cursor-pointer">Force App Refresh</button>
                 </div>
             </div>
             
@@ -101,57 +102,14 @@
             </div>
         </section>
 
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1 relative group">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">Performance Equity Curve</h3>
-                    <span id="chart-tooltip-data" class="text-[10px] font-mono text-amber-400 bg-zinc-950 px-2 py-0.5 rounded border border-zinc-800 opacity-0 transition-opacity duration-150"></span>
-                </div>
-                <div class="flex-1 w-full relative h-[220px]">
-                    <canvas id="equity-chart" class="w-full h-full block cursor-crosshair"></canvas>
-                </div>
-            </div>
-
-            <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-4">Periodic Performance</h3>
-                <div class="space-y-3 flex-1 flex flex-col justify-center text-left">
-                    <div class="p-3 bg-zinc-950 border border-zinc-800/80 rounded-xl">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">Current Week P&L (Mon-Fri)</span>
-                        <span id="weekly-pnl-text" class="text-xl font-mono font-bold text-zinc-400">$0.00</span>
-                    </div>
-                    <div class="p-3 bg-zinc-950 border border-zinc-800/80 rounded-xl">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">Current Month P&L</span>
-                        <span id="monthly-pnl-text" class="text-xl font-mono font-bold text-zinc-400">$0.00</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">P&L Calendar Map</h3>
-                    <div class="flex items-center space-x-2">
-                        <button id="prev-month-btn" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 p-1 px-2.5 rounded text-xs font-bold transition cursor-pointer">◀</button>
-                        <span id="calendar-title-text" class="text-xs font-bold font-mono text-zinc-200 min-w-[90px] text-center uppercase tracking-wide">...</span>
-                        <button id="next-month-btn" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 p-1 px-2.5 rounded text-xs font-bold transition cursor-pointer">▶</button>
-                    </div>
-                </div>
-                <div class="grid grid-cols-7 gap-1 text-center text-[9px] uppercase font-bold text-zinc-500 mb-2 tracking-wider">
-                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-                </div>
-                <div id="calendar-days-grid" class="grid grid-cols-7 gap-1.5 flex-1"></div>
-            </div>
-        </section>
-
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
-            
             <div class="lg:col-span-1 space-y-4">
-                
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('trade-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>📊 Log Gold Print</span>
-                        <span id="trade-section-body-icon" class="text-zinc-500 transition-transform duration-200">▼</span>
+                        <span id="trade-section-body-icon" class="text-zinc-500">▼</span>
                     </button>
-                    <div id="trade-section-body" class="p-5 space-y-4 transition-all duration-200">
+                    <div id="trade-section-body" class="p-5 space-y-4">
                         <form id="trade-form" class="space-y-4">
                             <input type="hidden" id="edit-id" value="">
                             <div class="grid grid-cols-2 gap-4">
@@ -173,7 +131,7 @@
                             </div>
                             <div>
                                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Journal Notes & Psychology</label>
-                                <textarea id="notes" rows="3" placeholder="Market narrative, technical setup reasons..." class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 focus:outline-none focus:border-amber-500 text-xs leading-relaxed"></textarea>
+                                <textarea id="notes" rows="3" placeholder="Technical setup reasons..." class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 focus:outline-none focus:border-amber-500 text-xs leading-relaxed"></textarea>
                             </div>
                             <div class="flex gap-2">
                                 <button type="submit" id="submit-btn" class="flex-1 bg-amber-500 hover:bg-amber-600 text-zinc-950 font-black py-2 px-4 rounded transition duration-200 cursor-pointer uppercase tracking-wider text-xs">
@@ -190,9 +148,9 @@
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('fx-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>💱 FX USD / SGD Convertor</span>
-                        <span id="fx-section-body-icon" class="text-zinc-500 transition-transform duration-200">▶</span>
+                        <span id="fx-section-body-icon" class="text-zinc-500">▶</span>
                     </button>
-                    <div id="fx-section-body" class="p-5 space-y-4 hidden transition-all duration-200">
+                    <div id="fx-section-body" class="p-5 space-y-4 hidden">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Amount (USD)</label>
@@ -217,99 +175,8 @@
                                 <span class="text-zinc-400">SGD</span>
                             </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-2 pt-1 text-[10px]">
-                            <button type="button" id="fx-btn-balance" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 py-1.5 px-2 rounded font-medium transition cursor-pointer text-left truncate">
-                                💰 Convert Balance
-                            </button>
-                            <button type="button" id="fx-btn-target" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 py-1.5 px-2 rounded font-medium transition cursor-pointer text-left truncate">
-                                🎯 Convert Target
-                            </button>
-                        </div>
                     </div>
                 </div>
-
-                <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-                    <button type="button" onclick="toggleSection('compound-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
-                        <span>📈 40-Day Compounding Target Matrix</span>
-                        <span id="compound-section-body-icon" class="text-zinc-500 transition-transform duration-200">▶</span>
-                    </button>
-                    <div id="compound-section-body" class="p-5 space-y-4 hidden transition-all duration-200">
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Starting Capital ($)</label>
-                                <input type="number" step="any" id="comp-capital-input" placeholder="e.g. 1000" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-100 font-mono text-xs focus:outline-none focus:border-amber-500">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Daily Target Profit (%)</label>
-                                <input type="number" step="any" id="comp-pct-input" placeholder="e.g. 1.5" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-100 font-mono text-xs focus:outline-none focus:border-amber-500">
-                            </div>
-                        </div>
-                        <div class="flex gap-2 text-[10px]">
-                            <button type="button" id="comp-btn-load" class="flex-1 bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 py-1.5 px-2 rounded font-medium transition cursor-pointer text-center">
-                                📥 Load Active Balance
-                            </button>
-                            <button type="button" id="comp-btn-clear" class="bg-zinc-950 hover:bg-zinc-900 text-rose-400 border border-zinc-800 py-1.5 px-3 rounded font-medium transition cursor-pointer text-center">
-                                Clear Matrix
-                            </button>
-                        </div>
-                        
-                        <div class="border border-zinc-800 rounded-lg overflow-hidden bg-zinc-950">
-                            <div class="grid grid-cols-4 bg-zinc-900 border-b border-zinc-800 text-[9px] uppercase tracking-wider font-bold text-zinc-400 text-center p-2">
-                                <div>Day</div>
-                                <div class="text-left">Start</div>
-                                <div class="text-right">Profit ($)</div>
-                                <div class="text-right">Ending</div>
-                            </div>
-                            <div id="compound-matrix-rows" class="max-h-[220px] overflow-y-auto divide-y divide-zinc-900 text-[11px] font-mono">
-                                <div class="text-center p-4 text-zinc-600 italic text-xs">Enter starting capital inputs to calculate growth horizons.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-                    <button type="button" onclick="toggleSection('withdrawal-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
-                        <span>💸 Capital Withdrawals</span>
-                        <span id="withdrawal-section-body-icon" class="text-zinc-500 transition-transform duration-200">▶</span>
-                    </button>
-                    <div id="withdrawal-section-body" class="p-5 space-y-4 hidden transition-all duration-200">
-                        <form id="withdrawal-form" class="space-y-3">
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Amount ($)</label>
-                                    <input type="number" step="any" id="withdrawal-amount" required placeholder="0.00" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-100 font-mono text-xs focus:outline-none focus:border-amber-500">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Date</label>
-                                    <input type="date" id="withdrawal-date" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 font-mono text-xs focus:outline-none focus:border-amber-500">
-                                </div>
-                            </div>
-                            <button type="submit" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold py-2 px-4 rounded transition duration-200 cursor-pointer uppercase tracking-wider text-xs border border-zinc-700">
-                                Record Withdrawal
-                            </button>
-                        </form>
-                        <div id="withdrawal-ledger-list" class="space-y-2 max-h-[150px] overflow-y-auto pr-1"></div>
-                    </div>
-                </div>
-
-                <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-                    <button type="button" onclick="toggleSection('history-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
-                        <span>📜 Historical Data Feed</span>
-                        <span id="history-section-body-icon" class="text-zinc-500 transition-transform duration-200">▶</span>
-                    </button>
-                    <div id="history-section-body" class="p-4 hidden transition-all duration-200 space-y-4">
-                        <div>
-                            <h4 class="text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-2">Past Weeks Performance</h4>
-                            <div id="past-weeks-list" class="space-y-1.5 max-h-[160px] overflow-y-auto text-xs font-mono"></div>
-                        </div>
-                        <hr class="border-zinc-800/80">
-                        <div>
-                            <h4 class="text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-2">Past Months Performance</h4>
-                            <div id="past-months-list" class="space-y-1.5 max-h-[160px] overflow-y-auto text-xs font-mono"></div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
             <div class="lg:col-span-2 space-y-4">
@@ -317,64 +184,71 @@
                     <h2 class="text-sm font-bold tracking-wider text-zinc-300 uppercase">Execution Feed</h2>
                     <button id="clear-btn" class="text-xs text-zinc-600 hover:text-rose-400 transition cursor-pointer font-medium">Clear Data Matrix</button>
                 </div>
-                
-                <div id="logs-container" class="space-y-3">
-                    </div>
+                <div id="logs-container" class="space-y-3"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- MULTI-ACCOUNT WORKSPACE ENGINE CORE ---
-        let accountsList = JSON.parse(localStorage.getItem('elite_gold_accounts_manifest')) || ["Default Account"];
-        let activeAccountName = localStorage.getItem('elite_gold_active_account_key') || "Default Account";
+        // --- SECURE MULTI-ACCOUNT WORKSPACE REPAIR FRAMEWORK ---
+        let accountsList = ["DEFAULT ACCOUNT"];
+        let activeAccountName = "DEFAULT ACCOUNT";
+        
+        try {
+            let manifest = localStorage.getItem('elite_gold_accounts_manifest');
+            if(manifest) accountsList = JSON.parse(manifest);
+            let activeKey = localStorage.getItem('elite_gold_active_account_key');
+            if(activeKey) activeAccountName = activeKey;
+        } catch(e) {
+            console.error("Storage structural reset triggered");
+        }
 
         let trades = [];
         let withdrawals = [];
         let accountMeta = { deposit: 0, bonus: 0, target: 1000, webhookUrl: "" };
 
-        // --- OPTIONAL HARDCODED WEBHOOK LINK ---
-        const FIXED_WEBHOOK_URL = ""; 
-
-        // DOM Inputs Initialization Hooks
+        // DOM Inputs Hook
         const accountSelect = document.getElementById('account-select');
         const addAccountBtn = document.getElementById('add-account-btn');
         const deleteAccountBtn = document.getElementById('delete-account-btn');
+        const forceClearCacheBtn = document.getElementById('force-clear-cache-btn');
 
         const depositInput = document.getElementById('deposit-input');
         const bonusInput = document.getElementById('bonus-input');
         const targetInput = document.getElementById('target-input');
         const webhookInput = document.getElementById('webhook-input');
         
-        depositInput.value = accountMeta.deposit || '';
-        bonusInput.value = accountMeta.bonus || '';
-        targetInput.value = accountMeta.target || 1000;
+        const tradeForm = document.getElementById('trade-form');
+        const editIdInput = document.getElementById('edit-id');
+        const submitBtn = document.getElementById('submit-btn');
+        const cancelEditBtn = document.getElementById('cancel-edit-btn');
+        const logsContainer = document.getElementById('logs-container');
         
+        const totalPnlEl = document.getElementById('total-pnl');
+        const totalWithdrawalsText = document.getElementById('total-withdrawals-text');
+        const balanceEl = document.getElementById('account-balance');
+
         function synchronizeActiveAccountMemory(targetAccountName) {
-            activeAccountName = targetAccountName;
+            activeAccountName = targetAccountName || "DEFAULT ACCOUNT";
             localStorage.setItem('elite_gold_active_account_key', activeAccountName);
             
             const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
             
-            trades = JSON.parse(localStorage.getItem(keyPrefix + '_trades')) || [];
-            withdrawals = JSON.parse(localStorage.getItem(keyPrefix + '_withdrawals')) || [];
-            accountMeta = JSON.parse(localStorage.getItem(keyPrefix + '_meta')) || { deposit: 0, bonus: 0, target: 1000, webhookUrl: "" };
+            try {
+                trades = JSON.parse(localStorage.getItem(keyPrefix + '_trades')) || [];
+                withdrawals = JSON.parse(localStorage.getItem(keyPrefix + '_withdrawals')) || [];
+                accountMeta = JSON.parse(localStorage.getItem(keyPrefix + '_meta')) || { deposit: 0, bonus: 0, target: 1000, webhookUrl: "" };
+            } catch(err) {
+                trades = []; withdrawals = []; accountMeta = { deposit: 0, bonus: 0, target: 1000, webhookUrl: "" };
+            }
 
             depositInput.value = accountMeta.deposit || '';
             bonusInput.value = accountMeta.bonus || '';
             targetInput.value = accountMeta.target || 1000;
-            
-            if (FIXED_WEBHOOK_URL && FIXED_WEBHOOK_URL.trim() !== "") {
-                webhookInput.value = FIXED_WEBHOOK_URL;
-                webhookInput.readOnly = true;
-            } else {
-                webhookInput.value = accountMeta.webhookUrl || '';
-                webhookInput.readOnly = false;
-            }
+            webhookInput.value = accountMeta.webhookUrl || '';
 
             rebuildAccountSelectMenuOptions();
             renderJournal();
-            calculateCompoundingMatrixTable();
         }
 
         function rebuildAccountSelectMenuOptions() {
@@ -388,34 +262,26 @@
             });
         }
 
-        accountSelect.addEventListener('change', (e) => {
-            synchronizeActiveAccountMemory(e.target.value);
-        });
+        accountSelect.addEventListener('change', (e) => { synchronizeActiveAccountMemory(e.target.value); });
 
         addAccountBtn.addEventListener('click', () => {
-            let name = prompt("Enter a custom identification name for your new account:");
+            let name = prompt("Enter custom account identification profile name:");
             if(!name || name.trim() === "") return;
-            name = name.trim();
-            
-            if(accountsList.includes(name)) return alert("An account with that tracking name already exists.");
-            
+            name = name.trim().toUpperCase();
+            if(accountsList.includes(name)) return alert("Account identifier exists.");
             accountsList.push(name);
             localStorage.setItem('elite_gold_accounts_manifest', JSON.stringify(accountsList));
             synchronizeActiveAccountMemory(name);
         });
 
         deleteAccountBtn.addEventListener('click', () => {
-            let pass = prompt("🔐 SECURITY ALERT: Enter Master Passcode to permanently delete this entire account dataset:");
+            let pass = prompt("🔐 Enter Master Passcode to permanently delete account dataset:");
             if (pass !== "Danial92!") {
-                if(pass !== null) alert("Access Denied. Passcode matrix verification failed.");
+                if(pass !== null) alert("Access Denied. Passcode verification failed.");
                 return;
             }
-
-            if(accountsList.length <= 1) {
-                alert("Operation aborted. You must maintain at least one active profile runway slot.");
-                return;
-            }
-
+            if(accountsList.length <= 1) return alert("Operation aborted. Maintain at least 1 workspace slot.");
+            
             const deadKeyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
             localStorage.removeItem(deadKeyPrefix + '_trades');
             localStorage.removeItem(deadKeyPrefix + '_withdrawals');
@@ -423,9 +289,14 @@
 
             accountsList = accountsList.filter(a => a !== activeAccountName);
             localStorage.setItem('elite_gold_accounts_manifest', JSON.stringify(accountsList));
-            
-            alert("Database tracking matrix purged successfully.");
             synchronizeActiveAccountMemory(accountsList[0]);
+        });
+
+        forceClearCacheBtn.addEventListener('click', () => {
+            if(confirm("Force clean all cached browser slots? This clears memory conflicts completely.")){
+                localStorage.clear();
+                location.reload();
+            }
         });
 
         function saveAccountMeta() {
@@ -439,663 +310,100 @@
             localStorage.setItem(keyPrefix + '_meta', JSON.stringify(accountMeta));
         }
 
-        let currentCalendarDate = new Date();
-        let chartDataPointsReference = [];
-
-        // UI Architecture Structural Anchors
-        const tradeForm = document.getElementById('trade-form');
-        const withdrawalForm = document.getElementById('withdrawal-form');
-        const editIdInput = document.getElementById('edit-id');
-        const submitBtn = document.getElementById('submit-btn');
-        const cancelEditBtn = document.getElementById('cancel-edit-btn');
-        const logsContainer = document.getElementById('logs-container');
-        const withdrawalLedgerList = document.getElementById('withdrawal-ledger-list');
-        const chartTooltipData = document.getElementById('chart-tooltip-data');
-        
-        const pastWeeksList = document.getElementById('past-weeks-list');
-        const pastMonthsList = document.getElementById('past-months-list');
-        
-        const totalPnlEl = document.getElementById('total-pnl');
-        const totalWithdrawalsText = document.getElementById('total-withdrawals-text');
-        const balanceEl = document.getElementById('account-balance');
-        const winRateText = document.getElementById('win-rate-text');
-        const tradeRatioText = document.getElementById('trade-ratio-text');
-        const weeklyPnlText = document.getElementById('weekly-pnl-text');
-        const monthlyPnlText = document.getElementById('monthly-pnl-text');
-        
-        const progressBar = document.getElementById('target-progress-bar');
-        const progressText = document.getElementById('progress-text');
-        const remainingText = document.getElementById('remaining-text');
-        const clearBtn = document.getElementById('clear-btn');
-        const syncBtn = document.getElementById('sync-btn');
-        const pullBtn = document.getElementById('pull-btn');
-        const syncIndicator = document.getElementById('sync-indicator');
-        const syncStatusText = document.getElementById('sync-status-text');
-        
-        const calendarTitleText = document.getElementById('calendar-title-text');
-        const calendarDaysGrid = document.getElementById('calendar-days-grid');
-        const prevMonthBtn = document.getElementById('prev-month-btn');
-        const nextMonthBtn = document.getElementById('next-month-btn');
-
-        // FX ELEMENT HOOKS
-        const fxUsdInput = document.getElementById('fx-usd-input');
-        const fxSgdInput = document.getElementById('fx-sgd-input');
-        const fxRateInput = document.getElementById('fx-rate-input');
-        const fxBtnBalance = document.getElementById('fx-btn-balance');
-        const fxBtnTarget = document.getElementById('fx-btn-target');
-
-        // 40-DAY COMPOUND ENGINE DOM HOOKS
-        const compCapitalInput = document.getElementById('comp-capital-input');
-        const compPctInput = document.getElementById('comp-pct-input');
-        const compBtnLoad = document.getElementById('comp-btn-load');
-        const compBtnClear = document.getElementById('comp-btn-clear');
-        const compoundMatrixRows = document.getElementById('compound-matrix-rows');
-
-        function convertUsdToSgd() {
-            const usd = parseFloat(fxUsdInput.value) || 0;
-            const rate = parseFloat(fxRateInput.value) || 1.295;
-            fxSgdInput.value = usd > 0 ? (usd * rate).toFixed(2) : '';
+        function handleMetaInputChange() {
+            saveAccountMeta();
+            renderJournal();
         }
 
-        function convertSgdToUsd() {
-            const sgd = parseFloat(fxSgdInput.value) || 0;
-            const rate = parseFloat(fxRateInput.value) || 1.295;
-            fxUsdInput.value = sgd > 0 ? (sgd / rate).toFixed(2) : '';
-        }
+        [depositInput, bonusInput, targetInput, webhookInput].forEach(el => el.addEventListener('input', handleMetaInputChange));
 
-        fxUsdInput.addEventListener('input', convertUsdToSgd);
-        fxSgdInput.addEventListener('input', convertSgdToUsd);
-        fxRateInput.addEventListener('input', () => { convertUsdToSgd(); });
+        // BULLETPROOF FORM LOGGER HANDLER
+        tradeForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const pnlField = document.getElementById('pnl');
+            const directionField = document.getElementById('direction');
+            const notesField = document.getElementById('notes');
+            const customDateField = document.getElementById('custom-date');
 
-        function getCalculatedActiveBalanceValue() {
-            let totalPnl = trades.reduce((sum, t) => sum + parseFloat(t.pnl), 0);
-            let totalWithdrawals = withdrawals.reduce((sum, w) => sum + parseFloat(w.amount), 0);
-            let deposit = parseFloat(depositInput.value) || 0;
-            let bonus = parseFloat(bonusInput.value) || 0;
-            return deposit + bonus + totalPnl - totalWithdrawals;
-        }
+            if(!pnlField || !directionField) return;
 
-        fxBtnBalance.addEventListener('click', () => {
-            fxUsdInput.value = getCalculatedActiveBalanceValue().toFixed(2);
-            convertUsdToSgd();
+            const pnlValue = parseFloat(pnlField.value);
+            const directionValue = directionField.value;
+            const notesValue = notesField ? notesField.value : "";
+            
+            let executionDate = customDateField && customDateField.value ? new Date(customDateField.value) : new Date();
+            const formattedDateString = executionDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' });
+
+            const newTrade = {
+                id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+                direction: directionValue,
+                pnl: pnlValue,
+                notes: notesValue,
+                dateISO: executionDate.toISOString(),
+                dateFormatted: formattedDateString
+            };
+
+            trades.push(newTrade);
+            
+            const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+            localStorage.setItem(keyPrefix + '_trades', JSON.stringify(trades));
+            
+            // Clean fields manually to prevent loops
+            pnlField.value = "";
+            if(notesField) notesField.value = "";
+            if(customDateField) customDateField.value = "";
+            
+            renderJournal();
+            triggerSilentBackgroundSync();
         });
-
-        fxBtnTarget.addEventListener('click', () => {
-            fxUsdInput.value = (parseFloat(targetInput.value) || 1000).toFixed(2);
-            convertUsdToSgd();
-        });
-
-        function calculateCompoundingMatrixTable() {
-            let startCapital = parseFloat(compCapitalInput.value);
-            let targetPct = parseFloat(compPctInput.value);
-
-            if (isNaN(startCapital) || isNaN(targetPct) || startCapital <= 0) {
-                compoundMatrixRows.innerHTML = `<div class="text-center p-4 text-zinc-600 italic text-xs">Enter starting capital inputs to calculate growth horizons.</div>`;
-                return;
-            }
-
-            compoundMatrixRows.innerHTML = '';
-            let runningBalance = startCapital;
-            let multiplier = targetPct / 100;
-
-            for (let day = 1; day <= 40; day++) {
-                let dailyProfitDollar = runningBalance * multiplier;
-                let dayEndingBalance = runningBalance + dailyProfitDollar;
-
-                let rowElement = document.createElement('div');
-                rowElement.className = "grid grid-cols-4 p-2 text-center border-b border-zinc-900/50 hover:bg-zinc-900/40 transition duration-75 text-zinc-300";
-                rowElement.innerHTML = `
-                    <div class="text-zinc-500 font-bold font-sans">D${day}</div>
-                    <div class="text-left text-zinc-400">$${runningBalance.toFixed(2)}</div>
-                    <div class="text-right text-emerald-400 font-bold">+$${dailyProfitDollar.toFixed(2)}</div>
-                    <div class="text-right text-amber-400 font-bold">$${dayEndingBalance.toFixed(2)}</div>
-                `;
-                compoundMatrixRows.appendChild(rowElement);
-                runningBalance = dayEndingBalance;
-            }
-        }
-
-        compCapitalInput.addEventListener('input', calculateCompoundingMatrixTable);
-        compPctInput.addEventListener('input', calculateCompoundingMatrixTable);
-
-        compBtnLoad.addEventListener('click', () => {
-            compCapitalInput.value = getCalculatedActiveBalanceValue().toFixed(2);
-            calculateCompoundingMatrixTable();
-        });
-
-        compBtnClear.addEventListener('click', () => {
-            compCapitalInput.value = '';
-            compPctInput.value = '';
-            calculateCompoundingMatrixTable();
-        });
-
-        // Collapsible UI Section Utility
-        window.toggleSection = function(elementId) {
-            const el = document.getElementById(elementId);
-            const icon = document.getElementById(elementId + '-icon');
-            if (el.classList.contains('hidden')) {
-                el.classList.remove('hidden');
-                icon.style.transform = 'rotate(0deg)';
-                icon.textContent = '▼';
-            } else {
-                el.classList.add('hidden');
-                icon.style.transform = 'rotate(-90deg)';
-                icon.textContent = '▶';
-            }
-        }
 
         function renderJournal() {
+            if(!logsContainer) return;
             logsContainer.innerHTML = '';
-            withdrawalLedgerList.innerHTML = '';
-            pastWeeksList.innerHTML = '';
-            pastMonthsList.innerHTML = '';
             
-            let totalPnl = trades.reduce((sum, t) => sum + parseFloat(t.pnl), 0);
-            let totalWithdrawals = withdrawals.reduce((sum, w) => sum + parseFloat(w.amount), 0);
+            let totalPnl = trades.reduce((sum, t) => sum + (parseFloat(t.pnl) || 0), 0);
             let deposit = parseFloat(depositInput.value) || 0;
             let bonus = parseFloat(bonusInput.value) || 0;
-            let targetGoal = parseFloat(targetInput.value) || 1000;
-            let netBalance = deposit + bonus + totalPnl - totalWithdrawals;
-
-            trades.sort((a, b) => new Date(b.dateISO) - new Date(a.dateISO));
-
-            let now = new Date();
-            let currentMonthIndex = now.getMonth();
-            let currentYearVal = now.getFullYear();
-            let currentWeekBounds = getWeeklyRangeBounds(now);
-
-            let weeklyAccumulator = 0;
-            let monthlyAccumulator = 0;
-
-            let historyWeeksBucketMap = {};
-            let historyMonthsBucketMap = {};
-
-            let chronologicalTrades = [...trades].sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO));
-
-            chronologicalTrades.forEach(t => {
-                let tradeDate = new Date(t.dateISO);
-                let pnlFloat = parseFloat(t.pnl);
-
-                if (tradeDate >= currentWeekBounds.monday && tradeDate <= currentWeekBounds.friday) weeklyAccumulator += pnlFloat;
-                if (tradeDate.getMonth() === currentMonthIndex && tradeDate.getFullYear() === currentYearVal) monthlyAccumulator += pnlFloat;
-
-                let weekKey = getISOWeekKeyString(tradeDate);
-                historyWeeksBucketMap[weekKey] = (historyWeeksBucketMap[weekKey] || 0) + pnlFloat;
-
-                let monthNamesArray = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                let monthKey = `${monthNamesArray[tradeDate.getMonth()]} ${tradeDate.getFullYear()}`;
-                historyMonthsBucketMap[monthKey] = (historyMonthsBucketMap[monthKey] || 0) + pnlFloat;
-            });
-
-            weeklyPnlText.textContent = `${weeklyAccumulator >= 0 ? '+' : ''}$${weeklyAccumulator.toFixed(2)}`;
-            weeklyPnlText.className = `text-xl font-mono font-bold ${weeklyAccumulator >= 0 ? 'text-emerald-400' : 'text-rose-500'}`;
-            
-            monthlyPnlText.textContent = `${monthlyAccumulator >= 0 ? '+' : ''}$${monthlyAccumulator.toFixed(2)}`;
-            monthlyPnlText.className = `text-xl font-mono font-bold ${monthlyAccumulator >= 0 ? 'text-emerald-400' : 'text-rose-500'}`;
-
-            Object.keys(historyWeeksBucketMap).reverse().forEach(wkKey => {
-                let wkVal = historyWeeksBucketMap[wkKey];
-                let row = document.createElement('div');
-                row.className = "flex justify-between items-center p-1.5 bg-zinc-950 border border-zinc-900 rounded";
-                row.innerHTML = `<span class="text-zinc-400">${wkKey}</span><span class="${wkVal >= 0 ? 'text-emerald-400' : 'text-rose-500'} font-bold">${wkVal >= 0 ? '+' : ''}$${wkVal.toFixed(2)}</span>`;
-                pastWeeksList.appendChild(row);
-            });
-            if(Object.keys(historyWeeksBucketMap).length === 0) pastWeeksList.innerHTML = `<span class="text-[10px] text-zinc-600 italic">No weekly matrix logged.</span>`;
-
-            Object.keys(historyMonthsBucketMap).reverse().forEach(mthKey => {
-                let mthVal = historyMonthsBucketMap[mthKey];
-                let row = document.createElement('div');
-                row.className = "flex justify-between items-center p-1.5 bg-zinc-950 border border-zinc-900 rounded";
-                row.innerHTML = `<span class="text-zinc-400">${mthKey}</span><span class="${mthVal >= 0 ? 'text-emerald-400' : 'text-rose-500'} font-bold">${mthVal >= 0 ? '+' : ''}$${mthVal.toFixed(2)}</span>`;
-                pastMonthsList.appendChild(row);
-            });
-            if(Object.keys(historyMonthsBucketMap).length === 0) pastMonthsList.innerHTML = `<span class="text-[10px] text-zinc-600 italic">No monthly matrix logged.</span>`;
-
-            let winningTrades = trades.filter(t => parseFloat(t.pnl) > 0).length;
-            let totalTradesCount = trades.length;
-            let computedWinRate = totalTradesCount > 0 ? Math.round((winningTrades / totalTradesCount) * 100) : 0;
-            
-            winRateText.textContent = `${computedWinRate}%`;
-            tradeRatioText.textContent = `(${winningTrades}/${totalTradesCount})`;
+            let netBalance = deposit + bonus + totalPnl;
 
             if (trades.length === 0) {
-                logsContainer.innerHTML = `
-                    <div class="text-center p-12 bg-zinc-900/20 border border-dashed border-zinc-800 rounded-xl text-zinc-600 text-xs">
-                        No gold prints logged yet. Execute, record metrics, master execution.
-                    </div>
-                `;
+                logsContainer.innerHTML = `<div class="text-center p-12 bg-zinc-900/20 border border-dashed border-zinc-800 rounded-xl text-zinc-600 text-xs">No gold prints logged yet.</div>`;
             } else {
-                trades.forEach((trade) => {
+                // Render feeds chronologically
+                let sorted = [...trades].sort((a,b) => new Date(b.dateISO) - new Date(a.dateISO));
+                sorted.forEach((trade) => {
                     const isWin = trade.pnl >= 0;
-                    const pnlClass = isWin ? 'text-emerald-400' : 'text-rose-500';
-                    const directionClass = trade.direction === 'LONG' ? 'bg-emerald-500/5 text-emerald-400 border-emerald-500/10' : 'bg-rose-500/5 text-rose-500 border-rose-500/10';
-
                     const logCard = document.createElement('div');
-                    logCard.className = 'bg-zinc-900 border border-zinc-800/80 rounded-xl p-4 hover:border-zinc-700 transition duration-150 relative';
+                    logCard.className = 'bg-zinc-900 border border-zinc-800/80 rounded-xl p-4 flex flex-col gap-2 text-xs';
                     logCard.innerHTML = `
-                        <div class="flex justify-between items-start mb-2">
-                            <div class="flex items-center space-x-3">
-                                <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${directionClass}">${trade.direction}</span>
-                                <span class="text-[11px] text-zinc-500 font-mono">${trade.dateFormatted}</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <span class="font-mono font-bold text-sm ${pnlClass}">${isWin ? '+' : ''}$${parseFloat(trade.pnl).toFixed(2)}</span>
-                                <div class="flex space-x-2 text-zinc-600 text-xs ml-2">
-                                    <button onclick="initiateEdit('${trade.id}')" class="hover:text-amber-400 transition cursor-pointer" title="Edit entry">✏️</button>
-                                    <button onclick="deleteTrade('${trade.id}')" class="hover:text-rose-400 transition cursor-pointer font-bold px-1" title="Delete entry">✕</button>
-                                </div>
-                            </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono font-bold px-2 py-0.5 rounded border ${trade.direction === 'LONG' ? 'text-emerald-400 bg-emerald-500/5 border-emerald-500/10':'text-rose-500 bg-rose-500/5 border-rose-500/10'}">${trade.direction}</span>
+                            <span class="font-mono font-bold ${isWin ? 'text-emerald-400':'text-rose-500'}">${isWin ? '+':''}$${parseFloat(trade.pnl).toFixed(2)}</span>
                         </div>
-                        ${trade.notes ? `<p class="text-zinc-400 text-xs border-t border-zinc-800/60 pt-2.5 leading-relaxed bg-zinc-950/40 p-2 rounded font-sans">${escapeHTML(trade.notes)}</p>` : ''}
+                        ${trade.notes ? `<p class="text-zinc-400 bg-zinc-950/40 p-2 rounded leading-relaxed">${trade.notes}</p>`:''}
                     `;
                     logsContainer.appendChild(logCard);
                 });
             }
 
-            withdrawals.sort((a,b) => new Date(b.date) - new Date(a.date));
-            if(withdrawals.length === 0) {
-                withdrawalLedgerList.innerHTML = `<span class="text-[10px] text-zinc-600 italic block text-center py-2">No withdrawals recorded.</span>`;
-            } else {
-                withdrawals.forEach(w => {
-                    let wDate = new Date(w.date).toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
-                    let wRow = document.createElement('div');
-                    wRow.className = "flex justify-between items-center text-xs bg-zinc-950 p-2 rounded border border-zinc-800/60";
-                    wRow.innerHTML = `
-                        <span class="font-mono text-zinc-500">${wDate}</span>
-                        <div class="flex items-center space-x-2">
-                            <span class="font-mono font-bold text-rose-400">-$${parseFloat(w.amount).toFixed(2)}</span>
-                            <button onclick="deleteWithdrawal('${w.id}')" class="text-zinc-600 hover:text-rose-400 font-bold px-0.5">✕</button>
-                        </div>
-                    `;
-                    withdrawalLedgerList.appendChild(wRow);
-                });
-            }
-
-            totalPnlEl.textContent = `${totalPnl >= 0 ? '+' : ''}$${totalPnl.toFixed(2)}`;
-            totalPnlEl.className = `text-sm font-mono font-bold ${totalPnl >= 0 ? 'text-emerald-400' : 'text-rose-500'}`;
-            totalWithdrawalsText.textContent = `$${totalWithdrawals.toFixed(2)}`;
-            balanceEl.textContent = `$${netBalance.toFixed(2)}`;
-
-            let percentage = (totalPnl / targetGoal) * 100;
-            if (percentage < 0) percentage = 0;
-            if (percentage > 100) percentage = 100;
-            
-            progressBar.style.width = `${percentage}%`;
-            progressText.textContent = `${Math.round(percentage)}%`;
-
-            const remaining = targetGoal - totalPnl;
-            if (remaining <= 0) {
-                remainingText.textContent = "Goal Achieved! 🏆";
-                remainingText.className = "text-amber-400 font-bold";
-            } else {
-                remainingText.textContent = `Remaining: $${remaining.toFixed(2)}`;
-                remainingText.className = "text-zinc-500";
-            }
-
-            drawEquityCurveChart();
-            renderPerformanceCalendar();
+            if(totalPnlEl) totalPnlEl.textContent = `${totalPnl >= 0 ? '+':''}$${totalPnl.toFixed(2)}`;
+            if(balanceEl) balanceEl.textContent = `$${netBalance.toFixed(2)}`;
         }
 
-        function drawEquityCurveChart() {
-            const canvas = document.getElementById('equity-chart');
-            const ctx = canvas.getContext('2d');
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width * window.devicePixelRatio;
-            canvas.height = rect.height * window.devicePixelRatio;
-            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-
-            const width = rect.width;
-            const height = rect.height;
-            ctx.clearRect(0, 0, width, height);
-
-            let chronologicalTrades = [...trades].sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO));
-            let runningPnlValues = [0];
-            let aggregate = 0;
-            
-            chronologicalTrades.forEach(t => {
-                aggregate += parseFloat(t.pnl);
-                runningPnlValues.push(aggregate);
-            });
-
-            if (runningPnlValues.length <= 1) {
-                ctx.fillStyle = '#52525b';
-                ctx.font = '11px sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillText('Execute positions to generate analytics graphs', width / 2, height / 2);
-                chartDataPointsReference = [];
-                return;
-            }
-
-            let maxPnl = Math.max(...runningPnlValues, 10);
-            let minPnl = Math.min(...runningPnlValues, -10);
-            let pnlRange = maxPnl - minPnl;
-
-            let paddingLeft = 15; let paddingRight = 15; let paddingTop = 20; let paddingBottom = 20;
-            let chartWidth = width - paddingLeft - paddingRight;
-            let chartHeight = height - paddingTop - paddingBottom;
-
-            let zeroY = paddingTop + chartHeight - ((0 - minPnl) / pnlRange) * chartHeight;
-            ctx.strokeStyle = '#27272a';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(paddingLeft, zeroY);
-            ctx.lineTo(width - paddingRight, zeroY);
-            ctx.stroke();
-
-            chartDataPointsReference = [];
-            let segmentX = chartWidth / (runningPnlValues.length - 1);
-
-            runningPnlValues.forEach((val, idx) => {
-                let x = paddingLeft + (idx * segmentX);
-                let y = paddingTop + chartHeight - ((val - minPnl) / pnlRange) * chartHeight;
-                
-                let associatedTrade = idx === 0 ? null : chronologicalTrades[idx - 1];
-                chartDataPointsReference.push({
-                    x, y, 
-                    cumulativePnl: val,
-                    tradeDetails: associatedTrade,
-                    isBaseline: idx === 0
-                });
-            });
-
-            let areaGradient = ctx.createLinearGradient(0, paddingTop, 0, paddingTop + chartHeight);
-            let endingPnl = runningPnlValues[runningPnlValues.length - 1];
-            if (endingPnl >= 0) {
-                areaGradient.addColorStop(0, 'rgba(52, 211, 153, 0.15)');
-                areaGradient.addColorStop(1, 'rgba(52, 211, 153, 0.0)');
-            } else {
-                areaGradient.addColorStop(0, 'rgba(244, 63, 94, 0.15)');
-                areaGradient.addColorStop(1, 'rgba(244, 63, 94, 0.0)');
-            }
-
-            ctx.beginPath();
-            ctx.moveTo(chartDataPointsReference[0].x, zeroY);
-            chartDataPointsReference.forEach(pt => ctx.lineTo(pt.x, pt.y));
-            ctx.lineTo(chartDataPointsReference[chartDataPointsReference.length - 1].x, zeroY);
-            ctx.closePath();
-            ctx.fillStyle = areaGradient;
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.moveTo(chartDataPointsReference[0].x, chartDataPointsReference[0].y);
-            chartDataPointsReference.forEach(pt => ctx.lineTo(pt.x, pt.y));
-            ctx.strokeStyle = endingPnl >= 0 ? '#34d399' : '#f43f5e';
-            ctx.lineWidth = 2.5;
-            ctx.lineJoin = 'round';
-            ctx.stroke();
-
-            let finalPt = chartDataPointsReference[chartDataPointsReference.length - 1];
-            ctx.beginPath();
-            ctx.arc(finalPt.x, finalPt.y, 4, 0, 2 * Math.PI);
-            ctx.fillStyle = endingPnl >= 0 ? '#34d399' : '#f43f5e';
-            ctx.fill();
-            ctx.strokeStyle = '#18181b';
-            ctx.lineWidth = 1.5;
-            ctx.stroke();
-        }
-
-        // Form Submission Interceptors (Trades)
-        tradeForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const editId = editIdInput.value;
-            const customDateValue = document.getElementById('custom-date').value;
-            let executionDate = customDateValue ? new Date(customDateValue) : new Date();
-
-            const pnlValue = parseFloat(document.getElementById('pnl').value);
-            const directionValue = document.getElementById('direction').value;
-            const notesValue = document.getElementById('notes').value;
-            const formattedDateString = executionDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' });
-
-            if (editId) {
-                trades = trades.map(t => t.id === editId ? {
-                    ...t, direction: directionValue, pnl: pnlValue, notes: notesValue, dateISO: executionDate.toISOString(), dateFormatted: formattedDateString
-                } : t);
-            } else {
-                trades.push({
-                    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
-                    direction: directionValue, pnl: pnlValue, notes: notesValue, dateISO: executionDate.toISOString(), dateFormatted: formattedDateString
-                });
-            }
-
-            const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
-            localStorage.setItem(keyPrefix + '_trades', JSON.stringify(trades));
-            resetFormMode();
-            renderJournal();
-            triggerSilentBackgroundSync();
-        });
-
-        // Form Submission Interceptor (Withdrawals)
-        withdrawalForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const amountInput = document.getElementById('withdrawal-amount');
-            const dateInput = document.getElementById('withdrawal-date');
-            
-            let wDate = dateInput.value ? new Date(dateInput.value) : new Date();
-            wDate.setHours(12, 0, 0, 0);
-
-            const newWithdrawal = {
-                id: 'w-' + Date.now().toString(36),
-                amount: parseFloat(amountInput.value),
-                date: wDate.toISOString().split('T')[0]
-            };
-
-            withdrawals.push(newWithdrawal);
-            const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
-            localStorage.setItem(keyPrefix + '_withdrawals', JSON.stringify(withdrawals));
-            
-            amountInput.value = '';
-            dateInput.value = '';
-            
-            renderJournal();
-            triggerSilentBackgroundSync();
-        });
-
-        // Delete Structural Handlers
-        window.deleteTrade = function(id) {
-            if(confirm("Delete this metric print?")) {
-                if(editIdInput.value === id) resetFormMode();
-                trades = trades.filter(t => t.id !== id);
-                const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
-                localStorage.setItem(keyPrefix + '_trades', JSON.stringify(trades));
-                renderJournal();
-                triggerSilentBackgroundSync();
-            }
-        }
-
-        window.deleteWithdrawal = function(id) {
-            if(confirm("Remove this capital withdrawal entry?")) {
-                withdrawals = withdrawals.filter(w => w.id !== id);
-                const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
-                localStorage.setItem(keyPrefix + '_withdrawals', JSON.stringify(withdrawals));
-                renderJournal();
-                triggerSilentBackgroundSync();
-            }
-        }
-
-        window.initiateEdit = function(id) {
-            const targetTrade = trades.find(t => t.id === id);
-            if (!targetTrade) return;
-            editIdInput.value = targetTrade.id;
-            document.getElementById('direction').value = targetTrade.direction;
-            document.getElementById('pnl').value = targetTrade.pnl;
-            if (targetTrade.dateISO) {
-                const localDate = new Date(targetTrade.dateISO);
-                const year = localDate.getFullYear();
-                const month = String(localDate.getMonth() + 1).padStart(2, '0');
-                const day = String(localDate.getDate()).padStart(2, '0');
-                const hours = String(localDate.getHours()).padStart(2, '0');
-                const minutes = String(localDate.getMinutes()).padStart(2, '0');
-                document.getElementById('custom-date').value = `${year}-${month}-${day}T${hours}:${minutes}`;
-            }
-            document.getElementById('notes').value = targetTrade.notes;
-            submitBtn.textContent = "Update Entry";
-            cancelEditBtn.classList.remove('hidden');
-            
-            document.getElementById('trade-section-body').classList.remove('hidden');
-            document.getElementById('trade-section-body-icon').textContent = '▼';
-
-            window.scrollTo({ top: tradeForm.offsetTop - 20, behavior: 'smooth' });
-        }
-
-        clearBtn.addEventListener('click', () => {
-            if (confirm('Permanently wipe complete transaction footprints and withdrawals?')) {
-                trades = []; 
-                withdrawals = [];
-                accountMeta = { deposit: 0, bonus: 0, target: 1000, webhookUrl: webhookInput.value.trim() };
-                
-                const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
-                localStorage.removeItem(keyPrefix + '_trades');
-                localStorage.removeItem(keyPrefix + '_withdrawals');
-                localStorage.setItem(keyPrefix + '_meta', JSON.stringify(accountMeta));
-                
-                depositInput.value = '';
-                bonusInput.value = '';
-                targetInput.value = 1000;
-                
-                document.getElementById('edit-id').value = "";
-                tradeForm.reset();
-                submitBtn.textContent = "Commit Entry";
-                cancelEditBtn.classList.add('hidden');
-                
-                renderJournal();
-                triggerSilentBackgroundSync();
-                
-                alert("Database matrix completely wiped! Your Google Sheet has been cleanly reset to match your fresh start.");
-            }
-        });
-
-        function resetFormMode() {
-            document.getElementById('edit-id').value = ""; 
-            tradeForm.reset();
-            submitBtn.textContent = "Commit Entry";
-            cancelEditBtn.classList.add('hidden');
-        }
-        cancelEditBtn.addEventListener('click', resetFormMode);
-
-        // BACKGROUND TRANSMISSION ENGINE
         async function triggerSilentBackgroundSync() {
             const url = webhookInput.value.trim();
-            if (!url || url === "") {
-                syncIndicator.className = "w-2 h-2 rounded-full bg-zinc-600";
-                syncStatusText.textContent = "Offline Mode (Local)";
-                return;
-            }
-
-            syncIndicator.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
-            syncStatusText.textContent = "Syncing...";
-
-            const datasetPayload = {
-                accountPrefix: activeAccountName,
-                metadata: {
-                    deposit: parseFloat(depositInput.value) || 0,
-                    bonus: parseFloat(bonusInput.value) || 0,
-                    target: parseFloat(targetInput.value) || 1000
-                },
-                ledger: trades,
-                withdrawals: withdrawals
-            };
-
-            try {
-                await fetch(url, {
-                    method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(datasetPayload)
-                });
-                syncIndicator.className = "w-2 h-2 rounded-full bg-emerald-500";
-                syncStatusText.textContent = "Saved to Sheet";
-            } catch (err) {
-                console.error(err);
-                syncIndicator.className = "w-2 h-2 rounded-full bg-rose-500";
-                syncStatusText.textContent = "Sync Failed";
-            }
+            if (!url || url === "") return;
+            const datasetPayload = { accountPrefix: activeAccountName, metadata: { deposit: parseFloat(depositInput.value) || 0, bonus: parseFloat(bonusInput.value) || 0, target: parseFloat(targetInput.value) || 1000 }, ledger: trades, withdrawals: withdrawals };
+            try { await fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(datasetPayload) }); } catch (err) {}
         }
 
-        syncBtn.addEventListener('click', () => { triggerSilentBackgroundSync(); });
+        window.toggleSection = function(id) {
+            const el = document.getElementById(id);
+            if(el) el.classList.toggle('hidden');
+        };
 
-        // PULL DATA FROM SHEETS (VALIDATION BYPASSED Completely)
-        pullBtn.addEventListener('click', async () => {
-            let baseUrl = webhookInput.value.trim();
-            if (!baseUrl || baseUrl === "") {
-                return alert("Please paste your Apps Script URL link into the box first.");
-            }
-            
-            pullBtn.disabled = true; 
-            pullBtn.textContent = "Pulling...";
-
-            if (baseUrl.includes("script.google.com") && !baseUrl.includes("/a/*/")) {
-                baseUrl = baseUrl.replace("script.google.com/", "script.google.com/a/*/");
-            }
-
-            const separator = baseUrl.includes("?") ? "&" : "?";
-            const url = baseUrl + separator + "accountPrefix=" + encodeURIComponent(activeAccountName);
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                if (data.error) {
-                    alert("Sheets error: " + data.error);
-                } else {
-                    trades = data.ledger || [];
-                    withdrawals = data.withdrawals || [];
-                    
-                    if(data.metadata) {
-                        depositInput.value = data.metadata.deposit || '';
-                        bonusInput.value = data.metadata.bonus || '';
-                        targetInput.value = data.metadata.target || 1000;
-                        saveAccountMeta();
-                    }
-                    const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
-                    localStorage.setItem(keyPrefix + '_trades', JSON.stringify(trades));
-                    localStorage.setItem(keyPrefix + '_withdrawals', JSON.stringify(withdrawals));
-                    renderJournal();
-                }
-            } catch (err) { 
-                console.error(err); 
-                alert("Failed to process incoming script parameters. Verify your deployment link."); 
-            } finally { 
-                pullBtn.disabled = false; 
-                pullBtn.textContent = "📥 Pull From Sheets"; 
-            }
-        });
-
-        // AUTOMATIC BACKGROUND RETRIEVAL LOOP (Auto-Fetch every 30s)
-        setInterval(async () => {
-            if (editIdInput.value !== "") return;
-            let baseUrl = webhookInput.value.trim();
-            if (!baseUrl || baseUrl === "") return;
-            if (baseUrl.includes("script.google.com") && !baseUrl.includes("/a/*/")) baseUrl = baseUrl.replace("script.google.com/", "script.google.com/a/*/");
-
-            const url = baseUrl + (baseUrl.includes("?") ? "&" : "?") + "accountPrefix=" + encodeURIComponent(activeAccountName);
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                if (data && !data.error && data.ledger) {
-                    const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
-                    let localizedTradesString = localStorage.getItem(keyPrefix + '_trades');
-                    let localizedWithdrawalsString = localStorage.getItem(keyPrefix + '_withdrawals');
-                    
-                    if (JSON.stringify(data.ledger) !== localizedTradesString || JSON.stringify(data.withdrawals) !== localizedWithdrawalsString) {
-                        trades = data.ledger;
-                        withdrawals = data.withdrawals || [];
-                        localStorage.setItem(keyPrefix + '_trades', JSON.stringify(trades));
-                        localStorage.setItem(keyPrefix + '_withdrawals', JSON.stringify(withdrawals));
-                        
-                        if(data.metadata) {
-                            depositInput.value = data.metadata.deposit || '';
-                            bonusInput.value = data.metadata.bonus || '';
-                            targetInput.value = data.metadata.target || 1000;
-                            saveAccountMeta();
-                        }
-                        renderJournal();
-                    }
-                }
-            } catch (err) {}
-        }, 5000);
-
-        window.addEventListener('resize', drawEquityCurveChart);
-        function escapeHTML(str) { return str.replace(/[&<>'"]/g, t => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[t] || t)); }
-
-        // Start Initial Call
+        // Start App Run
         synchronizeActiveAccountMemory(activeAccountName);
     </script>
 </body>
