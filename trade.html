@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XAUUSD Obsidian Journal Elite</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-zinc-950 text-zinc-100 min-h-screen font-sans antialiased selection:bg-amber-500/30">
 
-    <div class="max-w-6xl mx-auto p-4 md:p-8">
+    <div class="max-w-7xl mx-auto p-4 md:p-8">
+        <!-- Header -->
         <header class="mb-6 border-b border-zinc-800 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h1 class="text-3xl font-black bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-transparent tracking-tight">XAUUSD JOURNAL ELITE</h1>
-                <p class="text-zinc-500 text-xs mt-1 uppercase tracking-widest font-semibold">Gold Execution, Native Editing & Sheets Integration</p>
+                <p class="text-zinc-500 text-xs mt-1 uppercase tracking-widest font-semibold">Gold Execution, Native Analytics & Sync Hub</p>
             </div>
             
+            <!-- Target Tracking Widget -->
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl min-w-[280px] w-full md:w-auto">
                 <div class="flex justify-between items-center mb-2">
                     <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Growth Target Progress</span>
@@ -33,37 +36,46 @@
             </div>
         </header>
 
-        <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <!-- Capital & Performance Analytics Metrics -->
+        <section class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl">
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Initial Deposit</label>
-                <div class="flex items-center border-b border-zinc-800 focus-within:border-amber-500 pb-1">
-                    <span class="text-sm font-mono text-zinc-400 mr-1">$</span>
-                    <input type="number" step="any" id="deposit-input" class="w-full bg-transparent text-base font-mono font-bold text-zinc-200 focus:outline-none" placeholder="0.00">
+                <div class="flex items-center border-b border-zinc-800 focus-within:border-amber-500 pb-0.5">
+                    <span class="text-xs font-mono text-zinc-400 mr-0.5">$</span>
+                    <input type="number" step="any" id="deposit-input" class="w-full bg-transparent text-sm font-mono font-bold text-zinc-200 focus:outline-none" placeholder="0.00">
                 </div>
             </div>
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl">
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Active Bonus</label>
-                <div class="flex items-center border-b border-zinc-800 focus-within:border-amber-500 pb-1">
-                    <span class="text-sm font-mono text-zinc-400 mr-1">$</span>
-                    <input type="number" step="any" id="bonus-input" class="w-full bg-transparent text-base font-mono font-bold text-zinc-200 focus:outline-none" placeholder="0.00">
+                <div class="flex items-center border-b border-zinc-800 focus-within:border-amber-500 pb-0.5">
+                    <span class="text-xs font-mono text-zinc-400 mr-0.5">$</span>
+                    <input type="number" step="any" id="bonus-input" class="w-full bg-transparent text-sm font-mono font-bold text-zinc-200 focus:outline-none" placeholder="0.00">
                 </div>
             </div>
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl">
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Net P&L Return</label>
-                <div class="pt-1">
-                    <span id="total-pnl" class="text-base font-mono font-bold text-zinc-400">$0.00</span>
+                <div class="pt-0.5">
+                    <span id="total-pnl" class="text-sm font-mono font-bold text-zinc-400">$0.00</span>
                 </div>
             </div>
-            <div class="bg-zinc-900 border border-amber-500/30 p-4 rounded-xl bg-gradient-to-br from-zinc-900 to-amber-950/10">
+            <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl">
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Win Rate</label>
+                <div class="flex items-baseline space-x-2 pt-0.5">
+                    <span id="win-rate-text" class="text-sm font-mono font-bold text-amber-400">0%</span>
+                    <span id="trade-ratio-text" class="text-[10px] font-mono text-zinc-500">(0/0 Trades)</span>
+                </div>
+            </div>
+            <div class="bg-zinc-900 border border-amber-500/30 p-4 rounded-xl bg-gradient-to-br from-zinc-900 to-amber-950/10 col-span-2 md:col-span-1">
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-amber-400 mb-1">Account Balance</label>
-                <div class="pt-1">
-                    <span id="account-balance" class="text-base font-mono font-black text-amber-400">$0.00</span>
+                <div class="pt-0.5">
+                    <span id="account-balance" class="text-sm font-mono font-black text-amber-400">$0.00</span>
                 </div>
             </div>
         </section>
 
-        <section class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl mb-8 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-            <div class="flex-1 w-full relative">
+        <!-- Google Sheets Sync Bar -->
+        <section class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl mb-6 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+            <div class="flex-1 w-full">
                 <div class="flex justify-between items-center mb-1">
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400">Google Apps Script Webhook URL</label>
                     <div class="flex items-center gap-1.5">
@@ -83,8 +95,39 @@
             </div>
         </section>
 
+        <!-- Graphics & Performance Calendar Row -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Analytics Chart Card -->
+            <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px]">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-4">Performance Equity Curve</h3>
+                <div class="flex-1 w-full relative h-[220px]">
+                    <canvas id="equity-chart" class="w-full h-full block"></canvas>
+                </div>
+            </div>
+
+            <!-- Interactive Matrix Calendar Card -->
+            <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px]">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">P&L Performance Calendar</h3>
+                    <div class="flex items-center space-x-2">
+                        <button id="prev-month-btn" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 p-1 px-2.5 rounded text-xs font-bold transition cursor-pointer">◀</button>
+                        <span id="calendar-title-text" class="text-xs font-bold font-mono text-zinc-200 min-w-[90px] text-center uppercase tracking-wide">June 2026</span>
+                        <button id="next-month-btn" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 p-1 px-2.5 rounded text-xs font-bold transition cursor-pointer">▶</button>
+                    </div>
+                </div>
+                <!-- Days Framework -->
+                <div class="grid grid-cols-7 gap-1 text-center text-[9px] uppercase font-bold text-zinc-500 mb-2 tracking-wider">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                </div>
+                <!-- Dynamic Dates Injection Frame Grid Matrix -->
+                <div id="calendar-days-grid" class="grid grid-cols-7 gap-1.5 flex-1"></div>
+            </div>
+        </section>
+
+        <!-- Main Workspace Grid Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
+            <!-- Left Workspace Column: Log Positions Form -->
             <div class="lg:col-span-1 bg-zinc-900 border border-zinc-800 p-6 rounded-xl h-fit">
                 <h2 id="form-title" class="text-sm font-bold mb-4 tracking-wider text-zinc-300 uppercase border-b border-zinc-800 pb-2 flex items-center justify-between">
                     <span>Log Gold Print</span>
@@ -98,8 +141,8 @@
                         <div>
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Direction</label>
                             <select id="direction" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 font-medium focus:outline-none focus:border-amber-500 text-xs">
-                                <option value="LONG">📈 Buy (Long)</option>
-                                <option value="SHORT">📉 Sell (Short)</option>
+                                <option value="LONG"> Long (Buy)</option>
+                                <option value="SHORT"> Short (Sell)</option>
                             </select>
                         </div>
                         <div>
@@ -129,6 +172,7 @@
                 </form>
             </div>
 
+            <!-- Right Workspace Column: Ledger Feeds -->
             <div class="lg:col-span-2 space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-sm font-bold tracking-wider text-zinc-300 uppercase">Execution Feed</h2>
@@ -136,17 +180,22 @@
                 </div>
                 
                 <div id="logs-container" class="space-y-3">
-                    </div>
+                    <!-- Dynamic Logs injection -->
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Scripting Engine Logic Framework Block -->
     <script>
-        // Database Architecture
+        // Database State
         let trades = JSON.parse(localStorage.getItem('elite_gold_trades')) || [];
         let accountMeta = JSON.parse(localStorage.getItem('elite_gold_meta')) || { deposit: 0, bonus: 0, target: 1000, webhookUrl: '' };
 
-        // DOM Inputs Initialization
+        // Calendar Global Context Parameters Tracker
+        let currentCalendarDate = new Date();
+
+        // DOM Inputs Initialization Hooks
         const depositInput = document.getElementById('deposit-input');
         const bonusInput = document.getElementById('bonus-input');
         const targetInput = document.getElementById('target-input');
@@ -157,7 +206,7 @@
         targetInput.value = accountMeta.target || 1000;
         webhookInput.value = accountMeta.webhookUrl || '';
 
-        // UI Target Hooks
+        // UI Architecture Structural Anchors
         const tradeForm = document.getElementById('trade-form');
         const editIdInput = document.getElementById('edit-id');
         const formTitle = document.getElementById('form-title');
@@ -166,6 +215,8 @@
         const logsContainer = document.getElementById('logs-container');
         const totalPnlEl = document.getElementById('total-pnl');
         const balanceEl = document.getElementById('account-balance');
+        const winRateText = document.getElementById('win-rate-text');
+        const tradeRatioText = document.getElementById('trade-ratio-text');
         const progressBar = document.getElementById('target-progress-bar');
         const progressText = document.getElementById('progress-text');
         const remainingText = document.getElementById('remaining-text');
@@ -174,8 +225,14 @@
         const pullBtn = document.getElementById('pull-btn');
         const syncIndicator = document.getElementById('sync-indicator');
         const syncStatusText = document.getElementById('sync-status-text');
+        
+        // Calendar Grid System Mappings
+        const calendarTitleText = document.getElementById('calendar-title-text');
+        const calendarDaysGrid = document.getElementById('calendar-days-grid');
+        const prevMonthBtn = document.getElementById('prev-month-btn');
+        const nextMonthBtn = document.getElementById('next-month-btn');
 
-        // Master UI Processing Loop
+        // Master UI Draw Cycle Interceptor
         function renderJournal() {
             logsContainer.innerHTML = '';
             
@@ -187,6 +244,14 @@
 
             // Sort trades chronologically
             trades.sort((a, b) => new Date(b.dateISO) - new Date(a.dateISO));
+
+            // Calculate Win Rate Metrics Engine
+            let winningTrades = trades.filter(t => parseFloat(t.pnl) > 0).length;
+            let totalTradesCount = trades.length;
+            let computedWinRate = totalTradesCount > 0 ? Math.round((winningTrades / totalTradesCount) * 100) : 0;
+            
+            winRateText.textContent = `${computedWinRate}%`;
+            tradeRatioText.textContent = `(${winningTrades}/${totalTradesCount} Wins)`;
 
             if (trades.length === 0) {
                 logsContainer.innerHTML = `
@@ -222,12 +287,11 @@
                 });
             }
 
-            // Top Dashboard Render Metrics
+            // Dashboard Component Updates
             totalPnlEl.textContent = `${totalPnl >= 0 ? '+' : ''}$${totalPnl.toFixed(2)}`;
             totalPnlEl.className = `text-base font-mono font-bold ${totalPnl >= 0 ? 'text-emerald-400' : 'text-rose-500'}`;
             balanceEl.textContent = `$${netBalance.toFixed(2)}`;
 
-            // Progression Bar Framework
             let percentage = (totalPnl / targetGoal) * 100;
             if (percentage < 0) percentage = 0;
             if (percentage > 100) percentage = 100;
@@ -243,7 +307,182 @@
                 remainingText.textContent = `Remaining: $${remaining.toFixed(2)}`;
                 remainingText.className = "text-zinc-500";
             }
+
+            // Render Native Charts & Performance Matrix Calendars
+            drawEquityCurveChart();
+            renderPerformanceCalendar();
         }
+
+        // Native HTML5 Vector Engine Canvas Draw Operation
+        function drawEquityCurveChart() {
+            const canvas = document.getElementById('equity-chart');
+            const ctx = canvas.getContext('2d');
+            
+            // Adjust canvas parameters matching pixel display matrices sizes accurately
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+            const width = rect.width;
+            const height = rect.height;
+
+            // Wipe drawing canvas clean
+            ctx.clearRect(0, 0, width, height);
+
+            // Reconstruct timeline array progression matching data indices sequentially
+            let chronologicalTrades = [...trades].sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO));
+            let runningPnlValues = [0];
+            let aggregate = 0;
+            
+            chronologicalTrades.forEach(t => {
+                aggregate += parseFloat(t.pnl);
+                runningPnlValues.push(aggregate);
+            });
+
+            if (runningPnlValues.length <= 1) {
+                ctx.fillStyle = '#52525b';
+                ctx.font = '11px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Execute positions to generate analytics graphs', width / 2, height / 2);
+                return;
+            }
+
+            // Calculate grid bounds constraints
+            let maxPnl = Math.max(...runningPnlValues, 10);
+            let minPnl = Math.min(...runningPnlValues, -10);
+            let pnlRange = maxPnl - minPnl;
+
+            let paddingLeft = 15;
+            let paddingRight = 15;
+            let paddingTop = 20;
+            let paddingBottom = 20;
+
+            let chartWidth = width - paddingLeft - paddingRight;
+            let chartHeight = height - paddingTop - paddingBottom;
+
+            // Zero Baseline Axis Marker Grid Logic
+            let zeroY = paddingTop + chartHeight - ((0 - minPnl) / pnlRange) * chartHeight;
+            ctx.strokeStyle = '#27272a';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(paddingLeft, zeroY);
+            ctx.lineTo(width - paddingRight, zeroY);
+            ctx.stroke();
+
+            // Formulate Line Vector Node Points
+            let coordinatePoints = [];
+            let segmentX = chartWidth / (runningPnlValues.length - 1);
+
+            runningPnlValues.forEach((val, idx) => {
+                let x = paddingLeft + (idx * segmentX);
+                let y = paddingTop + chartHeight - ((val - minPnl) / pnlRange) * chartHeight;
+                coordinatePoints.push({x, y});
+            });
+
+            // Draw Area Fill Shadow Matrix Gradient
+            let areaGradient = ctx.createLinearGradient(0, paddingTop, 0, paddingTop + chartHeight);
+            let endingPnl = runningPnlValues[runningPnlValues.length - 1];
+            if (endingPnl >= 0) {
+                areaGradient.addColorStop(0, 'rgba(52, 211, 153, 0.15)');
+                areaGradient.addColorStop(1, 'rgba(52, 211, 153, 0.0)');
+            } else {
+                areaGradient.addColorStop(0, 'rgba(244, 63, 94, 0.15)');
+                areaGradient.addColorStop(1, 'rgba(244, 63, 94, 0.0)');
+            }
+
+            ctx.beginPath();
+            ctx.moveTo(coordinatePoints[0].x, zeroY);
+            coordinatePoints.forEach(pt => ctx.lineTo(pt.x, pt.y));
+            ctx.lineTo(coordinatePoints[coordinatePoints.length - 1].x, zeroY);
+            ctx.closePath();
+            ctx.fillStyle = areaGradient;
+            ctx.fill();
+
+            // Draw Core Trend Line Stroke
+            ctx.beginPath();
+            ctx.moveTo(coordinatePoints[0].x, coordinatePoints[0].y);
+            coordinatePoints.forEach(pt => ctx.lineTo(pt.x, pt.y));
+            ctx.strokeStyle = endingPnl >= 0 ? '#34d399' : '#f43f5e';
+            ctx.lineWidth = 2.5;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            // Render terminal boundary intersection pointer dot nodes
+            let finalPt = coordinatePoints[coordinatePoints.length - 1];
+            ctx.beginPath();
+            ctx.arc(finalPt.x, finalPt.y, 4, 0, 2 * Math.PI);
+            ctx.fillStyle = endingPnl >= 0 ? '#34d399' : '#f43f5e';
+            ctx.fill();
+            ctx.strokeStyle = '#18181b';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+        }
+
+        // Performance Calendar Rendering Engine
+        function renderPerformanceCalendar() {
+            calendarDaysGrid.innerHTML = '';
+            
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+
+            // Set dynamic month header labels text
+            const monthNamesArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            calendarTitleText.textContent = `${monthNamesArray[month]} ${year}`;
+
+            // Determine structural parameter grids boundaries
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Map standard entries to aggregated calendar buckets by date string key
+            let dailyPnlMap = {};
+            trades.forEach(trade => {
+                if(!trade.dateISO) return;
+                let dateObj = new Date(trade.dateISO);
+                let dateKey = `${dateObj.getFullYear()}-${dateObj.getMonth()}-${dateObj.getDate()}`;
+                dailyPnlMap[dateKey] = (dailyPnlMap[dateKey] || 0) + parseFloat(trade.pnl);
+            });
+
+            // Fill leading empty grid slots
+            for (let i = 0; i < firstDayIndex; i++) {
+                let blankCell = document.createElement('div');
+                blankCell.className = "bg-zinc-900/10 rounded min-h-[32px]";
+                calendarDaysGrid.appendChild(blankCell);
+            }
+
+            // Draw actual calendar day element cards
+            for (let day = 1; day <= totalDaysInMonth; day++) {
+                let dayCell = document.createElement('div');
+                let cellKey = `${year}-${month}-${day}`;
+                let cellPnl = dailyPnlMap[cellKey] || 0;
+
+                let colorStylesClass = "bg-zinc-950 border border-zinc-800 text-zinc-400"; // No trade defaults configuration style
+                
+                if (cellPnl > 0.01) {
+                    colorStylesClass = "bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 font-bold";
+                } else if (cellPnl < -0.01) {
+                    colorStylesClass = "bg-rose-950/30 border border-rose-500/20 text-rose-400 font-bold";
+                }
+
+                dayCell.className = `rounded p-1 min-h-[34px] flex flex-col justify-between items-start ${colorStylesClass} transition duration-100 hover:border-zinc-600`;
+                dayCell.innerHTML = `
+                    <span class="text-[9px] block leading-none opacity-60">${day}</span>
+                    ${cellPnl !== 0 ? `<span class="text-[8px] block tracking-tighter font-mono overflow-hidden max-w-full text-ellipsis">${cellPnl >= 0 ? '+' : ''}${Math.round(cellPnl)}</span>` : ''}
+                `;
+                calendarDaysGrid.appendChild(dayCell);
+            }
+        }
+
+        // Calendar Nav Listeners
+        prevMonthBtn.addEventListener('click', () => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+            renderPerformanceCalendar();
+        });
+        nextMonthBtn.addEventListener('click', () => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+            renderPerformanceCalendar();
+        });
 
         // Commit state metadata modifications
         function saveAccountMeta() {
@@ -257,11 +496,9 @@
             renderJournal();
         }
 
-        // Event listener functions that save data locally AND trigger background cloud saves
         let metaTimeout;
         function handleMetaInputChange() {
             saveAccountMeta();
-            // Debounce the metadata input saves by 1.5 seconds so it doesn't spam Google Sheets as you type
             clearTimeout(metaTimeout);
             metaTimeout = setTimeout(() => {
                 triggerSilentBackgroundSync();
@@ -348,8 +585,6 @@
             localStorage.setItem('elite_gold_trades', JSON.stringify(trades));
             resetFormMode();
             renderJournal();
-            
-            // AUTOMATIC INJECTION BACKEND SYNC
             triggerSilentBackgroundSync();
         });
 
@@ -359,8 +594,6 @@
                 trades = trades.filter(t => t.id !== id);
                 localStorage.setItem('elite_gold_trades', JSON.stringify(trades));
                 renderJournal();
-                
-                // AUTOMATIC DELETION BACKEND SYNC
                 triggerSilentBackgroundSync();
             }
         }
@@ -371,18 +604,15 @@
                 localStorage.removeItem('elite_gold_trades');
                 resetFormMode();
                 renderJournal();
-                
-                // AUTOMATIC WIPE BACKEND SYNC
                 triggerSilentBackgroundSync();
             }
         });
 
-        // BACKGROUND BACKGROUND TRANSMISSION ENGINE (AUTO SYNC)
+        // BACKGROUND TRANSMISSION ENGINE (AUTO SYNC)
         async function triggerSilentBackgroundSync() {
             const url = webhookInput.value.trim();
-            if (!url) return; // Silent pass if webhook isn't configured yet
+            if (!url) return;
 
-            // Set UI to loading visual feedback state
             syncIndicator.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
             syncStatusText.textContent = "Syncing...";
             syncStatusText.className = "text-[10px] uppercase font-mono font-bold text-amber-400 tracking-wider";
@@ -404,7 +634,6 @@
                     body: JSON.stringify(datasetPayload)
                 });
                 
-                // Update UI to success visual feedback state
                 syncIndicator.className = "w-2 h-2 rounded-full bg-emerald-500";
                 syncStatusText.textContent = "Saved to Sheet";
                 syncStatusText.className = "text-[10px] uppercase font-mono font-bold text-emerald-500 tracking-wider";
@@ -416,7 +645,6 @@
             }
         }
 
-        // FORCE MANUAL PUSH PARAMETERS (Kept as fallback backup)
         syncBtn.addEventListener('click', () => {
             if (!webhookInput.value.trim()) {
                 alert("Please add your Google Apps Script Webhook URL first.");
@@ -436,7 +664,6 @@
             pullBtn.disabled = true;
             pullBtn.textContent = "Pulling...";
 
-            // Workaround modifier check for multiple account bugs
             if (url.includes("script.google.com") && !url.includes("/a/*/")) {
                 url = url.replace("script.google.com/", "script.google.com/a/*/");
             }
@@ -479,6 +706,9 @@
                 pullBtn.textContent = "📥 Pull From Sheets";
             }
         });
+
+        // Redraw canvas bounds correctly on screen width size scale changes
+        window.addEventListener('resize', drawEquityCurveChart);
 
         function escapeHTML(str) {
             return str.replace(/[&<>'"]/g, 
