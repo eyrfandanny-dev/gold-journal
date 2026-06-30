@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XAUUSD Obsidian Journal Elite</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-zinc-950 text-zinc-100 min-h-screen font-sans antialiased selection:bg-amber-500/30">
 
     <div class="max-w-7xl mx-auto p-4 md:p-8">
+        <!-- Header -->
         <header class="mb-6 border-b border-zinc-800 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-                <h1 class="text-3xl font-black bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-transparent tracking-tight">XAUUSD JOURNAL ELITE</h1>
+                <h1 class="text-3xl font-black bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-transparent tracking-tight">DANFX JOURNAL ELITE</h1>
                 
+                <!-- Account Hub Controller UI -->
                 <div class="mt-3 flex items-center gap-2 flex-wrap">
                     <select id="account-select" class="bg-zinc-900 border border-zinc-800 text-amber-400 font-black px-3 py-1.5 rounded-lg text-xs tracking-wide uppercase focus:outline-none focus:border-amber-500 cursor-pointer"></select>
                     <button id="add-account-btn" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 font-bold px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider cursor-pointer transition">➕ Add Account</button>
@@ -21,6 +24,7 @@
                 </div>
             </div>
             
+            <!-- Target Tracking Widget -->
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl min-w-[280px] w-full md:w-auto">
                 <div class="flex justify-between items-center mb-2">
                     <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Growth Target Progress</span>
@@ -39,6 +43,7 @@
             </div>
         </header>
 
+        <!-- Capital & Performance Analytics Metrics -->
         <section class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl">
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Initial Deposit</label>
@@ -81,6 +86,7 @@
             </div>
         </section>
 
+        <!-- Google Sheets Sync Bar -->
         <section class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl mb-6 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
             <div class="flex-1 w-full text-left">
                 <div class="flex justify-between items-center mb-1">
@@ -102,14 +108,66 @@
             </div>
         </section>
 
+        <!-- Graphics & Performance Periodic Performance Analytics Row -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 text-left">
+            <!-- Analytics Chart Card -->
+            <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1 relative group">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">Performance Equity Curve</h3>
+                    <span id="chart-tooltip-data" class="text-[10px] font-mono text-amber-400 bg-zinc-950 px-2 py-0.5 rounded border border-zinc-800 opacity-0 transition-opacity duration-150"></span>
+                </div>
+                <div class="flex-1 w-full relative h-[220px]">
+                    <canvas id="equity-chart" class="w-full h-full block cursor-crosshair"></canvas>
+                </div>
+            </div>
+
+            <!-- Periodic Performance Box -->
+            <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-4">Periodic Performance</h3>
+                <div class="space-y-3 flex-1 flex flex-col justify-center text-left">
+                    <div class="p-3 bg-zinc-950 border border-zinc-800/80 rounded-xl">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">Current Week P&L (Mon-Fri)</span>
+                        <span id="weekly-pnl-text" class="text-xl font-mono font-bold text-zinc-400">$0.00</span>
+                    </div>
+                    <div class="p-3 bg-zinc-950 border border-zinc-800/80 rounded-xl">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">Current Month P&L</span>
+                        <span id="monthly-pnl-text" class="text-xl font-mono font-bold text-zinc-400">$0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Matrix Calendar Card -->
+            <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">P&L Calendar Map</h3>
+                    <div class="flex items-center space-x-2">
+                        <button id="prev-month-btn" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 p-1 px-2.5 rounded text-xs font-bold transition cursor-pointer">◀</button>
+                        <span id="calendar-title-text" class="text-xs font-bold font-mono text-zinc-200 min-w-[90px] text-center uppercase tracking-wide">...</span>
+                        <button id="next-month-btn" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 p-1 px-2.5 rounded text-xs font-bold transition cursor-pointer">▶</button>
+                    </div>
+                </div>
+                <!-- Days Framework -->
+                <div class="grid grid-cols-7 gap-1 text-center text-[9px] uppercase font-bold text-zinc-500 mb-2 tracking-wider">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                </div>
+                <!-- Dynamic Dates Injection Frame Grid Matrix -->
+                <div id="calendar-days-grid" class="grid grid-cols-7 gap-1.5 flex-1"></div>
+            </div>
+        </section>
+
+        <!-- Main Workspace Grid Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
+            
+            <!-- Left Workspace Column -->
             <div class="lg:col-span-1 space-y-4">
+                
+                <!-- Card 1: Log Gold Print Form Box -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('trade-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>📊 Log Gold Print</span>
-                        <span id="trade-section-body-icon" class="text-zinc-500">▼</span>
+                        <span id="trade-section-body-icon" class="text-zinc-500 transition-transform duration-200">▼</span>
                     </button>
-                    <div id="trade-section-body" class="p-5 space-y-4">
+                    <div id="trade-section-body" class="p-5 space-y-4 transition-all duration-200">
                         <form id="trade-form" class="space-y-4">
                             <input type="hidden" id="edit-id" value="">
                             <div class="grid grid-cols-2 gap-4">
@@ -131,7 +189,7 @@
                             </div>
                             <div>
                                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Journal Notes & Psychology</label>
-                                <textarea id="notes" rows="3" placeholder="Technical setup reasons..." class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 focus:outline-none focus:border-amber-500 text-xs leading-relaxed"></textarea>
+                                <textarea id="notes" rows="3" placeholder="Market narrative, technical setup reasons..." class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 focus:outline-none focus:border-amber-500 text-xs leading-relaxed"></textarea>
                             </div>
                             <div class="flex gap-2">
                                 <button type="submit" id="submit-btn" class="flex-1 bg-amber-500 hover:bg-amber-600 text-zinc-950 font-black py-2 px-4 rounded transition duration-200 cursor-pointer uppercase tracking-wider text-xs">
@@ -145,12 +203,13 @@
                     </div>
                 </div>
 
+                <!-- Card 2: FX Currency Convertor Core -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('fx-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>💱 FX USD / SGD Convertor</span>
-                        <span id="fx-section-body-icon" class="text-zinc-500">▶</span>
+                        <span id="fx-section-body-icon" class="text-zinc-500 transition-transform duration-200">▶</span>
                     </button>
-                    <div id="fx-section-body" class="p-5 space-y-4 hidden">
+                    <div id="fx-section-body" class="p-5 space-y-4 hidden transition-all duration-200">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Amount (USD)</label>
@@ -175,39 +234,137 @@
                                 <span class="text-zinc-400">SGD</span>
                             </div>
                         </div>
+                        <div class="grid grid-cols-2 gap-2 pt-1 text-[10px]">
+                            <button type="button" id="fx-btn-balance" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 py-1.5 px-2 rounded font-medium transition cursor-pointer text-left truncate">
+                                💰 Convert Balance
+                            </button>
+                            <button type="button" id="fx-btn-target" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 py-1.5 px-2 rounded font-medium transition cursor-pointer text-left truncate">
+                                🎯 Convert Target
+                            </button>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Card 3: 40-DAY EXPONENTIALLY COMPOUNDING FORECAST RADAR -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                    <button type="button" onclick="toggleSection('compound-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
+                        <span>📈 40-Day Compounding Target Matrix</span>
+                        <span id="compound-section-body-icon" class="text-zinc-500 transition-transform duration-200">▶</span>
+                    </button>
+                    <div id="compound-section-body" class="p-5 space-y-4 hidden transition-all duration-200">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Starting Capital ($)</label>
+                                <input type="number" step="any" id="comp-capital-input" placeholder="e.g. 1000" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-100 font-mono text-xs focus:outline-none focus:border-amber-500">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Daily Target Profit (%)</label>
+                                <input type="number" step="any" id="comp-pct-input" placeholder="e.g. 1.5" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-100 font-mono text-xs focus:outline-none focus:border-amber-500">
+                            </div>
+                        </div>
+                        <div class="flex gap-2 text-[10px]">
+                            <button type="button" id="comp-btn-load" class="flex-1 bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 py-1.5 px-2 rounded font-medium transition cursor-pointer text-center">
+                                📥 Load Active Balance
+                            </button>
+                            <button type="button" id="comp-btn-clear" class="bg-zinc-950 hover:bg-zinc-900 text-rose-400 border border-zinc-800 py-1.5 px-3 rounded font-medium transition cursor-pointer text-center">
+                                Clear Matrix
+                            </button>
+                        </div>
+                        
+                        <!-- Compounding Output Table Container -->
+                        <div class="border border-zinc-800 rounded-lg overflow-hidden bg-zinc-950">
+                            <div class="grid grid-cols-4 bg-zinc-900 border-b border-zinc-800 text-[9px] uppercase tracking-wider font-bold text-zinc-400 text-center p-2">
+                                <div>Day</div>
+                                <div class="text-left">Start</div>
+                                <div class="text-right">Profit ($)</div>
+                                <div class="text-right">Ending</div>
+                            </div>
+                            <div id="compound-matrix-rows" class="max-h-[220px] overflow-y-auto divide-y divide-zinc-900 text-[11px] font-mono">
+                                <div class="text-center p-4 text-zinc-600 italic text-xs">Enter starting capital inputs to calculate growth horizons.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Log Capital Withdrawal Box -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                    <button type="button" onclick="toggleSection('withdrawal-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
+                        <span>💸 Capital Withdrawals</span>
+                        <span id="withdrawal-section-body-icon" class="text-zinc-500 transition-transform duration-200">▶</span>
+                    </button>
+                    <div id="withdrawal-section-body" class="p-5 space-y-4 hidden transition-all duration-200">
+                        <form id="withdrawal-form" class="space-y-3">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Amount ($)</label>
+                                    <input type="number" step="any" id="withdrawal-amount" required placeholder="0.00" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-100 font-mono text-xs focus:outline-none focus:border-amber-500">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Date</label>
+                                    <input type="date" id="withdrawal-date" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 font-mono text-xs focus:outline-none focus:border-amber-500">
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold py-2 px-4 rounded transition duration-200 cursor-pointer uppercase tracking-wider text-xs border border-zinc-700">
+                                Record Withdrawal
+                            </button>
+                        </form>
+                        <div id="withdrawal-ledger-list" class="space-y-2 max-h-[150px] overflow-y-auto pr-1"></div>
+                    </div>
+                </div>
+
+                <!-- Card 5: Historical Periodic Performance Box -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                    <button type="button" onclick="toggleSection('history-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
+                        <span>📜 Historical Data Feed</span>
+                        <span id="history-section-body-icon" class="text-zinc-500 transition-transform duration-200">▶</span>
+                    </button>
+                    <div id="history-section-body" class="p-4 hidden transition-all duration-200 space-y-4">
+                        <div>
+                            <h4 class="text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-2">Past Weeks Performance</h4>
+                            <div id="past-weeks-list" class="space-y-1.5 max-h-[160px] overflow-y-auto text-xs font-mono"></div>
+                        </div>
+                        <hr class="border-zinc-800/80">
+                        <div>
+                            <h4 class="text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-2">Past Months Performance</h4>
+                            <div id="past-months-list" class="space-y-1.5 max-h-[160px] overflow-y-auto text-xs font-mono"></div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
+            <!-- Right Workspace Column: Ledger Feeds -->
             <div class="lg:col-span-2 space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-sm font-bold tracking-wider text-zinc-300 uppercase">Execution Feed</h2>
                     <button id="clear-btn" class="text-xs text-zinc-600 hover:text-rose-400 transition cursor-pointer font-medium">Clear Data Matrix</button>
                 </div>
+                
                 <div id="logs-container" class="space-y-3"></div>
             </div>
         </div>
     </div>
 
+    <!-- Scripting Engine Logic Framework Block -->
     <script>
-        // --- SECURE MULTI-ACCOUNT WORKSPACE REPAIR FRAMEWORK ---
-        let accountsList = ["DEFAULT ACCOUNT"];
-        let activeAccountName = "DEFAULT ACCOUNT";
-        
+        // --- MULTI-ACCOUNT WORKSPACE ENGINE CORE ---
+        let accountsList = ["Main Account"];
+        let activeAccountName = "Main Account";
+
         try {
             let manifest = localStorage.getItem('elite_gold_accounts_manifest');
             if(manifest) accountsList = JSON.parse(manifest);
             let activeKey = localStorage.getItem('elite_gold_active_account_key');
             if(activeKey) activeAccountName = activeKey;
-        } catch(e) {
-            console.error("Storage structural reset triggered");
-        }
+        } catch(e) { console.error(e); }
 
         let trades = [];
         let withdrawals = [];
         let accountMeta = { deposit: 0, bonus: 0, target: 1000, webhookUrl: "" };
+        let currentCalendarDate = new Date();
+        let chartDataPointsReference = [];
 
-        // DOM Inputs Hook
+        // DOM Inputs Hook Up Setup
         const accountSelect = document.getElementById('account-select');
         const addAccountBtn = document.getElementById('add-account-btn');
         const deleteAccountBtn = document.getElementById('delete-account-btn');
@@ -219,14 +376,52 @@
         const webhookInput = document.getElementById('webhook-input');
         
         const tradeForm = document.getElementById('trade-form');
+        const withdrawalForm = document.getElementById('withdrawal-form');
         const editIdInput = document.getElementById('edit-id');
         const submitBtn = document.getElementById('submit-btn');
         const cancelEditBtn = document.getElementById('cancel-edit-btn');
         const logsContainer = document.getElementById('logs-container');
+        const withdrawalLedgerList = document.getElementById('withdrawal-ledger-list');
+        const chartTooltipData = document.getElementById('chart-tooltip-data');
+        
+        const pastWeeksList = document.getElementById('past-weeks-list');
+        const pastMonthsList = document.getElementById('past-months-list');
         
         const totalPnlEl = document.getElementById('total-pnl');
         const totalWithdrawalsText = document.getElementById('total-withdrawals-text');
         const balanceEl = document.getElementById('account-balance');
+        const winRateText = document.getElementById('win-rate-text');
+        const tradeRatioText = document.getElementById('trade-ratio-text');
+        const weeklyPnlText = document.getElementById('weekly-pnl-text');
+        const monthlyPnlText = document.getElementById('monthly-pnl-text');
+        
+        const progressBar = document.getElementById('target-progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const remainingText = document.getElementById('remaining-text');
+        const clearBtn = document.getElementById('clear-btn');
+        const syncBtn = document.getElementById('sync-btn');
+        const pullBtn = document.getElementById('pull-btn');
+        const syncIndicator = document.getElementById('sync-indicator');
+        const syncStatusText = document.getElementById('sync-status-text');
+        
+        const calendarTitleText = document.getElementById('calendar-title-text');
+        const calendarDaysGrid = document.getElementById('calendar-days-grid');
+        const prevMonthBtn = document.getElementById('prev-month-btn');
+        const nextMonthBtn = document.getElementById('next-month-btn');
+
+        // FX ELEMENT HOOKS
+        const fxUsdInput = document.getElementById('fx-usd-input');
+        const fxSgdInput = document.getElementById('fx-sgd-input');
+        const fxRateInput = document.getElementById('fx-rate-input');
+        const fxBtnBalance = document.getElementById('fx-btn-balance');
+        const fxBtnTarget = document.getElementById('fx-btn-target');
+
+        // 40-DAY COMPOUND ENGINE DOM HOOKS
+        const compCapitalInput = document.getElementById('comp-capital-input');
+        const compPctInput = document.getElementById('comp-pct-input');
+        const compBtnLoad = document.getElementById('comp-btn-load');
+        const compBtnClear = document.getElementById('comp-btn-clear');
+        const compoundMatrixRows = document.getElementById('compound-matrix-rows');
 
         function synchronizeActiveAccountMemory(targetAccountName) {
             activeAccountName = targetAccountName || "DEFAULT ACCOUNT";
@@ -249,6 +444,7 @@
 
             rebuildAccountSelectMenuOptions();
             renderJournal();
+            calculateCompoundingMatrixTable();
         }
 
         function rebuildAccountSelectMenuOptions() {
@@ -299,6 +495,75 @@
             }
         });
 
+        function convertUsdToSgd() {
+            const usd = parseFloat(fxUsdInput.value) || 0;
+            const rate = parseFloat(fxRateInput.value) || 1.295;
+            fxSgdInput.value = usd > 0 ? (usd * rate).toFixed(2) : '';
+        }
+
+        function convertSgdToUsd() {
+            const sgd = parseFloat(fxSgdInput.value) || 0;
+            const rate = parseFloat(fxRateInput.value) || 1.295;
+            fxUsdInput.value = sgd > 0 ? (sgd / rate).toFixed(2) : '';
+        }
+
+        fxUsdInput.addEventListener('input', convertUsdToSgd);
+        fxSgdInput.addEventListener('input', convertSgdToUsd);
+        fxRateInput.addEventListener('input', () => { convertUsdToSgd(); });
+
+        function getCalculatedActiveBalanceValue() {
+            let totalPnl = trades.reduce((sum, t) => sum + (parseFloat(t.pnl) || 0), 0);
+            let totalWithdrawals = withdrawals.reduce((sum, w) => sum + (parseFloat(w.amount) || 0), 0);
+            let deposit = parseFloat(depositInput.value) || 0;
+            let bonus = parseFloat(bonusInput.value) || 0;
+            return deposit + bonus + totalPnl - totalWithdrawals;
+        }
+
+        fxBtnBalance.addEventListener('click', () => {
+            fxUsdInput.value = getCalculatedActiveBalanceValue().toFixed(2);
+            convertUsdToSgd();
+        });
+
+        fxBtnTarget.addEventListener('click', () => {
+            fxUsdInput.value = (parseFloat(targetInput.value) || 1000).toFixed(2);
+            convertUsdToSgd();
+        });
+
+        function calculateCompoundingMatrixTable() {
+            let startCapital = parseFloat(compCapitalInput.value);
+            let targetPct = parseFloat(compPctInput.value);
+
+            if (isNaN(startCapital) || isNaN(targetPct) || startCapital <= 0) {
+                compoundMatrixRows.innerHTML = `<div class="text-center p-4 text-zinc-600 italic text-xs">Enter starting capital inputs to calculate growth horizons.</div>`;
+                return;
+            }
+
+            compoundMatrixRows.innerHTML = '';
+            let runningBalance = startCapital;
+            let multiplier = targetPct / 100;
+
+            for (let day = 1; day <= 40; day++) {
+                let dailyProfitDollar = runningBalance * multiplier;
+                let dayEndingBalance = runningBalance + dailyProfitDollar;
+
+                let rowElement = document.createElement('div');
+                rowElement.className = "grid grid-cols-4 p-2 text-center border-b border-zinc-900/50 hover:bg-zinc-900/40 transition duration-75 text-zinc-300";
+                rowElement.innerHTML = `
+                    <div class="text-zinc-500 font-bold font-sans">D${day}</div>
+                    <div class="text-left text-zinc-400">$${runningBalance.toFixed(2)}</div>
+                    <div class="text-right text-emerald-400 font-bold">+$${dailyProfitDollar.toFixed(2)}</div>
+                    <div class="text-right text-amber-400 font-bold">$${dayEndingBalance.toFixed(2)}</div>
+                `;
+                compoundMatrixRows.appendChild(rowElement);
+                runningBalance = dayEndingBalance;
+            }
+        }
+
+        compCapitalInput.addEventListener('input', calculateCompoundingMatrixTable);
+        compPctInput.addEventListener('input', calculateCompoundingMatrixTable);
+        compBtnLoad.addEventListener('click', () => { compCapitalInput.value = getCalculatedActiveBalanceValue().toFixed(2); calculateCompoundingMatrixTable(); });
+        compBtnClear.addEventListener('click', () => { compCapitalInput.value = ''; compPctInput.value = ''; calculateCompoundingMatrixTable(); });
+
         function saveAccountMeta() {
             const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
             accountMeta = {
@@ -310,100 +575,359 @@
             localStorage.setItem(keyPrefix + '_meta', JSON.stringify(accountMeta));
         }
 
+        let metaTimeout;
         function handleMetaInputChange() {
             saveAccountMeta();
             renderJournal();
+            clearTimeout(metaTimeout);
+            metaTimeout = setTimeout(() => { triggerSilentBackgroundSync(); }, 1500);
         }
-
         [depositInput, bonusInput, targetInput, webhookInput].forEach(el => el.addEventListener('input', handleMetaInputChange));
 
-        // BULLETPROOF FORM LOGGER HANDLER
         tradeForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            const pnlField = document.getElementById('pnl');
-            const directionField = document.getElementById('direction');
-            const notesField = document.getElementById('notes');
-            const customDateField = document.getElementById('custom-date');
+            const editId = editIdInput.value;
+            const customDateValue = document.getElementById('custom-date').value;
+            let executionDate = customDateValue ? new Date(customDateValue) : new Date();
 
-            if(!pnlField || !directionField) return;
-
-            const pnlValue = parseFloat(pnlField.value);
-            const directionValue = directionField.value;
-            const notesValue = notesField ? notesField.value : "";
-            
-            let executionDate = customDateField && customDateField.value ? new Date(customDateField.value) : new Date();
+            const pnlValue = parseFloat(document.getElementById('pnl').value);
+            const directionValue = document.getElementById('direction').value;
+            const notesValue = document.getElementById('notes').value;
             const formattedDateString = executionDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' });
 
-            const newTrade = {
-                id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
-                direction: directionValue,
-                pnl: pnlValue,
-                notes: notesValue,
-                dateISO: executionDate.toISOString(),
-                dateFormatted: formattedDateString
-            };
+            if (editId) {
+                trades = trades.map(t => t.id === editId ? {
+                    ...t, direction: directionValue, pnl: pnlValue, notes: notesValue, dateISO: executionDate.toISOString(), dateFormatted: formattedDateString
+                } : t);
+            } else {
+                trades.push({
+                    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+                    direction: directionValue, pnl: pnlValue, notes: notesValue, dateISO: executionDate.toISOString(), dateFormatted: formattedDateString
+                });
+            }
 
-            trades.push(newTrade);
-            
             const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
             localStorage.setItem(keyPrefix + '_trades', JSON.stringify(trades));
-            
-            // Clean fields manually to prevent loops
-            pnlField.value = "";
-            if(notesField) notesField.value = "";
-            if(customDateField) customDateField.value = "";
-            
+            resetFormMode();
             renderJournal();
             triggerSilentBackgroundSync();
         });
 
+        withdrawalForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const amountInput = document.getElementById('withdrawal-amount');
+            const dateInput = document.getElementById('withdrawal-date');
+            let wDate = dateInput.value ? new Date(dateInput.value) : new Date();
+            wDate.setHours(12, 0, 0, 0);
+
+            const newWithdrawal = {
+                id: 'w-' + Date.now().toString(36),
+                amount: parseFloat(amountInput.value),
+                date: wDate.toISOString().split('T')[0]
+            };
+            withdrawals.push(newWithdrawal);
+            const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+            localStorage.setItem(keyPrefix + '_withdrawals', JSON.stringify(withdrawals));
+            amountInput.value = ''; dateInput.value = '';
+            renderJournal();
+            triggerSilentBackgroundSync();
+        });
+
+        window.deleteTrade = function(id) {
+            if(confirm("Delete this metric print?")) {
+                if(editIdInput.value === id) resetFormMode();
+                trades = trades.filter(t => t.id !== id);
+                const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+                localStorage.setItem(keyPrefix + '_trades', JSON.stringify(trades));
+                renderJournal();
+                triggerSilentBackgroundSync();
+            }
+        }
+
+        window.deleteWithdrawal = function(id) {
+            if(confirm("Remove this capital withdrawal entry?")) {
+                withdrawals = withdrawals.filter(w => w.id !== id);
+                const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+                localStorage.setItem(keyPrefix + '_withdrawals', JSON.stringify(withdrawals));
+                renderJournal();
+                triggerSilentBackgroundSync();
+            }
+        }
+
+        window.initiateEdit = function(id) {
+            const targetTrade = trades.find(t => t.id === id);
+            if (!targetTrade) return;
+            editIdInput.value = targetTrade.id;
+            document.getElementById('direction').value = targetTrade.direction;
+            document.getElementById('pnl').value = targetTrade.pnl;
+            if (targetTrade.dateISO) {
+                const localDate = new Date(targetTrade.dateISO);
+                const year = localDate.getFullYear();
+                const month = String(localDate.getMonth() + 1).padStart(2, '0');
+                const day = String(localDate.getDate()).padStart(2, '0');
+                const hours = String(localDate.getHours()).padStart(2, '0');
+                const minutes = String(localDate.getMinutes()).padStart(2, '0');
+                document.getElementById('custom-date').value = `${year}-${month}-${day}T${hours}:${minutes}`;
+            }
+            document.getElementById('notes').value = targetTrade.notes;
+            submitBtn.textContent = "Update Entry";
+            cancelEditBtn.classList.remove('hidden');
+            window.scrollTo({ top: tradeForm.offsetTop - 20, behavior: 'smooth' });
+        }
+
+        clearBtn.addEventListener('click', () => {
+            if (confirm('Permanently wipe complete transaction footprints and withdrawals?')) {
+                trades = []; withdrawals = [];
+                accountMeta = { deposit: 0, bonus: 0, target: 1000, webhookUrl: webhookInput.value.trim() };
+                const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+                localStorage.removeItem(keyPrefix + '_trades');
+                localStorage.removeItem(keyPrefix + '_withdrawals');
+                localStorage.setItem(keyPrefix + '_meta', JSON.stringify(accountMeta));
+                depositInput.value = ''; bonusInput.value = ''; targetInput.value = 1000;
+                resetFormMode(); renderJournal(); triggerSilentBackgroundSync();
+            }
+        });
+
+        function resetFormMode() {
+            editIdInput.value = ""; tradeForm.reset();
+            submitBtn.textContent = "Commit Entry"; cancelEditBtn.classList.add('hidden');
+        }
+        cancelEditBtn.addEventListener('click', resetFormMode);
+
         function renderJournal() {
             if(!logsContainer) return;
             logsContainer.innerHTML = '';
+            if(withdrawalLedgerList) withdrawalLedgerList.innerHTML = '';
+            if(pastWeeksList) pastWeeksList.innerHTML = '';
+            if(pastMonthsList) pastMonthsList.innerHTML = '';
             
             let totalPnl = trades.reduce((sum, t) => sum + (parseFloat(t.pnl) || 0), 0);
+            let totalWithdrawals = withdrawals.reduce((sum, w) => sum + (parseFloat(w.amount) || 0), 0);
             let deposit = parseFloat(depositInput.value) || 0;
             let bonus = parseFloat(bonusInput.value) || 0;
-            let netBalance = deposit + bonus + totalPnl;
+            let targetGoal = parseFloat(targetInput.value) || 1000;
+            let netBalance = deposit + bonus + totalPnl - totalWithdrawals;
+
+            // Sort chronologically for logging view
+            trades.sort((a, b) => new Date(b.dateISO) - new Date(a.dateISO));
+
+            // Periodic Performance Processing Engine
+            let now = new Date();
+            let currentMonth = now.getMonth();
+            let currentYear = now.getFullYear();
+            
+            let currentMon = new Date(now);
+            let dayOfWeek = currentMon.getDay();
+            currentMon.setDate(now.getDate() + (dayOfWeek === 0 ? -6 : 1 - dayOfWeek));
+            currentMon.setHours(0,0,0,0);
+            let currentFri = new Date(currentMon);
+            currentFri.setDate(currentMon.getDate() + 4);
+            currentFri.setHours(23,59,59,999);
+
+            let weeklyAccumulator = 0; let monthlyAccumulator = 0;
+            let historyWeeksBucketMap = {}; let historyMonthsBucketMap = {};
+
+            let chronologicalTrades = [...trades].sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO));
+            chronologicalTrades.forEach(t => {
+                let tradeDate = new Date(t.dateISO);
+                let pnlFloat = parseFloat(t.pnl) || 0;
+
+                if (tradeDate >= currentMon && tradeDate <= currentFri) weeklyAccumulator += pnlFloat;
+                if (tradeDate.getMonth() === currentMonth && tradeDate.getFullYear() === currentYear) monthlyAccumulator += pnlFloat;
+
+                let mondayRange = new Date(tradeDate);
+                let d = mondayRange.getDay();
+                mondayRange.setDate(tradeDate.getDate() + (d === 0 ? -6 : 1 - d));
+                let weekKey = `W/C ${mondayRange.toLocaleDateString('en-US', {month: 'short', day: 'numeric'})}`;
+                historyWeeksBucketMap[weekKey] = (historyWeeksBucketMap[weekKey] || 0) + pnlFloat;
+
+                let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                let monthKey = `${monthNames[tradeDate.getMonth()]} ${tradeDate.getFullYear()}`;
+                historyMonthsBucketMap[monthKey] = (historyMonthsBucketMap[monthKey] || 0) + pnlFloat;
+            });
+
+            if(weeklyPnlText) { weeklyPnlText.textContent = `${weeklyAccumulator >= 0 ? '+':''}$${weeklyAccumulator.toFixed(2)}`; weeklyPnlText.className = `text-xl font-mono font-bold ${weeklyAccumulator >= 0 ? 'text-emerald-400':'text-rose-500'}`; }
+            if(monthlyPnlText) { monthlyPnlText.textContent = `${monthlyAccumulator >= 0 ? '+':''}$${monthlyAccumulator.toFixed(2)}`; monthlyPnlText.className = `text-xl font-mono font-bold ${monthlyAccumulator >= 0 ? 'text-emerald-400':'text-rose-500'}`; }
+
+            Object.keys(historyWeeksBucketMap).reverse().forEach(wk => {
+                let row = document.createElement('div'); row.className = "flex justify-between items-center p-1.5 bg-zinc-950 border border-zinc-900 rounded text-xs font-mono";
+                row.innerHTML = `<span class="text-zinc-400">${wk}</span><span class="${historyWeeksBucketMap[wk] >= 0 ? 'text-emerald-400':'text-rose-500'} font-bold">${historyWeeksBucketMap[wk] >= 0 ? '+':''}$${historyWeeksBucketMap[wk].toFixed(2)}</span>`;
+                if(pastWeeksList) pastWeeksList.appendChild(row);
+            });
+            Object.keys(historyMonthsBucketMap).reverse().forEach(mth => {
+                let row = document.createElement('div'); row.className = "flex justify-between items-center p-1.5 bg-zinc-950 border border-zinc-900 rounded text-xs font-mono";
+                row.innerHTML = `<span class="text-zinc-400">${mth}</span><span class="${historyMonthsBucketMap[mth] >= 0 ? 'text-emerald-400':'text-rose-500'} font-bold">${historyMonthsBucketMap[mth] >= 0 ? '+':''}$${historyMonthsBucketMap[mth].toFixed(2)}</span>`;
+                if(pastMonthsList) pastMonthsList.appendChild(row);
+            });
+
+            let winningTrades = trades.filter(t => (parseFloat(t.pnl) || 0) > 0).length;
+            let totalTradesCount = trades.length;
+            if(winRateText) winRateText.textContent = `${totalTradesCount > 0 ? Math.round((winningTrades / totalTradesCount) * 100) : 0}%`;
+            if(tradeRatioText) tradeRatioText.textContent = `(${winningTrades}/${totalTradesCount})`;
 
             if (trades.length === 0) {
                 logsContainer.innerHTML = `<div class="text-center p-12 bg-zinc-900/20 border border-dashed border-zinc-800 rounded-xl text-zinc-600 text-xs">No gold prints logged yet.</div>`;
             } else {
-                // Render feeds chronologically
-                let sorted = [...trades].sort((a,b) => new Date(b.dateISO) - new Date(a.dateISO));
-                sorted.forEach((trade) => {
+                trades.forEach((trade) => {
                     const isWin = trade.pnl >= 0;
                     const logCard = document.createElement('div');
-                    logCard.className = 'bg-zinc-900 border border-zinc-800/80 rounded-xl p-4 flex flex-col gap-2 text-xs';
+                    logCard.className = 'bg-zinc-900 border border-zinc-800/80 rounded-xl p-4 hover:border-zinc-700 transition relative';
                     logCard.innerHTML = `
-                        <div class="flex justify-between items-center">
-                            <span class="font-mono font-bold px-2 py-0.5 rounded border ${trade.direction === 'LONG' ? 'text-emerald-400 bg-emerald-500/5 border-emerald-500/10':'text-rose-500 bg-rose-500/5 border-rose-500/10'}">${trade.direction}</span>
-                            <span class="font-mono font-bold ${isWin ? 'text-emerald-400':'text-rose-500'}">${isWin ? '+':''}$${parseFloat(trade.pnl).toFixed(2)}</span>
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center space-x-3 text-xs">
+                                <span class="font-mono font-bold px-2 py-0.5 rounded border ${trade.direction === 'LONG' ? 'bg-emerald-500/5 text-emerald-400 border-emerald-500/10':'bg-rose-500/5 text-rose-500 border-rose-500/10'}">${trade.direction}</span>
+                                <span class="text-zinc-500 font-mono">${trade.dateFormatted || ''}</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-xs">
+                                <span class="font-mono font-bold ${isWin ? 'text-emerald-400':'text-rose-500'}">${isWin ? '+':''}$${parseFloat(trade.pnl).toFixed(2)}</span>
+                                <button onclick="deleteTrade('${trade.id}')" class="text-zinc-600 hover:text-rose-400 font-bold ml-2">✕</button>
+                            </div>
                         </div>
-                        ${trade.notes ? `<p class="text-zinc-400 bg-zinc-950/40 p-2 rounded leading-relaxed">${trade.notes}</p>`:''}
+                        ${trade.notes ? `<p class="text-zinc-400 text-xs bg-zinc-950/40 p-2 rounded leading-relaxed">${trade.notes}</p>` : ''}
                     `;
                     logsContainer.appendChild(logCard);
                 });
             }
 
+            // Render Withdrawals Ledger
+            withdrawals.sort((a,b) => new Date(b.date) - new Date(a.date));
+            withdrawals.forEach(w => {
+                let wRow = document.createElement('div'); wRow.className = "flex justify-between items-center text-xs bg-zinc-950 p-2 rounded border border-zinc-800/60";
+                wRow.innerHTML = `<span class="font-mono text-zinc-500">${w.date}</span><div class="flex items-center space-x-2"><span class="font-mono font-bold text-rose-400">-$${parseFloat(w.amount).toFixed(2)}</span><button onclick="deleteWithdrawal('${w.id}')" class="text-zinc-600 hover:text-rose-400 font-bold">✕</button></div>`;
+                if(withdrawalLedgerList) withdrawalLedgerList.appendChild(wRow);
+            });
+
             if(totalPnlEl) totalPnlEl.textContent = `${totalPnl >= 0 ? '+':''}$${totalPnl.toFixed(2)}`;
+            if(totalPnlEl) totalPnlEl.className = `text-sm font-mono font-bold ${totalPnl >= 0 ? 'text-emerald-400':'text-rose-500'}`;
+            if(totalWithdrawalsText) totalWithdrawalsText.textContent = `$${totalWithdrawals.toFixed(2)}`;
             if(balanceEl) balanceEl.textContent = `$${netBalance.toFixed(2)}`;
+
+            let percentage = (totalPnl / targetGoal) * 100;
+            if (percentage < 0) percentage = 0; if (percentage > 100) percentage = 100;
+            if(progressBar) progressBar.style.width = `${percentage}%`;
+            if(progressText) progressText.textContent = `${Math.round(percentage)}%`;
+            if(remainingText) remainingText.textContent = (targetGoal - totalPnl) <= 0 ? "Goal Achieved! 🏆" : `Remaining: $${(targetGoal - totalPnl).toFixed(2)}`;
+
+            drawEquityCurveChart();
+            renderPerformanceCalendar();
         }
+
+        function drawEquityCurveChart() {
+            const canvas = document.getElementById('equity-chart');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * window.devicePixelRatio; canvas.height = rect.height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+            const width = rect.width; const height = rect.height;
+            ctx.clearRect(0, 0, width, height);
+
+            let chronologicalTrades = [...trades].sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO));
+            let runningPnlValues = [0]; let aggregate = 0;
+            chronologicalTrades.forEach(t => { aggregate += parseFloat(t.pnl) || 0; runningPnlValues.push(aggregate); });
+
+            if (runningPnlValues.length <= 1) {
+                ctx.fillStyle = '#52525b'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+                ctx.fillText('Execute positions to generate analytics graphs', width / 2, height / 2);
+                return;
+            }
+
+            let maxPnl = Math.max(...runningPnlValues, 10); let minPnl = Math.min(...runningPnlValues, -10);
+            let pnlRange = maxPnl - minPnl;
+            let padding = 20; let chartWidth = width - (padding * 2); let chartHeight = height - (padding * 2);
+            let zeroY = padding + chartHeight - ((0 - minPnl) / pnlRange) * chartHeight;
+
+            ctx.strokeStyle = '#27272a'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(padding, zeroY); ctx.lineTo(width - padding, zeroY); ctx.stroke();
+
+            chartDataPointsReference = [];
+            let segmentX = chartWidth / (runningPnlValues.length - 1);
+            runningPnlValues.forEach((val, idx) => {
+                let x = padding + (idx * segmentX);
+                let y = padding + chartHeight - ((val - minPnl) / pnlRange) * chartHeight;
+                chartDataPointsReference.push({ x, y, cumulativePnl: val });
+            });
+
+            ctx.beginPath(); ctx.moveTo(chartDataPointsReference[0].x, chartDataPointsReference[0].y);
+            chartDataPointsReference.forEach(pt => ctx.lineTo(pt.x, pt.y));
+            ctx.strokeStyle = runningPnlValues[runningPnlValues.length - 1] >= 0 ? '#34d399' : '#f43f5e';
+            ctx.lineWidth = 2.5; ctx.stroke();
+        }
+
+        function renderPerformanceCalendar() {
+            if(!calendarDaysGrid) return;
+            calendarDaysGrid.innerHTML = '';
+            const year = currentCalendarDate.getFullYear(); const month = currentCalendarDate.getMonth();
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            if(calendarTitleText) calendarTitleText.textContent = `${monthNames[month]} ${year}`;
+
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
+
+            let dailyPnlMap = {};
+            trades.forEach(trade => {
+                if(!trade.dateISO) return;
+                let dateObj = new Date(trade.dateISO);
+                if(dateObj.getMonth() === month && dateObj.getFullYear() === year) {
+                    let key = dateObj.getDate();
+                    dailyPnlMap[key] = (dailyPnlMap[key] || 0) + (parseFloat(trade.pnl) || 0);
+                }
+            });
+
+            for (let i = 0; i < firstDayIndex; i++) {
+                let blank = document.createElement('div'); blank.className = "bg-zinc-900/10 rounded min-h-[32px]";
+                calendarDaysGrid.appendChild(blank);
+            }
+
+            for (let day = 1; day <= totalDaysInMonth; day++) {
+                let dayCell = document.createElement('div');
+                let cellPnl = dailyPnlMap[day] || 0;
+                let bgStyle = "bg-zinc-950 border border-zinc-800 text-zinc-500";
+                if(cellPnl > 0.01) bgStyle = "bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 font-bold";
+                if(cellPnl < -0.01) bgStyle = "bg-rose-950/30 border border-rose-500/20 text-rose-400 font-bold";
+
+                dayCell.className = `rounded p-1 min-h-[34px] flex flex-col justify-between items-start text-[10px] ${bgStyle}`;
+                dayCell.innerHTML = `<span>${day}</span>${cellPnl !== 0 ? `<span class="text-[8px] font-mono block">${cellPnl > 0 ? '+':''}${Math.round(cellPnl)}</span>`:''}`;
+                calendarDaysGrid.appendChild(dayCell);
+            }
+        }
+
+        if(prevMonthBtn) prevMonthBtn.addEventListener('click', () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1); renderPerformanceCalendar(); });
+        if(nextMonthBtn) nextMonthBtn.addEventListener('click', () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1); renderPerformanceCalendar(); });
 
         async function triggerSilentBackgroundSync() {
             const url = webhookInput.value.trim();
             if (!url || url === "") return;
             const datasetPayload = { accountPrefix: activeAccountName, metadata: { deposit: parseFloat(depositInput.value) || 0, bonus: parseFloat(bonusInput.value) || 0, target: parseFloat(targetInput.value) || 1000 }, ledger: trades, withdrawals: withdrawals };
-            try { await fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(datasetPayload) }); } catch (err) {}
+            try { await fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(datasetPayload) }); syncIndicator.className = "w-2 h-2 rounded-full bg-emerald-500"; syncStatusText.textContent = "Saved to Sheet"; } catch (err) { syncIndicator.className = "w-2 h-2 rounded-full bg-rose-500"; syncStatusText.textContent = "Sync Failed"; }
         }
 
-        window.toggleSection = function(id) {
-            const el = document.getElementById(id);
-            if(el) el.classList.toggle('hidden');
-        };
+        syncBtn.addEventListener('click', triggerSilentBackgroundSync);
 
-        // Start App Run
+        pullBtn.addEventListener('click', async () => {
+            let baseUrl = webhookInput.value.trim();
+            if (!baseUrl || baseUrl === "") return alert("Please paste your Webhook URL link into the box first.");
+            pullBtn.disabled = true; pullBtn.textContent = "Pulling...";
+            if (baseUrl.includes("script.google.com") && !baseUrl.includes("/a/*/")) baseUrl = baseUrl.replace("script.google.com/", "script.google.com/a/*/");
+            const url = baseUrl + (baseUrl.includes("?") ? "&" : "?") + "accountPrefix=" + encodeURIComponent(activeAccountName);
+
+            try {
+                const response = await fetch(url); const data = await response.json();
+                if (!data.error) {
+                    trades = data.ledger || []; withdrawals = data.withdrawals || [];
+                    if(data.metadata) { depositInput.value = data.metadata.deposit || ''; bonusInput.value = data.metadata.bonus || ''; targetInput.value = data.metadata.target || 1000; saveAccountMeta(); }
+                    const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+                    localStorage.setItem(keyPrefix + '_trades', JSON.stringify(trades)); localStorage.setItem(keyPrefix + '_withdrawals', JSON.stringify(withdrawals));
+                    renderJournal();
+                }
+            } catch (err) { alert("Data pulled error or empty matrix tabs."); }
+            finally { pullBtn.disabled = false; pullBtn.textContent = "📥 Pull From Sheets"; }
+        });
+
+        window.addEventListener('resize', drawEquityCurveChart);
+        window.toggleSection = function(id) { const el = document.getElementById(id); if(el) el.classList.toggle('hidden'); };
+        function escapeHTML(str) { return str.replace(/[&<>'"]/g, t => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[t] || t)); }
+
         synchronizeActiveAccountMemory(activeAccountName);
     </script>
 </body>
