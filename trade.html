@@ -4,20 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XAUUSD Obsidian Journal Elite</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-zinc-950 text-zinc-100 min-h-screen font-sans antialiased selection:bg-amber-500/30">
 
     <div class="max-w-6xl mx-auto p-4 md:p-8">
-        <!-- Header -->
         <header class="mb-6 border-b border-zinc-800 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h1 class="text-3xl font-black bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-transparent tracking-tight">XAUUSD JOURNAL ELITE</h1>
                 <p class="text-zinc-500 text-xs mt-1 uppercase tracking-widest font-semibold">Gold Execution, Native Editing & Sheets Integration</p>
             </div>
             
-            <!-- Target Tracking Widget -->
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl min-w-[280px] w-full md:w-auto">
                 <div class="flex justify-between items-center mb-2">
                     <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Growth Target Progress</span>
@@ -36,7 +33,6 @@
             </div>
         </header>
 
-        <!-- Capital Management Dashboard -->
         <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl">
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Initial Deposit</label>
@@ -66,26 +62,29 @@
             </div>
         </section>
 
-        <!-- Google Sheets Integration Bar -->
         <section class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl mb-8 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-            <div class="flex-1 w-full">
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Google Apps Script Webhook URL</label>
+            <div class="flex-1 w-full relative">
+                <div class="flex justify-between items-center mb-1">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400">Google Apps Script Webhook URL</label>
+                    <div class="flex items-center gap-1.5">
+                        <span id="sync-indicator" class="w-2 h-2 rounded-full bg-zinc-600"></span>
+                        <span id="sync-status-text" class="text-[10px] uppercase font-mono font-bold text-zinc-500 tracking-wider">Ready</span>
+                    </div>
+                </div>
                 <input type="url" id="webhook-input" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-xs font-mono text-zinc-300 focus:outline-none focus:border-amber-500">
             </div>
             <div class="flex gap-2 self-stretch md:self-end">
                 <button id="pull-btn" class="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-amber-400 font-bold px-4 py-2 rounded text-xs tracking-wider uppercase transition cursor-pointer whitespace-nowrap">
                     📥 Pull From Sheets
                 </button>
-                <button id="sync-btn" class="bg-amber-500 hover:bg-amber-600 text-zinc-950 font-bold px-4 py-2 rounded text-xs tracking-wider uppercase transition cursor-pointer whitespace-nowrap">
-                    🔗 Push to Sheets
+                <button id="sync-btn" class="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-400 font-bold px-4 py-2 rounded text-xs tracking-wider uppercase transition cursor-pointer whitespace-nowrap">
+                    🔗 Force Push
                 </button>
             </div>
         </section>
 
-        <!-- Main Workspace -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <!-- Left Column: Form Setup -->
             <div class="lg:col-span-1 bg-zinc-900 border border-zinc-800 p-6 rounded-xl h-fit">
                 <h2 id="form-title" class="text-sm font-bold mb-4 tracking-wider text-zinc-300 uppercase border-b border-zinc-800 pb-2 flex items-center justify-between">
                     <span>Log Gold Print</span>
@@ -130,7 +129,6 @@
                 </form>
             </div>
 
-            <!-- Right Column: Ledger Feed -->
             <div class="lg:col-span-2 space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-sm font-bold tracking-wider text-zinc-300 uppercase">Execution Feed</h2>
@@ -138,8 +136,7 @@
                 </div>
                 
                 <div id="logs-container" class="space-y-3">
-                    <!-- Dynamic Logs injection -->
-                </div>
+                    </div>
             </div>
         </div>
     </div>
@@ -175,6 +172,8 @@
         const clearBtn = document.getElementById('clear-btn');
         const syncBtn = document.getElementById('sync-btn');
         const pullBtn = document.getElementById('pull-btn');
+        const syncIndicator = document.getElementById('sync-indicator');
+        const syncStatusText = document.getElementById('sync-status-text');
 
         // Master UI Processing Loop
         function renderJournal() {
@@ -258,8 +257,19 @@
             renderJournal();
         }
 
+        // Event listener functions that save data locally AND trigger background cloud saves
+        let metaTimeout;
+        function handleMetaInputChange() {
+            saveAccountMeta();
+            // Debounce the metadata input saves by 1.5 seconds so it doesn't spam Google Sheets as you type
+            clearTimeout(metaTimeout);
+            metaTimeout = setTimeout(() => {
+                triggerSilentBackgroundSync();
+            }, 1500);
+        }
+
         [depositInput, bonusInput, targetInput, webhookInput].forEach(element => {
-            element.addEventListener('input', saveAccountMeta);
+            element.addEventListener('input', handleMetaInputChange);
         });
 
         // Trigger Inline Editing Operations
@@ -338,6 +348,9 @@
             localStorage.setItem('elite_gold_trades', JSON.stringify(trades));
             resetFormMode();
             renderJournal();
+            
+            // AUTOMATIC INJECTION BACKEND SYNC
+            triggerSilentBackgroundSync();
         });
 
         window.deleteTrade = function(id) {
@@ -346,6 +359,9 @@
                 trades = trades.filter(t => t.id !== id);
                 localStorage.setItem('elite_gold_trades', JSON.stringify(trades));
                 renderJournal();
+                
+                // AUTOMATIC DELETION BACKEND SYNC
+                triggerSilentBackgroundSync();
             }
         }
 
@@ -355,19 +371,21 @@
                 localStorage.removeItem('elite_gold_trades');
                 resetFormMode();
                 renderJournal();
+                
+                // AUTOMATIC WIPE BACKEND SYNC
+                triggerSilentBackgroundSync();
             }
         });
 
-        // PUSH DATA TO SHEETS
-        syncBtn.addEventListener('click', async () => {
+        // BACKGROUND BACKGROUND TRANSMISSION ENGINE (AUTO SYNC)
+        async function triggerSilentBackgroundSync() {
             const url = webhookInput.value.trim();
-            if (!url) {
-                alert("Please add your Google Apps Script Webhook URL first.");
-                return;
-            }
+            if (!url) return; // Silent pass if webhook isn't configured yet
 
-            syncBtn.disabled = true;
-            syncBtn.textContent = "Syncing...";
+            // Set UI to loading visual feedback state
+            syncIndicator.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
+            syncStatusText.textContent = "Syncing...";
+            syncStatusText.className = "text-[10px] uppercase font-mono font-bold text-amber-400 tracking-wider";
 
             const datasetPayload = {
                 metadata: {
@@ -385,14 +403,26 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(datasetPayload)
                 });
-                alert("Data matrix pushed successfully to Google Sheets!");
+                
+                // Update UI to success visual feedback state
+                syncIndicator.className = "w-2 h-2 rounded-full bg-emerald-500";
+                syncStatusText.textContent = "Saved to Sheet";
+                syncStatusText.className = "text-[10px] uppercase font-mono font-bold text-emerald-500 tracking-wider";
             } catch (err) {
-                console.error(err);
-                alert("Error pushing payload matrix.");
-            } finally {
-                syncBtn.disabled = false;
-                syncBtn.textContent = "🔗 Push to Sheets";
+                console.error("Background sync error:", err);
+                syncIndicator.className = "w-2 h-2 rounded-full bg-rose-500";
+                syncStatusText.textContent = "Sync Failed";
+                syncStatusText.className = "text-[10px] uppercase font-mono font-bold text-rose-500 tracking-wider";
             }
+        }
+
+        // FORCE MANUAL PUSH PARAMETERS (Kept as fallback backup)
+        syncBtn.addEventListener('click', () => {
+            if (!webhookInput.value.trim()) {
+                alert("Please add your Google Apps Script Webhook URL first.");
+                return;
+            }
+            triggerSilentBackgroundSync();
         });
 
         // PULL DATA FROM SHEETS
@@ -406,7 +436,7 @@
             pullBtn.disabled = true;
             pullBtn.textContent = "Pulling...";
 
-            // Workaround for multiple Google accounts bug: add /a/*/ if not present
+            // Workaround modifier check for multiple account bugs
             if (url.includes("script.google.com") && !url.includes("/a/*/")) {
                 url = url.replace("script.google.com/", "script.google.com/a/*/");
             }
@@ -418,23 +448,32 @@
                 if (data.error) {
                     alert("Sheets error: " + data.error);
                 } else {
-                    // Overwrite local memory structures with Sheet's truth data
                     trades = data.ledger || [];
                     
                     if(data.metadata) {
                         depositInput.value = data.metadata.deposit || '';
                         bonusInput.value = data.metadata.bonus || '';
                         targetInput.value = data.metadata.target || 1000;
-                        saveAccountMeta();
+                        
+                        accountMeta = {
+                            deposit: parseFloat(depositInput.value) || 0,
+                            bonus: parseFloat(bonusInput.value) || 0,
+                            target: parseFloat(targetInput.value) || 1000,
+                            webhookUrl: webhookInput.value.trim()
+                        };
+                        localStorage.setItem('elite_gold_meta', JSON.stringify(accountMeta));
                     }
                     
                     localStorage.setItem('elite_gold_trades', JSON.stringify(trades));
                     renderJournal();
-                    alert("Database synchronized successfully from Google Sheets!");
+                    
+                    syncIndicator.className = "w-2 h-2 rounded-full bg-emerald-500";
+                    syncStatusText.textContent = "Synced & Up to Date";
+                    syncStatusText.className = "text-[10px] uppercase font-mono font-bold text-emerald-500 tracking-wider";
                 }
             } catch (err) {
                 console.error(err);
-                alert("Failed to fetch data matrix from Google Sheets. Ensure you deployed your script correctly as 'Anyone'.");
+                alert("Failed to fetch data matrix from Google Sheets.");
             } finally {
                 pullBtn.disabled = false;
                 pullBtn.textContent = "📥 Pull From Sheets";
