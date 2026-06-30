@@ -240,13 +240,16 @@
     </div>
 
     <script>
-        // Database States
+ // Database States
         let trades = JSON.parse(localStorage.getItem('elite_gold_trades')) || [];
         let withdrawals = JSON.parse(localStorage.getItem('elite_gold_withdrawals')) || [];
-        let accountMeta = JSON.parse(localStorage.getItem('elite_gold_meta')) || { deposit: 0, bonus: 0, target: 1000, webhookUrl: '' };
+        let accountMeta = JSON.parse(localStorage.getItem('elite_gold_meta')) || { deposit: 0, bonus: 0, target: 1000 };
 
         let currentCalendarDate = new Date();
-        let chartDataPointsReference = [];
+        let chartDataPointsReference = []; 
+
+        // --- HARDCODED FIXED WEBHOOK URL LINK ---
+        const FIXED_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec"; 
 
         // DOM Inputs Initialization Hooks
         const depositInput = document.getElementById('deposit-input');
@@ -257,7 +260,10 @@
         depositInput.value = accountMeta.deposit || '';
         bonusInput.value = accountMeta.bonus || '';
         targetInput.value = accountMeta.target || 1000;
-        webhookInput.value = accountMeta.webhookUrl || '';
+        
+        // Force the box to always use your fixed URL link
+        webhookInput.value = FIXED_WEBHOOK_URL;
+        webhookInput.readOnly = true; // Makes it locked so you don't accidentally edit it
 
         // UI Architecture Structural Anchors
         const tradeForm = document.getElementById('trade-form');
