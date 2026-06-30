@@ -808,33 +808,28 @@
         }
         cancelEditBtn.addEventListener('click', resetFormMode);
 
-        clearBtn.addEventListener('click', () => {
+        cclearBtn.addEventListener('click', () => {
             if (confirm('Permanently wipe complete transaction footprints and withdrawals?')) {
-                // 1. Instantly break the connection string so auto-fetch can't download anything
-                webhookInput.value = "";
-                
-                // 2. Clear out all local browser databases
+                // Clear out only the trading statistics, leaving the hardcoded URL safe
                 trades = []; 
                 withdrawals = [];
-                accountMeta = { deposit: 0, bonus: 0, target: 1000, webhookUrl: '' };
+                accountMeta = { deposit: 0, bonus: 0, target: 1000 };
                 
                 localStorage.removeItem('elite_gold_trades');
                 localStorage.removeItem('elite_gold_withdrawals');
                 localStorage.setItem('elite_gold_meta', JSON.stringify(accountMeta));
                 
-                // 3. Reset form inputs on screen
                 depositInput.value = '';
                 bonusInput.value = '';
                 targetInput.value = 1000;
                 resetFormMode(); 
                 renderJournal();
                 
-                // 4. Update sync status indicator text
+                // Keep the indicator ready since the URL is still perfectly intact
                 syncIndicator.className = "w-2 h-2 rounded-full bg-zinc-600";
-                syncStatusText.textContent = "Data Matrix Cleared. Add settings, paste Webhook URL, then log a trade to save.";
-                syncStatusText.className = "text-[10px] uppercase font-mono font-bold text-zinc-500 tracking-wider";
+                syncStatusText.textContent = "Memory wiped. Enter fresh configurations to sync.";
                 
-                alert("Local memory wiped! To clean your Google Sheet, enter your fresh settings, paste your Webhook URL back in, and log your first new trade.");
+                alert("Local data reset! Enter your new initial settings and log your first trade to cleanly restart your Google Sheet.");
             }
         });
 
