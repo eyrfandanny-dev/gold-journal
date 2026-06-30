@@ -76,7 +76,7 @@
         </section>
 
         <section class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl mb-6 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-            <div class="flex-1 w-full">
+            <div class="flex-1 w-full text-left">
                 <div class="flex justify-between items-center mb-1">
                     <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400">Google Apps Script Webhook URL</label>
                     <div class="flex items-center gap-1.5">
@@ -109,7 +109,7 @@
 
             <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
                 <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-4">Periodic Performance</h3>
-                <div class="space-y-3 flex-1 flex flex-col justify-center">
+                <div class="space-y-3 flex-1 flex flex-col justify-center text-left">
                     <div class="p-3 bg-zinc-950 border border-zinc-800/80 rounded-xl">
                         <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">Current Week P&L (Mon-Fri)</span>
                         <span id="weekly-pnl-text" class="text-xl font-mono font-bold text-zinc-400">$0.00</span>
@@ -137,12 +137,12 @@
             </div>
         </section>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
             
             <div class="lg:col-span-1 space-y-4">
                 
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-                    <button onclick="toggleSection('trade-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
+                    <button type="button" onclick="toggleSection('trade-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>📊 Log Gold Print</span>
                         <span id="trade-section-body-icon" class="text-zinc-500 transition-transform duration-200">▼</span>
                     </button>
@@ -183,7 +183,7 @@
                 </div>
 
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-                    <button onclick="toggleSection('withdrawal-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
+                    <button type="button" onclick="toggleSection('withdrawal-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>💸 Capital Withdrawals</span>
                         <span id="withdrawal-section-body-icon" class="text-zinc-500 transition-transform duration-200">▶</span>
                     </button>
@@ -208,7 +208,7 @@
                 </div>
 
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-                    <button onclick="toggleSection('history-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
+                    <button type="button" onclick="toggleSection('history-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>📜 Historical Data Feed</span>
                         <span id="history-section-body-icon" class="text-zinc-500 transition-transform duration-200">▶</span>
                     </button>
@@ -246,7 +246,7 @@
         let accountMeta = JSON.parse(localStorage.getItem('elite_gold_meta')) || { deposit: 0, bonus: 0, target: 1000, webhookUrl: '' };
 
         let currentCalendarDate = new Date();
-        let chartDataPointsReference = []; // Tooltip vector target cache coordinates tracking anchor array
+        let chartDataPointsReference = [];
 
         // DOM Inputs Initialization Hooks
         const depositInput = document.getElementById('deposit-input');
@@ -326,7 +326,6 @@
             return { monday, friday };
         }
 
-        // Helper string key formatting generator matching ISO date inputs
         function getISOWeekKeyString(dateObj) {
             let { monday } = getWeeklyRangeBounds(dateObj);
             return `W/C ${monday.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}`;
@@ -361,35 +360,29 @@
             let historyWeeksBucketMap = {};
             let historyMonthsBucketMap = {};
 
-            // Sort array forward sequentially to map periodic histories tracking increments neatly
             let chronologicalTrades = [...trades].sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO));
 
             chronologicalTrades.forEach(t => {
                 let tradeDate = new Date(t.dateISO);
                 let pnlFloat = parseFloat(t.pnl);
 
-                // Live Active Blocks Checks
                 if (tradeDate >= currentWeekBounds.monday && tradeDate <= currentWeekBounds.friday) weeklyAccumulator += pnlFloat;
                 if (tradeDate.getMonth() === currentMonthIndex && tradeDate.getFullYear() === currentYearVal) monthlyAccumulator += pnlFloat;
 
-                // Build Week History Key Map Buckets
                 let weekKey = getISOWeekKeyString(tradeDate);
                 historyWeeksBucketMap[weekKey] = (historyWeeksBucketMap[weekKey] || 0) + pnlFloat;
 
-                // Build Month History Key Map Buckets
                 let monthNamesArray = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                 let monthKey = `${monthNamesArray[tradeDate.getMonth()]} ${tradeDate.getFullYear()}`;
                 historyMonthsBucketMap[monthKey] = (historyMonthsBucketMap[monthKey] || 0) + pnlFloat;
             });
 
-            // Populate Active Widgets
             weeklyPnlText.textContent = `${weeklyAccumulator >= 0 ? '+' : ''}$${weeklyAccumulator.toFixed(2)}`;
             weeklyPnlText.className = `text-xl font-mono font-bold ${weeklyAccumulator >= 0 ? 'text-emerald-400' : 'text-rose-500'}`;
             
             monthlyPnlText.textContent = `${monthlyAccumulator >= 0 ? '+' : ''}$${monthlyAccumulator.toFixed(2)}`;
             monthlyPnlText.className = `text-xl font-mono font-bold ${monthlyAccumulator >= 0 ? 'text-emerald-400' : 'text-rose-500'}`;
 
-            // Render Periodic History DOM Lists Loops
             Object.keys(historyWeeksBucketMap).reverse().forEach(wkKey => {
                 let wkVal = historyWeeksBucketMap[wkKey];
                 let row = document.createElement('div');
@@ -408,7 +401,6 @@
             });
             if(Object.keys(historyMonthsBucketMap).length === 0) pastMonthsList.innerHTML = `<span class="text-[10px] text-zinc-600 italic">No monthly matrix logged.</span>`;
 
-            // Calculate Win Rate Metrics Engine
             let winningTrades = trades.filter(t => parseFloat(t.pnl) > 0).length;
             let totalTradesCount = trades.length;
             let computedWinRate = totalTradesCount > 0 ? Math.round((winningTrades / totalTradesCount) * 100) : 0;
@@ -416,7 +408,6 @@
             winRateText.textContent = `${computedWinRate}%`;
             tradeRatioText.textContent = `(${winningTrades}/${totalTradesCount})`;
 
-            // Draw Trade Feed Elements
             if (trades.length === 0) {
                 logsContainer.innerHTML = `
                     <div class="text-center p-12 bg-zinc-900/20 border border-dashed border-zinc-800 rounded-xl text-zinc-600 text-xs">
@@ -451,7 +442,6 @@
                 });
             }
 
-            // Draw Withdrawal List Items Feed
             withdrawals.sort((a,b) => new Date(b.date) - new Date(a.date));
             if(withdrawals.length === 0) {
                 withdrawalLedgerList.innerHTML = `<span class="text-[10px] text-zinc-600 italic block text-center py-2">No withdrawals recorded.</span>`;
@@ -471,7 +461,6 @@
                 });
             }
 
-            // Top Dashboard Component Render Updates
             totalPnlEl.textContent = `${totalPnl >= 0 ? '+' : ''}$${totalPnl.toFixed(2)}`;
             totalPnlEl.className = `text-sm font-mono font-bold ${totalPnl >= 0 ? 'text-emerald-400' : 'text-rose-500'}`;
             totalWithdrawalsText.textContent = `$${totalWithdrawals.toFixed(2)}`;
@@ -497,7 +486,6 @@
             renderPerformanceCalendar();
         }
 
-        // Native HTML5 Canvas Graph Vector Rendering with coordinate capture tracking logic
         function drawEquityCurveChart() {
             const canvas = document.getElementById('equity-chart');
             const ctx = canvas.getContext('2d');
@@ -544,7 +532,6 @@
             ctx.lineTo(width - paddingRight, zeroY);
             ctx.stroke();
 
-            // Formulate coordinates array nodes
             chartDataPointsReference = [];
             let segmentX = chartWidth / (runningPnlValues.length - 1);
 
@@ -552,7 +539,6 @@
                 let x = paddingLeft + (idx * segmentX);
                 let y = paddingTop + chartHeight - ((val - minPnl) / pnlRange) * chartHeight;
                 
-                // Track details object references mapped back to coordinate positions indices metrics accurately
                 let associatedTrade = idx === 0 ? null : chronologicalTrades[idx - 1];
                 chartDataPointsReference.push({
                     x, y, 
@@ -598,17 +584,13 @@
             ctx.stroke();
         }
 
-        // Tooltip hover coordinates mouse intersection detection algorithm core loop listeners
         const canvasElement = document.getElementById('equity-chart');
         
         function handleChartInteractionHover(e) {
             if (chartDataPointsReference.length === 0) return;
-            
             const rect = canvasElement.getBoundingClientRect();
-            // Capture accurate interactive matrix position metrics regardless of cross-origin resolution differences
             const mouseX = e.clientX ? e.clientX - rect.left : e.touches[0].clientX - rect.left;
             
-            // Search coordinates mapping indexes arrays closest matching index position targets nodes
             let closestNode = chartDataPointsReference.reduce((prev, curr) => {
                 return (Math.abs(curr.x - mouseX) < Math.abs(prev.x - mouseX)) ? curr : prev;
             });
@@ -635,7 +617,6 @@
         canvasElement.addEventListener('mouseleave', () => chartTooltipData.style.opacity = "0");
         canvasElement.addEventListener('touchend', () => chartTooltipData.style.opacity = "0");
 
-        // Performance Calendar Rendering Engine
         function renderPerformanceCalendar() {
             calendarDaysGrid.innerHTML = '';
             const year = currentCalendarDate.getFullYear();
@@ -685,7 +666,7 @@
         prevMonthBtn.addEventListener('click', () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1); renderPerformanceCalendar(); });
         nextMonthBtn.addEventListener('click', () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1); renderPerformanceCalendar(); });
 
-        // Save metadata parameters locally
+        // CRUCIAL: Saves config data locally WITHOUT triggering a loop reset error
         function saveAccountMeta() {
             accountMeta = {
                 deposit: parseFloat(depositInput.value) || 0,
@@ -694,12 +675,17 @@
                 webhookUrl: webhookInput.value.trim()
             };
             localStorage.setItem('elite_gold_meta', JSON.stringify(accountMeta));
-            renderJournal();
         }
 
         let metaTimeout;
         function handleMetaInputChange() {
             saveAccountMeta();
+            
+            // Fast recalculate values on page metrics instantly without drawing form items over again
+            let totalPnl = trades.reduce((sum, t) => sum + parseFloat(t.pnl), 0);
+            let totalWithdrawals = withdrawals.reduce((sum, w) => sum + parseFloat(w.amount), 0);
+            balanceEl.textContent = `$${(accountMeta.deposit + accountMeta.bonus + totalPnl - totalWithdrawals).toFixed(2)}`;
+            
             clearTimeout(metaTimeout);
             metaTimeout = setTimeout(() => { triggerSilentBackgroundSync(); }, 1500);
         }
@@ -762,7 +748,7 @@
             triggerSilentBackgroundSync();
         });
 
-        // Delete Structural Handlers
+        // Delete Handlers
         window.deleteTrade = function(id) {
             if(confirm("Delete this metric print?")) {
                 if(editIdInput.value === id) resetFormMode();
@@ -802,7 +788,6 @@
             submitBtn.textContent = "Update Entry";
             cancelEditBtn.classList.remove('hidden');
             
-            // Auto open section if it was closed during an edit attempt action sequence call
             document.getElementById('trade-section-body').classList.remove('hidden');
             document.getElementById('trade-section-body-icon').textContent = '▼';
 
@@ -889,7 +874,7 @@
                     localStorage.setItem('elite_gold_withdrawals', JSON.stringify(withdrawals));
                     renderJournal();
                 }
-            } catch (err) { console.error(err); alert("Failed to fetch matrix arrays."); }
+            } catch (err) { console.error(err); alert("Failed to fetch data."); }
             finally { pullBtn.disabled = false; pullBtn.textContent = "📥 Pull From Sheets"; }
         });
 
@@ -927,6 +912,7 @@
         window.addEventListener('resize', drawEquityCurveChart);
         function escapeHTML(str) { return str.replace(/[&<>'"]/g, t => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[t] || t)); }
 
+        // Start Initial Call
         renderJournal();
     </script>
 </body>
