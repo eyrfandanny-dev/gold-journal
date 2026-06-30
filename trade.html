@@ -4,17 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XAUUSD Obsidian Journal Elite</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-zinc-950 text-zinc-100 min-h-screen font-sans antialiased selection:bg-amber-500/30">
 
     <div class="max-w-7xl mx-auto p-4 md:p-8">
+        <!-- Header -->
         <header class="mb-6 border-b border-zinc-800 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h1 class="text-3xl font-black bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-transparent tracking-tight">XAUUSD JOURNAL ELITE</h1>
-                <p class="text-zinc-500 text-xs mt-1 uppercase tracking-widest font-semibold">Gold Analytics, Interactive Tracking & History Hub</p>
+                
+                <!-- Account Hub Controller UI -->
+                <div class="mt-3 flex items-center gap-2 flex-wrap">
+                    <select id="account-select" class="bg-zinc-900 border border-zinc-800 text-amber-400 font-black px-3 py-1.5 rounded-lg text-xs tracking-wide uppercase focus:outline-none focus:border-amber-500 cursor-pointer"></select>
+                    <button id="add-account-btn" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 font-bold px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider cursor-pointer transition">➕ Add Account</button>
+                    <button id="delete-account-btn" class="bg-zinc-950 hover:bg-rose-950/40 border border-zinc-900 text-zinc-600 hover:text-rose-400 font-bold px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider cursor-pointer transition">🗑️ Remove Active</button>
+                </div>
             </div>
             
+            <!-- Target Tracking Widget -->
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl min-w-[280px] w-full md:w-auto">
                 <div class="flex justify-between items-center mb-2">
                     <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Growth Target Progress</span>
@@ -33,6 +42,7 @@
             </div>
         </header>
 
+        <!-- Capital & Performance Analytics Metrics -->
         <section class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl">
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Initial Deposit</label>
@@ -75,6 +85,7 @@
             </div>
         </section>
 
+        <!-- Google Sheets Sync Bar -->
         <section class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl mb-6 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
             <div class="flex-1 w-full text-left">
                 <div class="flex justify-between items-center mb-1">
@@ -96,7 +107,9 @@
             </div>
         </section>
 
+        <!-- Graphics & Performance Periodic Performance Analytics Row -->
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Analytics Chart Card -->
             <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1 relative group">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">Performance Equity Curve</h3>
@@ -107,6 +120,7 @@
                 </div>
             </div>
 
+            <!-- Periodic Performance Box -->
             <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
                 <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-4">Periodic Performance</h3>
                 <div class="space-y-3 flex-1 flex flex-col justify-center text-left">
@@ -121,6 +135,7 @@
                 </div>
             </div>
 
+            <!-- Interactive Matrix Calendar Card -->
             <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">P&L Calendar Map</h3>
@@ -137,10 +152,13 @@
             </div>
         </section>
 
+        <!-- Main Workspace Grid Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
             
+            <!-- Left Workspace Column -->
             <div class="lg:col-span-1 space-y-4">
                 
+                <!-- Card 1: Log Gold Print -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('trade-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>📊 Log Gold Print</span>
@@ -182,6 +200,7 @@
                     </div>
                 </div>
 
+                <!-- Card 2: FX Currency Convertor Core -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('fx-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>💱 FX USD / SGD Convertor</span>
@@ -223,12 +242,13 @@
                     </div>
                 </div>
 
+                <!-- Card 3: 40-DAY COMPOUND TARGET RADAR -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('compound-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>📈 40-Day Compounding Target Matrix</span>
-                        <span id="compound-section-body-icon" class="text-zinc-500 transition-transform duration-200">▼</span>
+                        <span id="compound-section-body-icon" class="text-zinc-500 transition-transform duration-200">▶</span>
                     </button>
-                    <div id="compound-section-body" class="p-5 space-y-4 transition-all duration-200">
+                    <div id="compound-section-body" class="p-5 space-y-4 hidden transition-all duration-200">
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Starting Capital ($)</label>
@@ -262,6 +282,7 @@
                     </div>
                 </div>
 
+                <!-- Card 4: Log Capital Withdrawal Box -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('withdrawal-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>💸 Capital Withdrawals</span>
@@ -287,6 +308,7 @@
                     </div>
                 </div>
 
+                <!-- Card 5: Historical Periodic Performance Box -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('history-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>📜 Historical Data Feed</span>
@@ -307,6 +329,7 @@
 
             </div>
 
+            <!-- Right Workspace Column: Ledger Feeds -->
             <div class="lg:col-span-2 space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-sm font-bold tracking-wider text-zinc-300 uppercase">Execution Feed</h2>
@@ -314,39 +337,130 @@
                 </div>
                 
                 <div id="logs-container" class="space-y-3">
-                    </div>
+                    <!-- Dynamic Logs injection -->
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Scripting Engine Logic Framework Block -->
     <script>
-        // Database States
-        let trades = JSON.parse(localStorage.getItem('elite_gold_trades')) || [];
-        let withdrawals = JSON.parse(localStorage.getItem('elite_gold_withdrawals')) || [];
-        let accountMeta = JSON.parse(localStorage.getItem('elite_gold_meta')) || { deposit: 0, bonus: 0, target: 1000 };
+        // --- MULTI-ACCOUNT WORKSPACE ENGINE CORE ---
+        let accountsList = JSON.parse(localStorage.getItem('elite_gold_accounts_manifest')) || ["Default Account"];
+        let activeAccountName = localStorage.getItem('elite_gold_active_account_key') || "Default Account";
 
-        let currentCalendarDate = new Date();
-        let chartDataPointsReference = [];
+        // Separate runtime database states linked dynamically to activeAccountName
+        let trades = [];
+        let withdrawals = [];
+        let accountMeta = { deposit: 0, bonus: 0, target: 1000, webhookUrl: "" };
 
         // --- OPTIONAL HARDCODED WEBHOOK LINK ---
-        const FIXED_WEBHOOK_URL = ""; 
+        const FIXED_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec"; 
 
         // DOM Inputs Initialization Hooks
+        const accountSelect = document.getElementById('account-select');
+        const addAccountBtn = document.getElementById('add-account-btn');
+        const deleteAccountBtn = document.getElementById('delete-account-btn');
+
         const depositInput = document.getElementById('deposit-input');
         const bonusInput = document.getElementById('bonus-input');
         const targetInput = document.getElementById('target-input');
         const webhookInput = document.getElementById('webhook-input');
         
-        depositInput.value = accountMeta.deposit || '';
-        bonusInput.value = accountMeta.bonus || '';
-        targetInput.value = accountMeta.target || 1000;
-        
-        if (FIXED_WEBHOOK_URL && FIXED_WEBHOOK_URL.trim() !== "" && FIXED_WEBHOOK_URL !== "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") {
-            webhookInput.value = FIXED_WEBHOOK_URL;
-            webhookInput.readOnly = true;
-        } else {
-            webhookInput.value = accountMeta.webhookUrl || '';
+        // Multi-Account Data Swapper Loop
+        function synchronizeActiveAccountMemory(targetAccountName) {
+            activeAccountName = targetAccountName;
+            localStorage.setItem('elite_gold_active_account_key', activeAccountName);
+            
+            // Clean up name mapping to form safe LocalStorage key strings
+            const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+            
+            trades = JSON.parse(localStorage.getItem(keyPrefix + '_trades')) || [];
+            withdrawals = JSON.parse(localStorage.getItem(keyPrefix + '_withdrawals')) || [];
+            accountMeta = JSON.parse(localStorage.getItem(keyPrefix + '_meta')) || { deposit: 0, bonus: 0, target: 1000, webhookUrl: "" };
+
+            depositInput.value = accountMeta.deposit || '';
+            bonusInput.value = accountMeta.bonus || '';
+            targetInput.value = accountMeta.target || 1000;
+            
+            if (FIXED_WEBHOOK_URL && FIXED_WEBHOOK_URL.trim() !== "" && FIXED_WEBHOOK_URL !== "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") {
+                webhookInput.value = FIXED_WEBHOOK_URL;
+                webhookInput.readOnly = true;
+            } else {
+                webhookInput.value = accountMeta.webhookUrl || '';
+                webhookInput.readOnly = false;
+            }
+
+            rebuildAccountSelectMenuOptions();
+            renderJournal();
+            calculateCompoundingMatrixTable();
         }
+
+        function rebuildAccountSelectMenuOptions() {
+            accountSelect.innerHTML = '';
+            accountsList.forEach(acc => {
+                let opt = document.createElement('option');
+                opt.value = acc;
+                opt.textContent = acc.toUpperCase();
+                if(acc === activeAccountName) opt.selected = true;
+                accountSelect.appendChild(opt);
+            });
+        }
+
+        accountSelect.addEventListener('change', (e) => {
+            synchronizeActiveAccountMemory(e.target.value);
+        });
+
+        addAccountBtn.addEventListener('click', () => {
+            let name = prompt("Enter a custom identification name for your new account:");
+            if(!name || name.trim() === "") return;
+            name = name.trim();
+            
+            if(accountsList.includes(name)) return alert("An account with that tracking name already exists.");
+            
+            accountsList.push(name);
+            localStorage.setItem('elite_gold_accounts_manifest', JSON.stringify(accountsList));
+            synchronizeActiveAccountMemory(name);
+        });
+
+        deleteAccountBtn.addEventListener('click', () => {
+            let pass = prompt("🔐 SECURITY ALERT: Enter Master Passcode to permanently delete this entire account dataset:");
+            if (pass !== "Danial92!") {
+                if(pass !== null) alert("Access Denied. Passcode matrix verification failed.");
+                return;
+            }
+
+            if(accountsList.length <= 1) {
+                alert("Operation aborted. You must maintain at least one active profile runway slot.");
+                return;
+            }
+
+            const deadKeyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+            localStorage.removeItem(deadKeyPrefix + '_trades');
+            localStorage.removeItem(deadKeyPrefix + '_withdrawals');
+            localStorage.removeItem(deadKeyPrefix + '_meta');
+
+            accountsList = accountsList.filter(a => a !== activeAccountName);
+            localStorage.setItem('elite_gold_accounts_manifest', JSON.stringify(accountsList));
+            
+            alert("Database tracking matrix purged successfully.");
+            synchronizeActiveAccountMemory(accountsList[0]);
+        });
+
+        // Save active settings to specific account sub-slots
+        function saveAccountMeta() {
+            const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+            accountMeta = {
+                deposit: parseFloat(depositInput.value) || 0,
+                bonus: parseFloat(bonusInput.value) || 0,
+                target: parseFloat(targetInput.value) || 1000,
+                webhookUrl: webhookInput.value.trim()
+            };
+            localStorage.setItem(keyPrefix + '_meta', JSON.stringify(accountMeta));
+        }
+
+        let currentCalendarDate = new Date();
+        let chartDataPointsReference = [];
 
         // UI Architecture Structural Anchors
         const tradeForm = document.getElementById('trade-form');
@@ -842,19 +956,6 @@
             }
         }
 
-        prevMonthBtn.addEventListener('click', () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1); renderPerformanceCalendar(); });
-        nextMonthBtn.addEventListener('click', () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1); renderPerformanceCalendar(); });
-
-        function saveAccountMeta() {
-            accountMeta = {
-                deposit: parseFloat(depositInput.value) || 0,
-                bonus: parseFloat(bonusInput.value) || 0,
-                target: parseFloat(targetInput.value) || 1000,
-                webhookUrl: webhookInput.value.trim()
-            };
-            localStorage.setItem('elite_gold_meta', JSON.stringify(accountMeta));
-        }
-
         let metaTimeout;
         function handleMetaInputChange() {
             saveAccountMeta();
@@ -894,7 +995,8 @@
                 });
             }
 
-            localStorage.setItem('elite_gold_trades', JSON.stringify(trades));
+            const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+            localStorage.setItem(keyPrefix + '_trades', JSON.stringify(trades));
             resetFormMode();
             renderJournal();
             triggerSilentBackgroundSync();
@@ -916,7 +1018,8 @@
             };
 
             withdrawals.push(newWithdrawal);
-            localStorage.setItem('elite_gold_withdrawals', JSON.stringify(withdrawals));
+            const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+            localStorage.setItem(keyPrefix + '_withdrawals', JSON.stringify(withdrawals));
             
             amountInput.value = '';
             dateInput.value = '';
@@ -930,7 +1033,8 @@
             if(confirm("Delete this metric print?")) {
                 if(editIdInput.value === id) resetFormMode();
                 trades = trades.filter(t => t.id !== id);
-                localStorage.setItem('elite_gold_trades', JSON.stringify(trades));
+                const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+                localStorage.setItem(keyPrefix + '_trades', JSON.stringify(trades));
                 renderJournal();
                 triggerSilentBackgroundSync();
             }
@@ -939,7 +1043,8 @@
         window.deleteWithdrawal = function(id) {
             if(confirm("Remove this capital withdrawal entry?")) {
                 withdrawals = withdrawals.filter(w => w.id !== id);
-                localStorage.setItem('elite_gold_withdrawals', JSON.stringify(withdrawals));
+                const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+                localStorage.setItem(keyPrefix + '_withdrawals', JSON.stringify(withdrawals));
                 renderJournal();
                 triggerSilentBackgroundSync();
             }
@@ -974,16 +1079,16 @@
             if (confirm('Permanently wipe complete transaction footprints and withdrawals?')) {
                 trades = []; 
                 withdrawals = [];
-                accountMeta = { deposit: 0, bonus: 0, target: 1000, webhookUrl: '' };
+                accountMeta = { deposit: 0, bonus: 0, target: 1000, webhookUrl: webhookInput.value.trim() };
                 
-                localStorage.removeItem('elite_gold_trades');
-                localStorage.removeItem('elite_gold_withdrawals');
-                localStorage.setItem('elite_gold_meta', JSON.stringify(accountMeta));
+                const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+                localStorage.removeItem(keyPrefix + '_trades');
+                localStorage.removeItem(keyPrefix + '_withdrawals');
+                localStorage.setItem(keyPrefix + '_meta', JSON.stringify(accountMeta));
                 
                 depositInput.value = '';
                 bonusInput.value = '';
                 targetInput.value = 1000;
-                webhookInput.value = '';
                 
                 document.getElementById('edit-id').value = "";
                 tradeForm.reset();
@@ -1018,6 +1123,7 @@
             syncStatusText.textContent = "Syncing...";
 
             const datasetPayload = {
+                accountPrefix: activeAccountName, // Pass down custom string name to create isolated sheets
                 metadata: {
                     deposit: parseFloat(depositInput.value) || 0,
                     bonus: parseFloat(bonusInput.value) || 0,
@@ -1043,15 +1149,18 @@
 
         syncBtn.addEventListener('click', () => { triggerSilentBackgroundSync(); });
 
-        // PULL DATA FROM SHEETS
+        // PULL DATA FROM SHEETS WITH DYNAMIC ACCOUNT PARAMS
         pullBtn.addEventListener('click', async () => {
-            let url = webhookInput.value.trim();
-            if (!url || url === "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") return alert("Please enter a valid Webhook URL first.");
+            let baseUrl = webhookInput.value.trim();
+            if (!baseUrl || baseUrl === "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") return alert("Please enter a valid Webhook URL first.");
             pullBtn.disabled = true; pullBtn.textContent = "Pulling...";
 
-            if (url.includes("script.google.com") && !url.includes("/a/*/")) {
-                url = url.replace("script.google.com/", "script.google.com/a/*/");
+            if (baseUrl.includes("script.google.com") && !baseUrl.includes("/a/*/")) {
+                baseUrl = baseUrl.replace("script.google.com/", "script.google.com/a/*/");
             }
+
+            // Append account param hook text
+            const url = baseUrl + (baseUrl.includes("?") ? "&" : "?") + "accountPrefix=" + encodeURIComponent(activeAccountName);
 
             try {
                 const response = await fetch(url);
@@ -1068,8 +1177,9 @@
                         targetInput.value = data.metadata.target || 1000;
                         saveAccountMeta();
                     }
-                    localStorage.setItem('elite_gold_trades', JSON.stringify(trades));
-                    localStorage.setItem('elite_gold_withdrawals', JSON.stringify(withdrawals));
+                    const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+                    localStorage.setItem(keyPrefix + '_trades', JSON.stringify(trades));
+                    localStorage.setItem(keyPrefix + '_withdrawals', JSON.stringify(withdrawals));
                     renderJournal();
                 }
             } catch (err) { console.error(err); alert("Failed to fetch data array matrices."); }
@@ -1079,22 +1189,25 @@
         // AUTOMATIC BACKGROUND RETRIEVAL LOOP (Auto-Fetch every 30s)
         setInterval(async () => {
             if (editIdInput.value !== "") return;
-            let url = webhookInput.value.trim();
-            if (!url || url === "" || url === "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") return;
-            if (url.includes("script.google.com") && !url.includes("/a/*/")) url = url.replace("script.google.com/", "script.google.com/a/*/");
+            let baseUrl = webhookInput.value.trim();
+            if (!baseUrl || baseUrl === "" || baseUrl === "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") return;
+            if (baseUrl.includes("script.google.com") && !baseUrl.includes("/a/*/")) baseUrl = baseUrl.replace("script.google.com/", "script.google.com/a/*/");
+
+            const url = baseUrl + (baseUrl.includes("?") ? "&" : "?") + "accountPrefix=" + encodeURIComponent(activeAccountName);
 
             try {
                 const response = await fetch(url);
                 const data = await response.json();
                 if (data && !data.error && data.ledger) {
-                    let localizedTradesString = localStorage.getItem('elite_gold_trades');
-                    let localizedWithdrawalsString = localStorage.getItem('elite_gold_withdrawals');
+                    const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+                    let localizedTradesString = localStorage.getItem(keyPrefix + '_trades');
+                    let localizedWithdrawalsString = localStorage.getItem(keyPrefix + '_withdrawals');
                     
                     if (JSON.stringify(data.ledger) !== localizedTradesString || JSON.stringify(data.withdrawals) !== localizedWithdrawalsString) {
                         trades = data.ledger;
                         withdrawals = data.withdrawals || [];
-                        localStorage.setItem('elite_gold_trades', JSON.stringify(trades));
-                        localStorage.setItem('elite_gold_withdrawals', JSON.stringify(withdrawals));
+                        localStorage.setItem(keyPrefix + '_trades', JSON.stringify(trades));
+                        localStorage.setItem(keyPrefix + '_withdrawals', JSON.stringify(withdrawals));
                         
                         if(data.metadata) {
                             depositInput.value = data.metadata.deposit || '';
@@ -1106,13 +1219,13 @@
                     }
                 }
             } catch (err) {}
-        }, 5000);
+        }, 30000);
 
         window.addEventListener('resize', drawEquityCurveChart);
         function escapeHTML(str) { return str.replace(/[&<>'"]/g, t => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[t] || t)); }
 
-        // Start Initial Call
-        renderJournal();
+        // Start Initial Call Loop Trigger
+        synchronizeActiveAccountMemory(activeAccountName);
     </script>
 </body>
 </html>
