@@ -196,6 +196,49 @@
                     </div>
                 </div>
 
+                <!-- NEW BONUS CARD: FX Currency Convertor Core -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                    <button type="button" onclick="toggleSection('fx-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
+                        <span>💱 FX USD / SGD Convertor</span>
+                        <span id="fx-section-body-icon" class="text-zinc-500 transition-transform duration-200">▼</span>
+                    </button>
+                    <div id="fx-section-body" class="p-5 space-y-4 transition-all duration-200">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Amount (USD)</label>
+                                <div class="flex items-center bg-zinc-950 border border-zinc-800 rounded px-2 py-1.5 focus-within:border-amber-500">
+                                    <span class="text-xs font-mono text-zinc-500 mr-1">$</span>
+                                    <input type="number" step="any" id="fx-usd-input" placeholder="0.00" class="w-full bg-transparent font-mono text-xs text-zinc-100 focus:outline-none">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Amount (SGD)</label>
+                                <div class="flex items-center bg-zinc-950 border border-zinc-800 rounded px-2 py-1.5 focus-within:border-amber-500">
+                                    <span class="text-xs font-mono text-zinc-500 mr-1">S$</span>
+                                    <input type="number" step="any" id="fx-sgd-input" placeholder="0.00" class="w-full bg-transparent font-mono text-xs text-zinc-100 focus:outline-none">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center text-[10px] font-mono text-zinc-500 bg-zinc-950/60 p-2 rounded border border-zinc-800/50">
+                            <span>Reference Spot Rate:</span>
+                            <div class="flex items-center space-x-1">
+                                <span class="text-zinc-400">1 USD =</span>
+                                <input type="number" step="any" id="fx-rate-input" value="1.295" class="w-14 bg-zinc-900 border border-zinc-800 text-center rounded text-amber-400 font-bold focus:outline-none">
+                                <span class="text-zinc-400">SGD</span>
+                            </div>
+                        </div>
+                        <!-- Quick Metric Shortcuts -->
+                        <div class="grid grid-cols-2 gap-2 pt-1 text-[10px]">
+                            <button type="button" id="fx-btn-balance" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 py-1.5 px-2 rounded font-medium transition cursor-pointer text-left truncate">
+                                💰 Convert Balance
+                            </button>
+                            <button type="button" id="fx-btn-target" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 py-1.5 px-2 rounded font-medium transition cursor-pointer text-left truncate">
+                                🎯 Convert Target
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Card 2: Log Capital Withdrawal Box -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('withdrawal-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
@@ -268,7 +311,6 @@
         let chartDataPointsReference = [];
 
         // --- OPTIONAL HARDCODED WEBHOOK LINK ---
-        // (You can paste your Google Apps Script link here, or leave it blank to type/edit manually on screen!)
         const FIXED_WEBHOOK_URL = ""; 
 
         // DOM Inputs Initialization Hooks
@@ -281,8 +323,7 @@
         bonusInput.value = accountMeta.bonus || '';
         targetInput.value = accountMeta.target || 1000;
         
-        // Populate and lock down ONLY if a valid link exists in the code layout
-        if (FIXED_WEBHOOK_URL && FIXED_WEBHOOK_URL.trim() !== "" && FIXED_WEBHOOK_URL !== "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") {
+        if (FIXED_WEBHOOK_URL && FIXED_WEBHOOK_URL.trim() !== "" && FIXED_WEBHOOK_URL !== "PASTE_YOUR_LINK_HERE") {
             webhookInput.value = FIXED_WEBHOOK_URL;
             webhookInput.readOnly = true;
         } else {
@@ -323,6 +364,44 @@
         const calendarDaysGrid = document.getElementById('calendar-days-grid');
         const prevMonthBtn = document.getElementById('prev-month-btn');
         const nextMonthBtn = document.getElementById('next-month-btn');
+
+        // FX ELEMENT HOOKS
+        const fxUsdInput = document.getElementById('fx-usd-input');
+        const fxSgdInput = document.getElementById('fx-sgd-input');
+        const fxRateInput = document.getElementById('fx-rate-input');
+        const fxBtnBalance = document.getElementById('fx-btn-balance');
+        const fxBtnTarget = document.getElementById('fx-btn-target');
+
+        // FX Calculation Logic Engine
+        function convertUsdToSgd() {
+            const usd = parseFloat(fxUsdInput.value) || 0;
+            const rate = parseFloat(fxRateInput.value) || 1.295;
+            fxSgdInput.value = usd > 0 ? (usd * rate).toFixed(2) : '';
+        }
+
+        function convertSgdToUsd() {
+            const sgd = parseFloat(fxSgdInput.value) || 0;
+            const rate = parseFloat(fxRateInput.value) || 1.295;
+            fxUsdInput.value = sgd > 0 ? (sgd / rate).toFixed(2) : '';
+        }
+
+        fxUsdInput.addEventListener('input', convertUsdToSgd);
+        fxSgdInput.addEventListener('input', convertSgdToUsd);
+        fxRateInput.addEventListener('input', () => { convertUsdToSgd(); });
+
+        fxBtnBalance.addEventListener('click', () => {
+            let totalPnl = trades.reduce((sum, t) => sum + parseFloat(t.pnl), 0);
+            let totalWithdrawals = withdrawals.reduce((sum, w) => sum + parseFloat(w.amount), 0);
+            let deposit = parseFloat(depositInput.value) || 0;
+            let bonus = parseFloat(bonusInput.value) || 0;
+            fxUsdInput.value = (deposit + bonus + totalPnl - totalWithdrawals).toFixed(2);
+            convertUsdToSgd();
+        });
+
+        fxBtnTarget.addEventListener('click', () => {
+            fxUsdInput.value = (parseFloat(targetInput.value) || 1000).toFixed(2);
+            convertUsdToSgd();
+        });
 
         // Collapsible UI Section Utility
         window.toggleSection = function(elementId) {
@@ -805,7 +884,7 @@
                 const day = String(localDate.getDate()).padStart(2, '0');
                 const hours = String(localDate.getHours()).padStart(2, '0');
                 const minutes = String(localDate.getMinutes()).padStart(2, '0');
-                document.getElementById('custom-date').value = `${year}-${month}-${day}T${hours}:${minutes}`;
+                document.getElementById('custom-date').value = `${year}-${month}-${day}T${hours}-${minutes}`;
             }
             document.getElementById('notes').value = targetTrade.notes;
             submitBtn.textContent = "Update Entry";
@@ -855,7 +934,6 @@
         // BACKGROUND TRANSMISSION ENGINE (AUTO SYNC WITH CRASH PROTECTOR)
         async function triggerSilentBackgroundSync() {
             const url = webhookInput.value.trim();
-            // Clean exit if URL is empty, a placeholder, or default string to prevent crashes
             if (!url || url === "" || url === "PASTE_YOUR_LINK_HERE") {
                 syncIndicator.className = "w-2 h-2 rounded-full bg-zinc-600";
                 syncStatusText.textContent = "Offline Mode (Local)";
@@ -954,7 +1032,7 @@
                     }
                 }
             } catch (err) {}
-        }, 30000);
+        }, 5000);
 
         window.addEventListener('resize', drawEquityCurveChart);
         function escapeHTML(str) { return str.replace(/[&<>'"]/g, t => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[t] || t)); }
