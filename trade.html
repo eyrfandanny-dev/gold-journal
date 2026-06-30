@@ -12,7 +12,7 @@
         <header class="mb-6 border-b border-zinc-800 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h1 class="text-3xl font-black bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-transparent tracking-tight">XAUUSD JOURNAL ELITE</h1>
-                <p class="text-zinc-500 text-xs mt-1 uppercase tracking-widest font-semibold">Gold Execution, Native Analytics & Sync Hub</p>
+                <p class="text-zinc-500 text-xs mt-1 uppercase tracking-widest font-semibold">Gold Analytics, Interactive Tracking & History Hub</p>
             </div>
             
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl min-w-[280px] w-full md:w-auto">
@@ -97,16 +97,19 @@
         </section>
 
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-4">Performance Equity Curve</h3>
+            <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1 relative group">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">Performance Equity Curve</h3>
+                    <span id="chart-tooltip-data" class="text-[10px] font-mono text-amber-400 bg-zinc-950 px-2 py-0.5 rounded border border-zinc-800 opacity-0 transition-opacity duration-150"></span>
+                </div>
                 <div class="flex-1 w-full relative h-[220px]">
-                    <canvas id="equity-chart" class="w-full h-full block"></canvas>
+                    <canvas id="equity-chart" class="w-full h-full block cursor-crosshair"></canvas>
                 </div>
             </div>
 
             <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
                 <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-4">Periodic Performance</h3>
-                <div class="space-y-4 flex-1 flex flex-col justify-center">
+                <div class="space-y-3 flex-1 flex flex-col justify-center">
                     <div class="p-3 bg-zinc-950 border border-zinc-800/80 rounded-xl">
                         <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">Current Week P&L (Mon-Fri)</span>
                         <span id="weekly-pnl-text" class="text-xl font-mono font-bold text-zinc-400">$0.00</span>
@@ -136,72 +139,92 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <div class="lg:col-span-1 space-y-6">
-                <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-xl">
-                    <h2 id="form-title" class="text-sm font-bold mb-4 tracking-wider text-zinc-300 uppercase border-b border-zinc-800 pb-2 flex items-center justify-between">
-                        <span>Log Gold Print</span>
-                        <span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded font-mono font-bold">XAUUSD</span>
-                    </h2>
-                    
-                    <form id="trade-form" class="space-y-4">
-                        <input type="hidden" id="edit-id" value="">
-                        
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Direction</label>
-                                <select id="direction" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 font-medium focus:outline-none focus:border-amber-500 text-xs">
-                                    <option value="LONG">Long (Buy)</option>
-                                    <option value="SHORT">Short (Sell)</option>
-                                </select>
+            <div class="lg:col-span-1 space-y-4">
+                
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                    <button onclick="toggleSection('trade-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
+                        <span>📊 Log Gold Print</span>
+                        <span id="trade-section-body-icon" class="text-zinc-500 transition-transform duration-200">▼</span>
+                    </button>
+                    <div id="trade-section-body" class="p-5 space-y-4 transition-all duration-200">
+                        <form id="trade-form" class="space-y-4">
+                            <input type="hidden" id="edit-id" value="">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Direction</label>
+                                    <select id="direction" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 font-medium focus:outline-none focus:border-amber-500 text-xs">
+                                        <option value="LONG">Long (Buy)</option>
+                                        <option value="SHORT">Short (Sell)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Net P&L ($)</label>
+                                    <input type="number" step="any" id="pnl" required placeholder="e.g. 150 or -80" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-100 font-mono text-xs focus:outline-none focus:border-amber-500">
+                                </div>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Net P&L ($)</label>
-                                <input type="number" step="any" id="pnl" required placeholder="e.g. 150 or -80" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-100 font-mono text-xs focus:outline-none focus:border-amber-500">
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Execution Time</label>
+                                <input type="datetime-local" id="custom-date" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 font-mono text-xs focus:outline-none focus:border-amber-500">
                             </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Execution Time <span class="text-zinc-600 lowercase font-normal">(Leave blank for now)</span></label>
-                            <input type="datetime-local" id="custom-date" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 font-mono text-xs focus:outline-none focus:border-amber-500">
-                        </div>
-
-                        <div>
-                            <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Journal Notes & Psychology</label>
-                            <textarea id="notes" rows="3" placeholder="Market narrative, technical setup reasons..." class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 focus:outline-none focus:border-amber-500 text-xs leading-relaxed"></textarea>
-                        </div>
-
-                        <div class="flex gap-2">
-                            <button type="submit" id="submit-btn" class="flex-1 bg-amber-500 hover:bg-amber-600 text-zinc-950 font-black py-2 px-4 rounded transition duration-200 cursor-pointer uppercase tracking-wider text-xs">
-                                Commit Entry
-                            </button>
-                            <button type="button" id="cancel-edit-btn" class="hidden bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold py-2 px-3 rounded transition cursor-pointer text-xs">
-                                Cancel
-                            </button>
-                        </div>
-                    </form>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Journal Notes & Psychology</label>
+                                <textarea id="notes" rows="3" placeholder="Market narrative, technical setup reasons..." class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 focus:outline-none focus:border-amber-500 text-xs leading-relaxed"></textarea>
+                            </div>
+                            <div class="flex gap-2">
+                                <button type="submit" id="submit-btn" class="flex-1 bg-amber-500 hover:bg-amber-600 text-zinc-950 font-black py-2 px-4 rounded transition duration-200 cursor-pointer uppercase tracking-wider text-xs">
+                                    Commit Entry
+                                </button>
+                                <button type="button" id="cancel-edit-btn" class="hidden bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold py-2 px-3 rounded transition cursor-pointer text-xs">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
 
-                <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-xl">
-                    <h2 class="text-sm font-bold mb-3 tracking-wider text-zinc-300 uppercase border-b border-zinc-800 pb-2">Log Capital Withdrawal</h2>
-                    <form id="withdrawal-form" class="space-y-3">
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Amount ($)</label>
-                                <input type="number" step="any" id="withdrawal-amount" required placeholder="0.00" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-100 font-mono text-xs focus:outline-none focus:border-amber-500">
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                    <button onclick="toggleSection('withdrawal-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
+                        <span>💸 Capital Withdrawals</span>
+                        <span id="withdrawal-section-body-icon" class="text-zinc-500 transition-transform duration-200">▶</span>
+                    </button>
+                    <div id="withdrawal-section-body" class="p-5 space-y-4 hidden transition-all duration-200">
+                        <form id="withdrawal-form" class="space-y-3">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Amount ($)</label>
+                                    <input type="number" step="any" id="withdrawal-amount" required placeholder="0.00" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-100 font-mono text-xs focus:outline-none focus:border-amber-500">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Date</label>
+                                    <input type="date" id="withdrawal-date" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 font-mono text-xs focus:outline-none focus:border-amber-500">
+                                </div>
                             </div>
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Date</label>
-                                <input type="date" id="withdrawal-date" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-200 font-mono text-xs focus:outline-none focus:border-amber-500">
-                            </div>
-                        </div>
-                        <button type="submit" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold py-2 px-4 rounded transition duration-200 cursor-pointer uppercase tracking-wider text-xs border border-zinc-700">
-                            Record Withdrawal
-                        </button>
-                    </form>
-
-                    <div id="withdrawal-ledger-list" class="mt-4 space-y-2 max-h-[150px] overflow-y-auto pr-1">
-                        </div>
+                            <button type="submit" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold py-2 px-4 rounded transition duration-200 cursor-pointer uppercase tracking-wider text-xs border border-zinc-700">
+                                Record Withdrawal
+                            </button>
+                        </form>
+                        <div id="withdrawal-ledger-list" class="space-y-2 max-h-[150px] overflow-y-auto pr-1"></div>
+                    </div>
                 </div>
+
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                    <button onclick="toggleSection('history-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
+                        <span>📜 Historical Data Feed</span>
+                        <span id="history-section-body-icon" class="text-zinc-500 transition-transform duration-200">▶</span>
+                    </button>
+                    <div id="history-section-body" class="p-4 hidden transition-all duration-200 space-y-4">
+                        <div>
+                            <h4 class="text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-2">Past Weeks Performance</h4>
+                            <div id="past-weeks-list" class="space-y-1.5 max-h-[160px] overflow-y-auto text-xs font-mono"></div>
+                        </div>
+                        <hr class="border-zinc-800/80">
+                        <div>
+                            <h4 class="text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-2">Past Months Performance</h4>
+                            <div id="past-months-list" class="space-y-1.5 max-h-[160px] overflow-y-auto text-xs font-mono"></div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="lg:col-span-2 space-y-4">
@@ -223,6 +246,7 @@
         let accountMeta = JSON.parse(localStorage.getItem('elite_gold_meta')) || { deposit: 0, bonus: 0, target: 1000, webhookUrl: '' };
 
         let currentCalendarDate = new Date();
+        let chartDataPointsReference = []; // Tooltip vector target cache coordinates tracking anchor array
 
         // DOM Inputs Initialization Hooks
         const depositInput = document.getElementById('deposit-input');
@@ -244,6 +268,10 @@
         const cancelEditBtn = document.getElementById('cancel-edit-btn');
         const logsContainer = document.getElementById('logs-container');
         const withdrawalLedgerList = document.getElementById('withdrawal-ledger-list');
+        const chartTooltipData = document.getElementById('chart-tooltip-data');
+        
+        const pastWeeksList = document.getElementById('past-weeks-list');
+        const pastMonthsList = document.getElementById('past-months-list');
         
         const totalPnlEl = document.getElementById('total-pnl');
         const totalWithdrawalsText = document.getElementById('total-withdrawals-text');
@@ -267,11 +295,25 @@
         const prevMonthBtn = document.getElementById('prev-month-btn');
         const nextMonthBtn = document.getElementById('next-month-btn');
 
-        // Helper function to get Monday and Friday of current active week parameter bounds
+        // Collapsible UI Section Utility
+        window.toggleSection = function(elementId) {
+            const el = document.getElementById(elementId);
+            const icon = document.getElementById(elementId + '-icon');
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                icon.style.transform = 'rotate(0deg)';
+                icon.textContent = '▼';
+            } else {
+                el.classList.add('hidden');
+                icon.style.transform = 'rotate(-90deg)';
+                icon.textContent = '▶';
+            }
+        }
+
+        // Helper function to get bounds of a given week offset calculation parameters matching Monday to Friday
         function getWeeklyRangeBounds(targetDate) {
             let current = new Date(targetDate);
             let dayOfWeek = current.getDay();
-            // Normalize Sunday to 7 instead of 0 for calculation simplicity
             let distanceToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
             
             let monday = new Date(current.setDate(current.getDate() + distanceToMonday));
@@ -284,10 +326,18 @@
             return { monday, friday };
         }
 
+        // Helper string key formatting generator matching ISO date inputs
+        function getISOWeekKeyString(dateObj) {
+            let { monday } = getWeeklyRangeBounds(dateObj);
+            return `W/C ${monday.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}`;
+        }
+
         // Master UI Draw Cycle Interceptor
         function renderJournal() {
             logsContainer.innerHTML = '';
             withdrawalLedgerList.innerHTML = '';
+            pastWeeksList.innerHTML = '';
+            pastMonthsList.innerHTML = '';
             
             let totalPnl = trades.reduce((sum, t) => sum + parseFloat(t.pnl), 0);
             let totalWithdrawals = withdrawals.reduce((sum, w) => sum + parseFloat(w.amount), 0);
@@ -299,33 +349,64 @@
             // Sort trades chronologically
             trades.sort((a, b) => new Date(b.dateISO) - new Date(a.dateISO));
 
-            // Calculate Periodic Breakdowns (Weekly & Monthly Metrics Engine)
+            // --- Historical Periodic Engine Calculus Matrix Rebuilding ---
             let now = new Date();
-            let currentMonth = now.getMonth();
-            let currentYear = now.getFullYear();
-            let { monday, friday } = getWeeklyRangeBounds(now);
+            let currentMonthIndex = now.getMonth();
+            let currentYearVal = now.getFullYear();
+            let currentWeekBounds = getWeeklyRangeBounds(now);
 
             let weeklyAccumulator = 0;
             let monthlyAccumulator = 0;
 
-            trades.forEach(t => {
+            let historyWeeksBucketMap = {};
+            let historyMonthsBucketMap = {};
+
+            // Sort array forward sequentially to map periodic histories tracking increments neatly
+            let chronologicalTrades = [...trades].sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO));
+
+            chronologicalTrades.forEach(t => {
                 let tradeDate = new Date(t.dateISO);
-                // Check week bracket constraint bounds matching Monday to Friday
-                if (tradeDate >= monday && tradeDate <= friday) {
-                    weeklyAccumulator += parseFloat(t.pnl);
-                }
-                // Check month bounds parameters matching current month context
-                if (tradeDate.getMonth() === currentMonth && tradeDate.getFullYear() === currentYear) {
-                    monthlyAccumulator += parseFloat(t.pnl);
-                }
+                let pnlFloat = parseFloat(t.pnl);
+
+                // Live Active Blocks Checks
+                if (tradeDate >= currentWeekBounds.monday && tradeDate <= currentWeekBounds.friday) weeklyAccumulator += pnlFloat;
+                if (tradeDate.getMonth() === currentMonthIndex && tradeDate.getFullYear() === currentYearVal) monthlyAccumulator += pnlFloat;
+
+                // Build Week History Key Map Buckets
+                let weekKey = getISOWeekKeyString(tradeDate);
+                historyWeeksBucketMap[weekKey] = (historyWeeksBucketMap[weekKey] || 0) + pnlFloat;
+
+                // Build Month History Key Map Buckets
+                let monthNamesArray = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                let monthKey = `${monthNamesArray[tradeDate.getMonth()]} ${tradeDate.getFullYear()}`;
+                historyMonthsBucketMap[monthKey] = (historyMonthsBucketMap[monthKey] || 0) + pnlFloat;
             });
 
-            // Update Periodic Elements Text Content
+            // Populate Active Widgets
             weeklyPnlText.textContent = `${weeklyAccumulator >= 0 ? '+' : ''}$${weeklyAccumulator.toFixed(2)}`;
             weeklyPnlText.className = `text-xl font-mono font-bold ${weeklyAccumulator >= 0 ? 'text-emerald-400' : 'text-rose-500'}`;
             
             monthlyPnlText.textContent = `${monthlyAccumulator >= 0 ? '+' : ''}$${monthlyAccumulator.toFixed(2)}`;
             monthlyPnlText.className = `text-xl font-mono font-bold ${monthlyAccumulator >= 0 ? 'text-emerald-400' : 'text-rose-500'}`;
+
+            // Render Periodic History DOM Lists Loops
+            Object.keys(historyWeeksBucketMap).reverse().forEach(wkKey => {
+                let wkVal = historyWeeksBucketMap[wkKey];
+                let row = document.createElement('div');
+                row.className = "flex justify-between items-center p-1.5 bg-zinc-950 border border-zinc-900 rounded";
+                row.innerHTML = `<span class="text-zinc-400">${wkKey}</span><span class="${wkVal >= 0 ? 'text-emerald-400' : 'text-rose-500'} font-bold">${wkVal >= 0 ? '+' : ''}$${wkVal.toFixed(2)}</span>`;
+                pastWeeksList.appendChild(row);
+            });
+            if(Object.keys(historyWeeksBucketMap).length === 0) pastWeeksList.innerHTML = `<span class="text-[10px] text-zinc-600 italic">No weekly matrix logged.</span>`;
+
+            Object.keys(historyMonthsBucketMap).reverse().forEach(mthKey => {
+                let mthVal = historyMonthsBucketMap[mthKey];
+                let row = document.createElement('div');
+                row.className = "flex justify-between items-center p-1.5 bg-zinc-950 border border-zinc-900 rounded";
+                row.innerHTML = `<span class="text-zinc-400">${mthKey}</span><span class="${mthVal >= 0 ? 'text-emerald-400' : 'text-rose-500'} font-bold">${mthVal >= 0 ? '+' : ''}$${mthVal.toFixed(2)}</span>`;
+                pastMonthsList.appendChild(row);
+            });
+            if(Object.keys(historyMonthsBucketMap).length === 0) pastMonthsList.innerHTML = `<span class="text-[10px] text-zinc-600 italic">No monthly matrix logged.</span>`;
 
             // Calculate Win Rate Metrics Engine
             let winningTrades = trades.filter(t => parseFloat(t.pnl) > 0).length;
@@ -412,12 +493,11 @@
                 remainingText.className = "text-zinc-500";
             }
 
-            // Graphic charts & Calendar components update loops
             drawEquityCurveChart();
             renderPerformanceCalendar();
         }
 
-        // Native HTML5 Canvas Graph Vector Rendering
+        // Native HTML5 Canvas Graph Vector Rendering with coordinate capture tracking logic
         function drawEquityCurveChart() {
             const canvas = document.getElementById('equity-chart');
             const ctx = canvas.getContext('2d');
@@ -444,6 +524,7 @@
                 ctx.font = '11px sans-serif';
                 ctx.textAlign = 'center';
                 ctx.fillText('Execute positions to generate analytics graphs', width / 2, height / 2);
+                chartDataPointsReference = [];
                 return;
             }
 
@@ -463,13 +544,22 @@
             ctx.lineTo(width - paddingRight, zeroY);
             ctx.stroke();
 
-            let coordinatePoints = [];
+            // Formulate coordinates array nodes
+            chartDataPointsReference = [];
             let segmentX = chartWidth / (runningPnlValues.length - 1);
 
             runningPnlValues.forEach((val, idx) => {
                 let x = paddingLeft + (idx * segmentX);
                 let y = paddingTop + chartHeight - ((val - minPnl) / pnlRange) * chartHeight;
-                coordinatePoints.push({x, y});
+                
+                // Track details object references mapped back to coordinate positions indices metrics accurately
+                let associatedTrade = idx === 0 ? null : chronologicalTrades[idx - 1];
+                chartDataPointsReference.push({
+                    x, y, 
+                    cumulativePnl: val,
+                    tradeDetails: associatedTrade,
+                    isBaseline: idx === 0
+                });
             });
 
             let areaGradient = ctx.createLinearGradient(0, paddingTop, 0, paddingTop + chartHeight);
@@ -483,22 +573,22 @@
             }
 
             ctx.beginPath();
-            ctx.moveTo(coordinatePoints[0].x, zeroY);
-            coordinatePoints.forEach(pt => ctx.lineTo(pt.x, pt.y));
-            ctx.lineTo(coordinatePoints[coordinatePoints.length - 1].x, zeroY);
+            ctx.moveTo(chartDataPointsReference[0].x, zeroY);
+            chartDataPointsReference.forEach(pt => ctx.lineTo(pt.x, pt.y));
+            ctx.lineTo(chartDataPointsReference[chartDataPointsReference.length - 1].x, zeroY);
             ctx.closePath();
             ctx.fillStyle = areaGradient;
             ctx.fill();
 
             ctx.beginPath();
-            ctx.moveTo(coordinatePoints[0].x, coordinatePoints[0].y);
-            coordinatePoints.forEach(pt => ctx.lineTo(pt.x, pt.y));
+            ctx.moveTo(chartDataPointsReference[0].x, chartDataPointsReference[0].y);
+            chartDataPointsReference.forEach(pt => ctx.lineTo(pt.x, pt.y));
             ctx.strokeStyle = endingPnl >= 0 ? '#34d399' : '#f43f5e';
             ctx.lineWidth = 2.5;
             ctx.lineJoin = 'round';
             ctx.stroke();
 
-            let finalPt = coordinatePoints[coordinatePoints.length - 1];
+            let finalPt = chartDataPointsReference[chartDataPointsReference.length - 1];
             ctx.beginPath();
             ctx.arc(finalPt.x, finalPt.y, 4, 0, 2 * Math.PI);
             ctx.fillStyle = endingPnl >= 0 ? '#34d399' : '#f43f5e';
@@ -507,6 +597,43 @@
             ctx.lineWidth = 1.5;
             ctx.stroke();
         }
+
+        // Tooltip hover coordinates mouse intersection detection algorithm core loop listeners
+        const canvasElement = document.getElementById('equity-chart');
+        
+        function handleChartInteractionHover(e) {
+            if (chartDataPointsReference.length === 0) return;
+            
+            const rect = canvasElement.getBoundingClientRect();
+            // Capture accurate interactive matrix position metrics regardless of cross-origin resolution differences
+            const mouseX = e.clientX ? e.clientX - rect.left : e.touches[0].clientX - rect.left;
+            
+            // Search coordinates mapping indexes arrays closest matching index position targets nodes
+            let closestNode = chartDataPointsReference.reduce((prev, curr) => {
+                return (Math.abs(curr.x - mouseX) < Math.abs(prev.x - mouseX)) ? curr : prev;
+            });
+
+            if (closestNode) {
+                let initialDeposit = parseFloat(depositInput.value) || 0;
+                let calculatedEquity = initialDeposit + closestNode.cumulativePnl;
+                
+                let textLabel = `Equity: $${calculatedEquity.toFixed(2)} | P&L: ${closestNode.cumulativePnl >= 0 ? '+' : ''}$${closestNode.cumulativePnl.toFixed(2)}`;
+                if(!closestNode.isBaseline && closestNode.tradeDetails) {
+                    textLabel += ` (${closestNode.tradeDetails.dateFormatted})`;
+                } else {
+                    textLabel += ` (Start)`;
+                }
+                
+                chartTooltipData.textContent = textLabel;
+                chartTooltipData.style.opacity = "1";
+            }
+        }
+
+        canvasElement.addEventListener('mousemove', handleChartInteractionHover);
+        canvasElement.addEventListener('touchstart', handleChartInteractionHover, {passive: true});
+        canvasElement.addEventListener('touchmove', handleChartInteractionHover, {passive: true});
+        canvasElement.addEventListener('mouseleave', () => chartTooltipData.style.opacity = "0");
+        canvasElement.addEventListener('touchend', () => chartTooltipData.style.opacity = "0");
 
         // Performance Calendar Rendering Engine
         function renderPerformanceCalendar() {
@@ -617,7 +744,6 @@
             const dateInput = document.getElementById('withdrawal-date');
             
             let wDate = dateInput.value ? new Date(dateInput.value) : new Date();
-            // Normalize time zone differences
             wDate.setHours(12, 0, 0, 0);
 
             const newWithdrawal = {
@@ -675,6 +801,11 @@
             formTitle.firstElementChild.textContent = "Modify Gold Entry";
             submitBtn.textContent = "Update Entry";
             cancelEditBtn.classList.remove('hidden');
+            
+            // Auto open section if it was closed during an edit attempt action sequence call
+            document.getElementById('trade-section-body').classList.remove('hidden');
+            document.getElementById('trade-section-body-icon').textContent = '▼';
+
             window.scrollTo({ top: tradeForm.offsetTop - 20, behavior: 'smooth' });
         }
 
