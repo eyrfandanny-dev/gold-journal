@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XAUUSD Obsidian Journal Elite</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-zinc-950 text-zinc-100 min-h-screen font-sans antialiased selection:bg-amber-500/30">
 
     <div class="max-w-7xl mx-auto p-4 md:p-8">
+        <!-- Header -->
         <header class="mb-6 border-b border-zinc-800 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h1 class="text-3xl font-black bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-transparent tracking-tight">XAUUSD JOURNAL ELITE</h1>
                 <p class="text-zinc-500 text-xs mt-1 uppercase tracking-widest font-semibold">Gold Analytics, Interactive Tracking & History Hub</p>
             </div>
             
+            <!-- Target Tracking Widget -->
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl min-w-[280px] w-full md:w-auto">
                 <div class="flex justify-between items-center mb-2">
                     <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Growth Target Progress</span>
@@ -33,6 +36,7 @@
             </div>
         </header>
 
+        <!-- Capital & Performance Analytics Metrics -->
         <section class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl">
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Initial Deposit</label>
@@ -75,6 +79,7 @@
             </div>
         </section>
 
+        <!-- Google Sheets Sync Bar -->
         <section class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl mb-6 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
             <div class="flex-1 w-full text-left">
                 <div class="flex justify-between items-center mb-1">
@@ -96,7 +101,9 @@
             </div>
         </section>
 
+        <!-- Graphics & Performance Periodic Performance Analytics Row -->
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Analytics Chart Card -->
             <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1 relative group">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">Performance Equity Curve</h3>
@@ -107,6 +114,7 @@
                 </div>
             </div>
 
+            <!-- Periodic Performance Box -->
             <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
                 <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-4">Periodic Performance</h3>
                 <div class="space-y-3 flex-1 flex flex-col justify-center text-left">
@@ -121,6 +129,7 @@
                 </div>
             </div>
 
+            <!-- Interactive Matrix Calendar Card -->
             <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">P&L Calendar Map</h3>
@@ -130,17 +139,22 @@
                         <button id="next-month-btn" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 p-1 px-2.5 rounded text-xs font-bold transition cursor-pointer">▶</button>
                     </div>
                 </div>
+                <!-- Days Framework -->
                 <div class="grid grid-cols-7 gap-1 text-center text-[9px] uppercase font-bold text-zinc-500 mb-2 tracking-wider">
                     <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                 </div>
+                <!-- Dynamic Dates Injection Frame Grid Matrix -->
                 <div id="calendar-days-grid" class="grid grid-cols-7 gap-1.5 flex-1"></div>
             </div>
         </section>
 
+        <!-- Main Workspace Grid Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
             
+            <!-- Left Workspace Column: Collapsible Input Containers -->
             <div class="lg:col-span-1 space-y-4">
                 
+                <!-- Card 1: Log Gold Print Form Box -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('trade-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>📊 Log Gold Print</span>
@@ -182,6 +196,7 @@
                     </div>
                 </div>
 
+                <!-- Card 2: Log Capital Withdrawal Box -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('withdrawal-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>💸 Capital Withdrawals</span>
@@ -207,6 +222,7 @@
                     </div>
                 </div>
 
+                <!-- Card 3: Historical Periodic Performance Box -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('history-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>📜 Historical Data Feed</span>
@@ -227,6 +243,7 @@
 
             </div>
 
+            <!-- Right Workspace Column: Ledger Feeds -->
             <div class="lg:col-span-2 space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-sm font-bold tracking-wider text-zinc-300 uppercase">Execution Feed</h2>
@@ -234,11 +251,13 @@
                 </div>
                 
                 <div id="logs-container" class="space-y-3">
-                    </div>
+                    <!-- Dynamic Logs injection -->
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Scripting Engine Logic Framework Block -->
     <script>
         // Database States
         let trades = JSON.parse(localStorage.getItem('elite_gold_trades')) || [];
@@ -248,8 +267,9 @@
         let currentCalendarDate = new Date();
         let chartDataPointsReference = [];
 
-        // --- HARDCODED FIXED WEBHOOK URL LINK ---
-        const FIXED_WEBHOOK_URL = "PASTE_YOUR_LINK_HERE"; 
+        // --- OPTIONAL HARDCODED WEBHOOK LINK ---
+        // (You can paste your Google Apps Script link here, or leave it blank to type/edit manually on screen!)
+        const FIXED_WEBHOOK_URL = ""; 
 
         // DOM Inputs Initialization Hooks
         const depositInput = document.getElementById('deposit-input');
@@ -261,9 +281,13 @@
         bonusInput.value = accountMeta.bonus || '';
         targetInput.value = accountMeta.target || 1000;
         
-        // Lock URL link down permanently
-        webhookInput.value = FIXED_WEBHOOK_URL;
-        webhookInput.readOnly = true;
+        // Populate and lock down ONLY if a valid link exists in the code layout
+        if (FIXED_WEBHOOK_URL && FIXED_WEBHOOK_URL.trim() !== "" && FIXED_WEBHOOK_URL !== "PASTE_YOUR_LINK_HERE") {
+            webhookInput.value = FIXED_WEBHOOK_URL;
+            webhookInput.readOnly = true;
+        } else {
+            webhookInput.value = accountMeta.webhookUrl || '';
+        }
 
         // UI Architecture Structural Anchors
         const tradeForm = document.getElementById('trade-form');
@@ -315,7 +339,6 @@
             }
         }
 
-        // Helper function to get bounds of a given week offset calculation parameters matching Monday to Friday
         function getWeeklyRangeBounds(targetDate) {
             let current = new Date(targetDate);
             let dayOfWeek = current.getDay();
@@ -350,10 +373,8 @@
             let targetGoal = parseFloat(targetInput.value) || 1000;
             let netBalance = deposit + bonus + totalPnl - totalWithdrawals;
 
-            // Sort trades chronologically
             trades.sort((a, b) => new Date(b.dateISO) - new Date(a.dateISO));
 
-            // --- Historical Periodic Engine Calculus Matrix Rebuilding ---
             let now = new Date();
             let currentMonthIndex = now.getMonth();
             let currentYearVal = now.getFullYear();
@@ -671,13 +692,12 @@
         prevMonthBtn.addEventListener('click', () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1); renderPerformanceCalendar(); });
         nextMonthBtn.addEventListener('click', () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1); renderPerformanceCalendar(); });
 
-        // Saves configuration parameter markers safely without loop triggers
         function saveAccountMeta() {
             accountMeta = {
                 deposit: parseFloat(depositInput.value) || 0,
                 bonus: parseFloat(bonusInput.value) || 0,
                 target: parseFloat(targetInput.value) || 1000,
-                webhookUrl: FIXED_WEBHOOK_URL
+                webhookUrl: webhookInput.value.trim()
             };
             localStorage.setItem('elite_gold_meta', JSON.stringify(accountMeta));
         }
@@ -694,7 +714,7 @@
             metaTimeout = setTimeout(() => { triggerSilentBackgroundSync(); }, 1500);
         }
 
-        [depositInput, bonusInput, targetInput].forEach(element => {
+        [depositInput, bonusInput, targetInput, webhookInput].forEach(element => {
             element.addEventListener('input', handleMetaInputChange);
         });
 
@@ -797,12 +817,11 @@
             window.scrollTo({ top: tradeForm.offsetTop - 20, behavior: 'smooth' });
         }
 
-        // Clean layout text modifier resets manually to clear out nonexistent ID errors
         clearBtn.addEventListener('click', () => {
             if (confirm('Permanently wipe complete transaction footprints and withdrawals?')) {
                 trades = []; 
                 withdrawals = [];
-                accountMeta = { deposit: 0, bonus: 0, target: 1000 };
+                accountMeta = { deposit: 0, bonus: 0, target: 1000, webhookUrl: '' };
                 
                 localStorage.removeItem('elite_gold_trades');
                 localStorage.removeItem('elite_gold_withdrawals');
@@ -811,6 +830,7 @@
                 depositInput.value = '';
                 bonusInput.value = '';
                 targetInput.value = 1000;
+                webhookInput.value = '';
                 
                 document.getElementById('edit-id').value = "";
                 tradeForm.reset();
@@ -832,10 +852,15 @@
         }
         cancelEditBtn.addEventListener('click', resetFormMode);
 
-        // BACKGROUND TRANSMISSION ENGINE (AUTO SYNC)
+        // BACKGROUND TRANSMISSION ENGINE (AUTO SYNC WITH CRASH PROTECTOR)
         async function triggerSilentBackgroundSync() {
-            const url = FIXED_WEBHOOK_URL;
-            if (!url || url === "PASTE_YOUR_LINK_HERE") return;
+            const url = webhookInput.value.trim();
+            // Clean exit if URL is empty, a placeholder, or default string to prevent crashes
+            if (!url || url === "" || url === "PASTE_YOUR_LINK_HERE") {
+                syncIndicator.className = "w-2 h-2 rounded-full bg-zinc-600";
+                syncStatusText.textContent = "Offline Mode (Local)";
+                return;
+            }
 
             syncIndicator.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
             syncStatusText.textContent = "Syncing...";
@@ -868,8 +893,8 @@
 
         // PULL DATA FROM SHEETS
         pullBtn.addEventListener('click', async () => {
-            let url = FIXED_WEBHOOK_URL;
-            if (!url || url === "PASTE_YOUR_LINK_HERE") return alert("Configure FIXED_WEBHOOK_URL inside code.");
+            let url = webhookInput.value.trim();
+            if (!url || url === "PASTE_YOUR_LINK_HERE") return alert("Please enter a valid Webhook URL first.");
             pullBtn.disabled = true; pullBtn.textContent = "Pulling...";
 
             if (url.includes("script.google.com") && !url.includes("/a/*/")) {
@@ -902,8 +927,8 @@
         // AUTOMATIC BACKGROUND RETRIEVAL LOOP (Auto-Fetch every 30s)
         setInterval(async () => {
             if (editIdInput.value !== "") return;
-            let url = FIXED_WEBHOOK_URL;
-            if (!url || url === "PASTE_YOUR_LINK_HERE") return;
+            let url = webhookInput.value.trim();
+            if (!url || url === "" || url === "PASTE_YOUR_LINK_HERE") return;
             if (url.includes("script.google.com") && !url.includes("/a/*/")) url = url.replace("script.google.com/", "script.google.com/a/*/");
 
             try {
@@ -929,7 +954,7 @@
                     }
                 }
             } catch (err) {}
-        }, 5000);
+        }, 30000);
 
         window.addEventListener('resize', drawEquityCurveChart);
         function escapeHTML(str) { return str.replace(/[&<>'"]/g, t => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[t] || t)); }
