@@ -715,7 +715,46 @@
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
             );
         }
+// AUTOMATIC BACKGROUND RETRIEVAL LOOP (Auto-Fetch)
+setInterval(async () => {
+    // Only run if you are not currently editing a trade and if a URL exists
+    if (document.getElementById('edit-id').value !== "" || !webhookInput.value.trim()) return;
+    
+    let url = webhookInput.value.trim();
+    if (url.includes("script.google.com") && !url.includes("/a/*/")) {
+        url = url.replace("script.google.com/", "script.google.com/a/*/");
+    }
 
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data && !data.error && data.ledger) {
+            // Check if incoming sheet data has a different number of trades or updated IDs
+            if (JSON.stringify(data.ledger) !== localStorage.getItem('elite_gold_trades')) {
+                trades = data.ledger;
+                localStorage.setItem('elite_gold_trades', JSON.stringify(trades));
+                
+                if(data.metadata) {
+                    depositInput.value = data.metadata.deposit || '';
+                    bonusInput.value = data.metadata.bonus || '';
+                    targetInput.value = data.metadata.target || 1000;
+                    saveAccountMeta();
+                }
+                
+                renderJournal();
+                
+                // Flash indicator green to show a background sync happened
+                syncIndicator.className = "w-2 h-2 rounded-full bg-cyan-400 animate-ping";
+                setTimeout(() => {
+                    syncIndicator.className = "w-2 h-2 rounded-full bg-emerald-500";
+                }, 1000);
+            }
+        }
+    } catch (err) {
+        console.log("Silent auto-fetch check skipped (network offline or busy).");
+    }
+}, 5000); // 5000 milliseconds = 5 seconds
         renderJournal();
     </script>
 </body>
