@@ -4,18 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XAUUSD Obsidian Journal Elite</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-zinc-950 text-zinc-100 min-h-screen font-sans antialiased selection:bg-amber-500/30">
 
     <div class="max-w-7xl mx-auto p-4 md:p-8">
-        <!-- Header -->
         <header class="mb-6 border-b border-zinc-800 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h1 class="text-3xl font-black bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-transparent tracking-tight">XAUUSD JOURNAL ELITE</h1>
                 
-                <!-- Account Hub Controller UI -->
                 <div class="mt-3 flex items-center gap-2 flex-wrap">
                     <select id="account-select" class="bg-zinc-900 border border-zinc-800 text-amber-400 font-black px-3 py-1.5 rounded-lg text-xs tracking-wide uppercase focus:outline-none focus:border-amber-500 cursor-pointer"></select>
                     <button id="add-account-btn" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 font-bold px-3 py-1.5 rounded-lg text-xs uppercase tracking-wider cursor-pointer transition">➕ Add Account</button>
@@ -23,7 +20,6 @@
                 </div>
             </div>
             
-            <!-- Target Tracking Widget -->
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl min-w-[280px] w-full md:w-auto">
                 <div class="flex justify-between items-center mb-2">
                     <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Growth Target Progress</span>
@@ -42,7 +38,6 @@
             </div>
         </header>
 
-        <!-- Capital & Performance Analytics Metrics -->
         <section class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl">
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Initial Deposit</label>
@@ -85,7 +80,6 @@
             </div>
         </section>
 
-        <!-- Google Sheets Sync Bar -->
         <section class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl mb-6 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
             <div class="flex-1 w-full text-left">
                 <div class="flex justify-between items-center mb-1">
@@ -107,9 +101,7 @@
             </div>
         </section>
 
-        <!-- Graphics & Performance Periodic Performance Analytics Row -->
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <!-- Analytics Chart Card -->
             <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1 relative group">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">Performance Equity Curve</h3>
@@ -120,7 +112,6 @@
                 </div>
             </div>
 
-            <!-- Periodic Performance Box -->
             <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
                 <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-4">Periodic Performance</h3>
                 <div class="space-y-3 flex-1 flex flex-col justify-center text-left">
@@ -135,7 +126,6 @@
                 </div>
             </div>
 
-            <!-- Interactive Matrix Calendar Card -->
             <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">P&L Calendar Map</h3>
@@ -152,13 +142,10 @@
             </div>
         </section>
 
-        <!-- Main Workspace Grid Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
             
-            <!-- Left Workspace Column -->
             <div class="lg:col-span-1 space-y-4">
                 
-                <!-- Card 1: Log Gold Print -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('trade-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>📊 Log Gold Print</span>
@@ -200,7 +187,6 @@
                     </div>
                 </div>
 
-                <!-- Card 2: FX Currency Convertor Core -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('fx-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>💱 FX USD / SGD Convertor</span>
@@ -242,7 +228,6 @@
                     </div>
                 </div>
 
-                <!-- Card 3: 40-DAY COMPOUND TARGET RADAR -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('compound-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>📈 40-Day Compounding Target Matrix</span>
@@ -282,7 +267,6 @@
                     </div>
                 </div>
 
-                <!-- Card 4: Log Capital Withdrawal Box -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('withdrawal-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>💸 Capital Withdrawals</span>
@@ -308,7 +292,6 @@
                     </div>
                 </div>
 
-                <!-- Card 5: Historical Periodic Performance Box -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('history-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>📜 Historical Data Feed</span>
@@ -329,7 +312,6 @@
 
             </div>
 
-            <!-- Right Workspace Column: Ledger Feeds -->
             <div class="lg:col-span-2 space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-sm font-bold tracking-wider text-zinc-300 uppercase">Execution Feed</h2>
@@ -337,25 +319,22 @@
                 </div>
                 
                 <div id="logs-container" class="space-y-3">
-                    <!-- Dynamic Logs injection -->
-                </div>
+                    </div>
             </div>
         </div>
     </div>
 
-    <!-- Scripting Engine Logic Framework Block -->
     <script>
         // --- MULTI-ACCOUNT WORKSPACE ENGINE CORE ---
         let accountsList = JSON.parse(localStorage.getItem('elite_gold_accounts_manifest')) || ["Default Account"];
         let activeAccountName = localStorage.getItem('elite_gold_active_account_key') || "Default Account";
 
-        // Separate runtime database states linked dynamically to activeAccountName
         let trades = [];
         let withdrawals = [];
         let accountMeta = { deposit: 0, bonus: 0, target: 1000, webhookUrl: "" };
 
         // --- OPTIONAL HARDCODED WEBHOOK LINK ---
-        const FIXED_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec"; 
+        const FIXED_WEBHOOK_URL = ""; 
 
         // DOM Inputs Initialization Hooks
         const accountSelect = document.getElementById('account-select');
@@ -367,12 +346,14 @@
         const targetInput = document.getElementById('target-input');
         const webhookInput = document.getElementById('webhook-input');
         
-        // Multi-Account Data Swapper Loop
+        depositInput.value = accountMeta.deposit || '';
+        bonusInput.value = accountMeta.bonus || '';
+        targetInput.value = accountMeta.target || 1000;
+        
         function synchronizeActiveAccountMemory(targetAccountName) {
             activeAccountName = targetAccountName;
             localStorage.setItem('elite_gold_active_account_key', activeAccountName);
             
-            // Clean up name mapping to form safe LocalStorage key strings
             const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
             
             trades = JSON.parse(localStorage.getItem(keyPrefix + '_trades')) || [];
@@ -383,7 +364,7 @@
             bonusInput.value = accountMeta.bonus || '';
             targetInput.value = accountMeta.target || 1000;
             
-            if (FIXED_WEBHOOK_URL && FIXED_WEBHOOK_URL.trim() !== "" && FIXED_WEBHOOK_URL !== "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") {
+            if (FIXED_WEBHOOK_URL && FIXED_WEBHOOK_URL.trim() !== "") {
                 webhookInput.value = FIXED_WEBHOOK_URL;
                 webhookInput.readOnly = true;
             } else {
@@ -447,7 +428,6 @@
             synchronizeActiveAccountMemory(accountsList[0]);
         });
 
-        // Save active settings to specific account sub-slots
         function saveAccountMeta() {
             const keyPrefix = "eg_acc_" + activeAccountName.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
             accountMeta = {
@@ -511,7 +491,6 @@
         const compBtnClear = document.getElementById('comp-btn-clear');
         const compoundMatrixRows = document.getElementById('compound-matrix-rows');
 
-        // FX Calculation Logic Engine
         function convertUsdToSgd() {
             const usd = parseFloat(fxUsdInput.value) || 0;
             const rate = parseFloat(fxRateInput.value) || 1.295;
@@ -546,7 +525,6 @@
             convertUsdToSgd();
         });
 
-        // 40-DAY EXPONENTIAL COMPOUND MATHEMATICS GRID RENDERER
         function calculateCompoundingMatrixTable() {
             let startCapital = parseFloat(compCapitalInput.value);
             let targetPct = parseFloat(compPctInput.value);
@@ -606,27 +584,6 @@
             }
         }
 
-        function getWeeklyRangeBounds(targetDate) {
-            let current = new Date(targetDate);
-            let dayOfWeek = current.getDay();
-            let distanceToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-            
-            let monday = new Date(current.setDate(current.getDate() + distanceToMonday));
-            monday.setHours(0, 0, 0, 0);
-            
-            let friday = new Date(monday);
-            friday.setDate(monday.getDate() + 4);
-            friday.setHours(23, 59, 59, 999);
-            
-            return { monday, friday };
-        }
-
-        function getISOWeekKeyString(dateObj) {
-            let { monday } = getWeeklyRangeBounds(dateObj);
-            return `W/C ${monday.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}`;
-        }
-
-        // Master UI Draw Cycle Interceptor
         function renderJournal() {
             logsContainer.innerHTML = '';
             withdrawalLedgerList.innerHTML = '';
@@ -877,101 +834,6 @@
             ctx.stroke();
         }
 
-        const canvasElement = document.getElementById('equity-chart');
-        
-        function handleChartInteractionHover(e) {
-            if (chartDataPointsReference.length === 0) return;
-            const rect = canvasElement.getBoundingClientRect();
-            const mouseX = e.clientX ? e.clientX - rect.left : e.touches[0].clientX - rect.left;
-            
-            let closestNode = chartDataPointsReference.reduce((prev, curr) => {
-                return (Math.abs(curr.x - mouseX) < Math.abs(prev.x - mouseX)) ? curr : prev;
-            });
-
-            if (closestNode) {
-                let initialDeposit = parseFloat(depositInput.value) || 0;
-                let calculatedEquity = initialDeposit + closestNode.cumulativePnl;
-                
-                let textLabel = `Equity: $${calculatedEquity.toFixed(2)} | P&L: ${closestNode.cumulativePnl >= 0 ? '+' : ''}$${closestNode.cumulativePnl.toFixed(2)}`;
-                if(!closestNode.isBaseline && closestNode.tradeDetails) {
-                    textLabel += ` (${closestNode.tradeDetails.dateFormatted})`;
-                } else {
-                    textLabel += ` (Start)`;
-                }
-                
-                chartTooltipData.textContent = textLabel;
-                chartTooltipData.style.opacity = "1";
-            }
-        }
-
-        canvasElement.addEventListener('mousemove', handleChartInteractionHover);
-        canvasElement.addEventListener('touchstart', handleChartInteractionHover, {passive: true});
-        canvasElement.addEventListener('touchmove', handleChartInteractionHover, {passive: true});
-        canvasElement.addEventListener('mouseleave', () => chartTooltipData.style.opacity = "0");
-        canvasElement.addEventListener('touchend', () => chartTooltipData.style.opacity = "0");
-
-        function renderPerformanceCalendar() {
-            calendarDaysGrid.innerHTML = '';
-            const year = currentCalendarDate.getFullYear();
-            const month = currentCalendarDate.getMonth();
-
-            const monthNamesArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            calendarTitleText.textContent = `${monthNamesArray[month]} ${year}`;
-
-            const firstDayIndex = new Date(year, month, 1).getDay();
-            const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
-
-            let dailyPnlMap = {};
-            trades.forEach(trade => {
-                if(!trade.dateISO) return;
-                let dateObj = new Date(trade.dateISO);
-                let dateKey = `${dateObj.getFullYear()}-${dateObj.getMonth()}-${dateObj.getDate()}`;
-                dailyPnlMap[dateKey] = (dailyPnlMap[dateKey] || 0) + parseFloat(trade.pnl);
-            });
-
-            for (let i = 0; i < firstDayIndex; i++) {
-                let blankCell = document.createElement('div');
-                blankCell.className = "bg-zinc-900/10 rounded min-h-[32px]";
-                calendarDaysGrid.appendChild(blankCell);
-            }
-
-            for (let day = 1; day <= totalDaysInMonth; day++) {
-                let dayCell = document.createElement('div');
-                let cellKey = `${year}-${month}-${day}`;
-                let cellPnl = dailyPnlMap[cellKey] || 0;
-                let colorStylesClass = "bg-zinc-950 border border-zinc-800 text-zinc-400";
-                
-                if (cellPnl > 0.01) {
-                    colorStylesClass = "bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 font-bold";
-                } else if (cellPnl < -0.01) {
-                    colorStylesClass = "bg-rose-950/30 border border-rose-500/20 text-rose-400 font-bold";
-                }
-
-                dayCell.className = `rounded p-1 min-h-[34px] flex flex-col justify-between items-start ${colorStylesClass}`;
-                dayCell.innerHTML = `
-                    <span class="text-[9px] block leading-none opacity-60">${day}</span>
-                    ${cellPnl !== 0 ? `<span class="text-[8px] block tracking-tighter font-mono overflow-hidden max-w-full text-ellipsis">${cellPnl >= 0 ? '+' : ''}${Math.round(cellPnl)}</span>` : ''}
-                `;
-                calendarDaysGrid.appendChild(dayCell);
-            }
-        }
-
-        let metaTimeout;
-        function handleMetaInputChange() {
-            saveAccountMeta();
-            
-            let totalPnl = trades.reduce((sum, t) => sum + parseFloat(t.pnl), 0);
-            let totalWithdrawals = withdrawals.reduce((sum, w) => sum + parseFloat(w.amount), 0);
-            balanceEl.textContent = `$${(accountMeta.deposit + accountMeta.bonus + totalPnl - totalWithdrawals).toFixed(2)}`;
-            
-            clearTimeout(metaTimeout);
-            metaTimeout = setTimeout(() => { triggerSilentBackgroundSync(); }, 1500);
-        }
-
-        [depositInput, bonusInput, targetInput, webhookInput].forEach(element => {
-            element.addEventListener('input', handleMetaInputChange);
-        });
-
         // Form Submission Interceptors (Trades)
         tradeForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -1110,10 +972,10 @@
         }
         cancelEditBtn.addEventListener('click', resetFormMode);
 
-        // BACKGROUND TRANSMISSION ENGINE (AUTO SYNC WITH CRASH PROTECTOR)
+        // BACKGROUND TRANSMISSION ENGINE
         async function triggerSilentBackgroundSync() {
             const url = webhookInput.value.trim();
-            if (!url || url === "" || url === "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") {
+            if (!url || url === "") {
                 syncIndicator.className = "w-2 h-2 rounded-full bg-zinc-600";
                 syncStatusText.textContent = "Offline Mode (Local)";
                 return;
@@ -1123,7 +985,7 @@
             syncStatusText.textContent = "Syncing...";
 
             const datasetPayload = {
-                accountPrefix: activeAccountName, // Pass down custom string name to create isolated sheets
+                accountPrefix: activeAccountName,
                 metadata: {
                     deposit: parseFloat(depositInput.value) || 0,
                     bonus: parseFloat(bonusInput.value) || 0,
@@ -1149,22 +1011,20 @@
 
         syncBtn.addEventListener('click', () => { triggerSilentBackgroundSync(); });
 
-       // PULL DATA FROM SHEETS WITH DYNAMIC ACCOUNT PARAMS
+        // PULL DATA FROM SHEETS (VALIDATION BYPASSED Completely)
         pullBtn.addEventListener('click', async () => {
             let baseUrl = webhookInput.value.trim();
-            if (!baseUrl || baseUrl === "" || baseUrl === "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") {
-                return alert("Please configure or paste a valid Webhook URL first.");
+            if (!baseUrl || baseUrl === "") {
+                return alert("Please paste your Apps Script URL link into the box first.");
             }
             
             pullBtn.disabled = true; 
             pullBtn.textContent = "Pulling...";
 
-            // Clean up the URL format if it's missing the multi-user path segment
             if (baseUrl.includes("script.google.com") && !baseUrl.includes("/a/*/")) {
                 baseUrl = baseUrl.replace("script.google.com/", "script.google.com/a/*/");
             }
 
-            // Append account prefix parameter cleanly
             const separator = baseUrl.includes("?") ? "&" : "?";
             const url = baseUrl + separator + "accountPrefix=" + encodeURIComponent(activeAccountName);
 
@@ -1190,17 +1050,18 @@
                 }
             } catch (err) { 
                 console.error(err); 
-                alert("Failed to fetch data. Make sure your Apps Script deployment is set to access: 'Anyone'."); 
+                alert("Failed to process incoming script parameters. Verify your deployment link."); 
             } finally { 
                 pullBtn.disabled = false; 
                 pullBtn.textContent = "📥 Pull From Sheets"; 
             }
         });
+
         // AUTOMATIC BACKGROUND RETRIEVAL LOOP (Auto-Fetch every 30s)
         setInterval(async () => {
             if (editIdInput.value !== "") return;
             let baseUrl = webhookInput.value.trim();
-            if (!baseUrl || baseUrl === "" || baseUrl === "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") return;
+            if (!baseUrl || baseUrl === "") return;
             if (baseUrl.includes("script.google.com") && !baseUrl.includes("/a/*/")) baseUrl = baseUrl.replace("script.google.com/", "script.google.com/a/*/");
 
             const url = baseUrl + (baseUrl.includes("?") ? "&" : "?") + "accountPrefix=" + encodeURIComponent(activeAccountName);
@@ -1234,7 +1095,7 @@
         window.addEventListener('resize', drawEquityCurveChart);
         function escapeHTML(str) { return str.replace(/[&<>'"]/g, t => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[t] || t)); }
 
-        // Start Initial Call Loop Trigger
+        // Start Initial Call
         synchronizeActiveAccountMemory(activeAccountName);
     </script>
 </body>
