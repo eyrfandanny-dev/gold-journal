@@ -817,41 +817,144 @@
             if(!canvas) return;
             const ctx = canvas.getContext('2d');
             const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width * window.devicePixelRatio; canvas.height = rect.height * window.devicePixelRatio;
+            
+            // Handle high-DPI displays (retina screens) perfectly
+            canvas.width = rect.width * window.devicePixelRatio; 
+            canvas.height = rect.height * window.devicePixelRatio;
             ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
-            const width = rect.width; const height = rect.height;
+            const width = rect.width; 
+            const height = rect.height;
             ctx.clearRect(0, 0, width, height);
 
+            // Rebuild running performance datasets
             let chronologicalTrades = [...trades].sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO));
-            let runningPnlValues = [0]; let aggregate = 0;
-            chronologicalTrades.forEach(t => { aggregate += parseFloat(t.pnl) || 0; runningPnlValues.push(aggregate); });
+            let initialDeposit = parseFloat(depositInput.value) || 0;
+            let runningPnlValues = [0]; 
+            let aggregate = 0;
+            
+            chronologicalTrades.forEach(t => { 
+                aggregate += parseFloat(t.pnl) || 0; 
+                runningPnlValues.push(aggregate); 
+            });
 
+            // Fallback message if there are no trades logged yet
             if (runningPnlValues.length <= 1) {
-                ctx.fillStyle = '#52525b'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
-                ctx.fillText('Execute positions to generate analytics graphs', width / 2, height / 2);
+                ctx.fillStyle = '#52525b'; 
+                ctx.font = '12px sans-serif'; 
+                ctx.textAlign = 'center';
+                ctx.fillText('Execute positions to generate equity statistics graph', width / 2, height / 2);
                 return;
             }
 
-            let maxPnl = Math.max(...runningPnlValues, 10); let minPnl = Math.min(...runningPnlValues, -10);
+            // Calculate precise charting bounds with buffer space for text axes
+            let maxPnl = Math.max(...runningPnlValues, 10); 
+            let minPnl = Math.min(...runningPnlValues, -10);
             let pnlRange = maxPnl - minPnl;
-            let padding = 20; let chartWidth = width - (padding * 2); let chartHeight = height - (padding * 2);
-            let zeroY = padding + chartHeight - ((0 - minPnl) / pnlRange) * chartHeight;
+            
+            // Standard spacing pads to make room for X and Y legends
+            let paddingLeft = 55;   // Room for $ values on the left
+            let paddingRight = 20;
+            let paddingTop = 20;
+            let paddingBottom = 30; // Room for Day/Trade labels at the bottom
+            
+            let chartWidth = width - paddingLeft - paddingRight;
+            let chartHeight = height - paddingTop - paddingBottom;
 
-            ctx.strokeStyle = '#27272a'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(padding, zeroY); ctx.lineTo(width - padding, zeroY); ctx.stroke();
+            // --- 1. Draw horizontal grid lines and Y-axis pricing metrics ---
+            const gridLinesCount = 4;
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            ctx.font = '10px monospace';
 
+            for (let i = 0; i <= gridLinesCount; i++) {
+                let ratio = i / gridLinesCount;
+                let y = paddingTop + chartHeight - (ratio * chartHeight);
+                let correspondingPnl = minPnl + (ratio * pnlRange);
+                let nominalEquityValue = initialDeposit + correspondingPnl;
+
+                // Render horizontal guide grids
+                ctx.strokeStyle = i === 0 || i === gridLinesCount ? '#27272a' : '#18181b';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(paddingLeft, y);
+                ctx.lineTo(width - paddingRight, y);
+                ctx.stroke();
+
+                // Draw Y-axis dollar strings
+                ctx.fillStyle = '#71717a';
+                ctx.fillText(`$${Math.round(nominalEquityValue)}`, paddingLeft - 8, y);
+            }
+
+            // --- 2. Process data nodes coordinates ---
             chartDataPointsReference = [];
             let segmentX = chartWidth / (runningPnlValues.length - 1);
+            
             runningPnlValues.forEach((val, idx) => {
-                let x = padding + (idx * segmentX);
-                let y = padding + chartHeight - ((val - minPnl) / pnlRange) * chartHeight;
+                let x = paddingLeft + (idx * segmentX);
+                let y = paddingTop + chartHeight - ((val - minPnl) / pnlRange) * chartHeight;
                 chartDataPointsReference.push({ x, y, cumulativePnl: val });
             });
 
-            ctx.beginPath(); ctx.moveTo(chartDataPointsReference[0].x, chartDataPointsReference[0].y);
+            // --- 3. Render clean X-axis day/trade ticks underneath ---
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            ctx.fillStyle = '#52525b';
+            
+            // Cap visual ticks on chart so text doesn't overlap if you have 100+ trades
+            let maxXTicks = 6;
+            let step = Math.max(1, Math.ceil(chartDataPointsReference.length / maxXTicks));
+            
+            for (let idx = 0; idx < chartDataPointsReference.length; idx += step) {
+                let pt = chartDataPointsReference[idx];
+                ctx.fillText(idx === 0 ? 'Start' : `T#${idx}`, pt.x, paddingTop + chartHeight + 8);
+                
+                // Tiny vertical structural tick notches
+                ctx.strokeStyle = '#27272a';
+                ctx.beginPath();
+                ctx.moveTo(pt.x, paddingTop + chartHeight);
+                ctx.lineTo(pt.x, paddingTop + chartHeight + 4);
+                ctx.stroke();
+            }
+
+            // --- 4. Draw rich glowing area fill gradient beneath your performance line ---
+            let areaGradient = ctx.createLinearGradient(0, paddingTop, 0, paddingTop + chartHeight);
+            let endingPnl = runningPnlValues[runningPnlValues.length - 1];
+            if (endingPnl >= 0) {
+                areaGradient.addColorStop(0, 'rgba(52, 211, 153, 0.12)'); // Emerald fade
+                areaGradient.addColorStop(1, 'rgba(52, 211, 153, 0.0)');
+            } else {
+                areaGradient.addColorStop(0, 'rgba(244, 63, 94, 0.12)');  // Rose fade
+                areaGradient.addColorStop(1, 'rgba(244, 63, 94, 0.0)');
+            }
+
+            ctx.beginPath();
+            ctx.moveTo(chartDataPointsReference[0].x, paddingTop + chartHeight); // anchor to bottom left
             chartDataPointsReference.forEach(pt => ctx.lineTo(pt.x, pt.y));
-            ctx.strokeStyle = runningPnlValues[runningPnlValues.length - 1] >= 0 ? '#34d399' : '#f43f5e';
-            ctx.lineWidth = 2.5; ctx.stroke();
+            ctx.lineTo(chartDataPointsReference[chartDataPointsReference.length - 1].x, paddingTop + chartHeight); // anchor to bottom right
+            ctx.closePath();
+            ctx.fillStyle = areaGradient;
+            ctx.fill();
+
+            // --- 5. Render the high-contrast equity stroke path ---
+            ctx.beginPath();
+            ctx.moveTo(chartDataPointsReference[0].x, chartDataPointsReference[0].y);
+            chartDataPointsReference.forEach(pt => ctx.lineTo(pt.x, pt.y));
+            
+            ctx.strokeStyle = endingPnl >= 0 ? '#34d399' : '#f43f5e'; // Green if net profit, red if net drawdown
+            ctx.lineWidth = 2.5;
+            ctx.lineJoin = 'round';
+            ctx.stroke();
+
+            // --- 6. End cap node tracker dot accent ---
+            let finalPt = chartDataPointsReference[chartDataPointsReference.length - 1];
+            ctx.beginPath();
+            ctx.arc(finalPt.x, finalPt.y, 4, 0, 2 * Math.PI);
+            ctx.fillStyle = endingPnl >= 0 ? '#34d399' : '#f43f5e';
+            ctx.fill();
+            ctx.strokeStyle = '#09090b'; // matching bg-zinc-950 accent border ring
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
         }
 
         function renderPerformanceCalendar() {
