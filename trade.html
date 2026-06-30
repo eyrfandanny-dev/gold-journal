@@ -4,20 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XAUUSD Obsidian Journal Elite</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-zinc-950 text-zinc-100 min-h-screen font-sans antialiased selection:bg-amber-500/30">
 
     <div class="max-w-7xl mx-auto p-4 md:p-8">
-        <!-- Header -->
         <header class="mb-6 border-b border-zinc-800 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h1 class="text-3xl font-black bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-transparent tracking-tight">XAUUSD JOURNAL ELITE</h1>
                 <p class="text-zinc-500 text-xs mt-1 uppercase tracking-widest font-semibold">Gold Analytics, Interactive Tracking & History Hub</p>
             </div>
             
-            <!-- Target Tracking Widget -->
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl min-w-[280px] w-full md:w-auto">
                 <div class="flex justify-between items-center mb-2">
                     <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Growth Target Progress</span>
@@ -36,7 +33,6 @@
             </div>
         </header>
 
-        <!-- Capital & Performance Analytics Metrics -->
         <section class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
             <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl">
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Initial Deposit</label>
@@ -79,7 +75,6 @@
             </div>
         </section>
 
-        <!-- Google Sheets Sync Bar -->
         <section class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl mb-6 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
             <div class="flex-1 w-full text-left">
                 <div class="flex justify-between items-center mb-1">
@@ -101,9 +96,7 @@
             </div>
         </section>
 
-        <!-- Graphics & Performance Periodic Performance Analytics Row -->
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <!-- Analytics Chart Card -->
             <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1 relative group">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">Performance Equity Curve</h3>
@@ -114,7 +107,6 @@
                 </div>
             </div>
 
-            <!-- Periodic Performance Box -->
             <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
                 <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-4">Periodic Performance</h3>
                 <div class="space-y-3 flex-1 flex flex-col justify-center text-left">
@@ -129,7 +121,6 @@
                 </div>
             </div>
 
-            <!-- Interactive Matrix Calendar Card -->
             <div class="bg-zinc-900 border border-zinc-800 p-5 rounded-xl flex flex-col min-h-[300px] lg:col-span-1">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">P&L Calendar Map</h3>
@@ -139,22 +130,17 @@
                         <button id="next-month-btn" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 p-1 px-2.5 rounded text-xs font-bold transition cursor-pointer">▶</button>
                     </div>
                 </div>
-                <!-- Days Framework -->
                 <div class="grid grid-cols-7 gap-1 text-center text-[9px] uppercase font-bold text-zinc-500 mb-2 tracking-wider">
                     <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                 </div>
-                <!-- Dynamic Dates Injection Frame Grid Matrix -->
                 <div id="calendar-days-grid" class="grid grid-cols-7 gap-1.5 flex-1"></div>
             </div>
         </section>
 
-        <!-- Main Workspace Grid Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
             
-            <!-- Left Workspace Column: Collapsible Input Containers -->
             <div class="lg:col-span-1 space-y-4">
                 
-                <!-- Card 1: Log Gold Print Form Box -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('trade-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>📊 Log Gold Print</span>
@@ -196,13 +182,12 @@
                     </div>
                 </div>
 
-                <!-- NEW BONUS CARD: FX Currency Convertor Core -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('fx-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>💱 FX USD / SGD Convertor</span>
-                        <span id="fx-section-body-icon" class="text-zinc-500 transition-transform duration-200">▼</span>
+                        <span id="fx-section-body-icon" class="text-zinc-500 transition-transform duration-200">▶</span>
                     </button>
-                    <div id="fx-section-body" class="p-5 space-y-4 transition-all duration-200">
+                    <div id="fx-section-body" class="p-5 space-y-4 hidden transition-all duration-200">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Amount (USD)</label>
@@ -223,11 +208,10 @@
                             <span>Reference Spot Rate:</span>
                             <div class="flex items-center space-x-1">
                                 <span class="text-zinc-400">1 USD =</span>
-                                <input type="number" step="any" id="fx-rate-input" value="1.3" class="w-14 bg-zinc-900 border border-zinc-800 text-center rounded text-amber-400 font-bold focus:outline-none">
+                                <input type="number" step="any" id="fx-rate-input" value="1.295" class="w-14 bg-zinc-900 border border-zinc-800 text-center rounded text-amber-400 font-bold focus:outline-none">
                                 <span class="text-zinc-400">SGD</span>
                             </div>
                         </div>
-                        <!-- Quick Metric Shortcuts -->
                         <div class="grid grid-cols-2 gap-2 pt-1 text-[10px]">
                             <button type="button" id="fx-btn-balance" class="bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 py-1.5 px-2 rounded font-medium transition cursor-pointer text-left truncate">
                                 💰 Convert Balance
@@ -239,7 +223,45 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Log Capital Withdrawal Box -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                    <button type="button" onclick="toggleSection('compound-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
+                        <span>📈 40-Day Compounding Target Matrix</span>
+                        <span id="compound-section-body-icon" class="text-zinc-500 transition-transform duration-200">▼</span>
+                    </button>
+                    <div id="compound-section-body" class="p-5 space-y-4 transition-all duration-200">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Starting Capital ($)</label>
+                                <input type="number" step="any" id="comp-capital-input" placeholder="e.g. 1000" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-100 font-mono text-xs focus:outline-none focus:border-amber-500">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Daily Target Profit (%)</label>
+                                <input type="number" step="any" id="comp-pct-input" placeholder="e.g. 1.5" class="w-full bg-zinc-950 border border-zinc-800 rounded p-2 text-zinc-100 font-mono text-xs focus:outline-none focus:border-amber-500">
+                            </div>
+                        </div>
+                        <div class="flex gap-2 text-[10px]">
+                            <button type="button" id="comp-btn-load" class="flex-1 bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 py-1.5 px-2 rounded font-medium transition cursor-pointer text-center">
+                                📥 Load Active Balance
+                            </button>
+                            <button type="button" id="comp-btn-clear" class="bg-zinc-950 hover:bg-zinc-900 text-rose-400 border border-zinc-800 py-1.5 px-3 rounded font-medium transition cursor-pointer text-center">
+                                Clear Matrix
+                            </button>
+                        </div>
+                        
+                        <div class="border border-zinc-800 rounded-lg overflow-hidden bg-zinc-950">
+                            <div class="grid grid-cols-4 bg-zinc-900 border-b border-zinc-800 text-[9px] uppercase tracking-wider font-bold text-zinc-400 text-center p-2">
+                                <div>Day</div>
+                                <div class="text-left">Start</div>
+                                <div class="text-right">Profit ($)</div>
+                                <div class="text-right">Ending</div>
+                            </div>
+                            <div id="compound-matrix-rows" class="max-h-[220px] overflow-y-auto divide-y divide-zinc-900 text-[11px] font-mono">
+                                <div class="text-center p-4 text-zinc-600 italic text-xs">Enter starting capital inputs to calculate growth horizons.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('withdrawal-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>💸 Capital Withdrawals</span>
@@ -265,7 +287,6 @@
                     </div>
                 </div>
 
-                <!-- Card 3: Historical Periodic Performance Box -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
                     <button type="button" onclick="toggleSection('history-section-body')" class="w-full text-left p-4 bg-zinc-900/60 font-bold uppercase tracking-wider text-xs text-zinc-300 flex justify-between items-center border-b border-zinc-800 cursor-pointer">
                         <span>📜 Historical Data Feed</span>
@@ -286,7 +307,6 @@
 
             </div>
 
-            <!-- Right Workspace Column: Ledger Feeds -->
             <div class="lg:col-span-2 space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-sm font-bold tracking-wider text-zinc-300 uppercase">Execution Feed</h2>
@@ -294,13 +314,11 @@
                 </div>
                 
                 <div id="logs-container" class="space-y-3">
-                    <!-- Dynamic Logs injection -->
-                </div>
+                    </div>
             </div>
         </div>
     </div>
 
-    <!-- Scripting Engine Logic Framework Block -->
     <script>
         // Database States
         let trades = JSON.parse(localStorage.getItem('elite_gold_trades')) || [];
@@ -323,7 +341,7 @@
         bonusInput.value = accountMeta.bonus || '';
         targetInput.value = accountMeta.target || 1000;
         
-        if (FIXED_WEBHOOK_URL && FIXED_WEBHOOK_URL.trim() !== "" && FIXED_WEBHOOK_URL !== "PASTE_YOUR_LINK_HERE") {
+        if (FIXED_WEBHOOK_URL && FIXED_WEBHOOK_URL.trim() !== "" && FIXED_WEBHOOK_URL !== "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") {
             webhookInput.value = FIXED_WEBHOOK_URL;
             webhookInput.readOnly = true;
         } else {
@@ -372,6 +390,13 @@
         const fxBtnBalance = document.getElementById('fx-btn-balance');
         const fxBtnTarget = document.getElementById('fx-btn-target');
 
+        // 40-DAY COMPOUND ENGINE DOM HOOKS
+        const compCapitalInput = document.getElementById('comp-capital-input');
+        const compPctInput = document.getElementById('comp-pct-input');
+        const compBtnLoad = document.getElementById('comp-btn-load');
+        const compBtnClear = document.getElementById('comp-btn-clear');
+        const compoundMatrixRows = document.getElementById('compound-matrix-rows');
+
         // FX Calculation Logic Engine
         function convertUsdToSgd() {
             const usd = parseFloat(fxUsdInput.value) || 0;
@@ -389,18 +414,67 @@
         fxSgdInput.addEventListener('input', convertSgdToUsd);
         fxRateInput.addEventListener('input', () => { convertUsdToSgd(); });
 
-        fxBtnBalance.addEventListener('click', () => {
+        function getCalculatedActiveBalanceValue() {
             let totalPnl = trades.reduce((sum, t) => sum + parseFloat(t.pnl), 0);
             let totalWithdrawals = withdrawals.reduce((sum, w) => sum + parseFloat(w.amount), 0);
             let deposit = parseFloat(depositInput.value) || 0;
             let bonus = parseFloat(bonusInput.value) || 0;
-            fxUsdInput.value = (deposit + bonus + totalPnl - totalWithdrawals).toFixed(2);
+            return deposit + bonus + totalPnl - totalWithdrawals;
+        }
+
+        fxBtnBalance.addEventListener('click', () => {
+            fxUsdInput.value = getCalculatedActiveBalanceValue().toFixed(2);
             convertUsdToSgd();
         });
 
         fxBtnTarget.addEventListener('click', () => {
             fxUsdInput.value = (parseFloat(targetInput.value) || 1000).toFixed(2);
             convertUsdToSgd();
+        });
+
+        // 40-DAY EXPONENTIAL COMPOUND MATHEMATICS GRID RENDERER
+        function calculateCompoundingMatrixTable() {
+            let startCapital = parseFloat(compCapitalInput.value);
+            let targetPct = parseFloat(compPctInput.value);
+
+            if (isNaN(startCapital) || isNaN(targetPct) || startCapital <= 0) {
+                compoundMatrixRows.innerHTML = `<div class="text-center p-4 text-zinc-600 italic text-xs">Enter starting capital inputs to calculate growth horizons.</div>`;
+                return;
+            }
+
+            compoundMatrixRows.innerHTML = '';
+            let runningBalance = startCapital;
+            let multiplier = targetPct / 100;
+
+            for (let day = 1; day <= 40; day++) {
+                let dailyProfitDollar = runningBalance * multiplier;
+                let dayEndingBalance = runningBalance + dailyProfitDollar;
+
+                let rowElement = document.createElement('div');
+                rowElement.className = "grid grid-cols-4 p-2 text-center border-b border-zinc-900/50 hover:bg-zinc-900/40 transition duration-75 text-zinc-300";
+                rowElement.innerHTML = `
+                    <div class="text-zinc-500 font-bold font-sans">D${day}</div>
+                    <div class="text-left text-zinc-400">$${runningBalance.toFixed(2)}</div>
+                    <div class="text-right text-emerald-400 font-bold">+$${dailyProfitDollar.toFixed(2)}</div>
+                    <div class="text-right text-amber-400 font-bold">$${dayEndingBalance.toFixed(2)}</div>
+                `;
+                compoundMatrixRows.appendChild(rowElement);
+                runningBalance = dayEndingBalance;
+            }
+        }
+
+        compCapitalInput.addEventListener('input', calculateCompoundingMatrixTable);
+        compPctInput.addEventListener('input', calculateCompoundingMatrixTable);
+
+        compBtnLoad.addEventListener('click', () => {
+            compCapitalInput.value = getCalculatedActiveBalanceValue().toFixed(2);
+            calculateCompoundingMatrixTable();
+        });
+
+        compBtnClear.addEventListener('click', () => {
+            compCapitalInput.value = '';
+            compPctInput.value = '';
+            calculateCompoundingMatrixTable();
         });
 
         // Collapsible UI Section Utility
@@ -884,7 +958,7 @@
                 const day = String(localDate.getDate()).padStart(2, '0');
                 const hours = String(localDate.getHours()).padStart(2, '0');
                 const minutes = String(localDate.getMinutes()).padStart(2, '0');
-                document.getElementById('custom-date').value = `${year}-${month}-${day}T${hours}-${minutes}`;
+                document.getElementById('custom-date').value = `${year}-${month}-${day}T${hours}:${minutes}`;
             }
             document.getElementById('notes').value = targetTrade.notes;
             submitBtn.textContent = "Update Entry";
@@ -934,7 +1008,7 @@
         // BACKGROUND TRANSMISSION ENGINE (AUTO SYNC WITH CRASH PROTECTOR)
         async function triggerSilentBackgroundSync() {
             const url = webhookInput.value.trim();
-            if (!url || url === "" || url === "PASTE_YOUR_LINK_HERE") {
+            if (!url || url === "" || url === "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") {
                 syncIndicator.className = "w-2 h-2 rounded-full bg-zinc-600";
                 syncStatusText.textContent = "Offline Mode (Local)";
                 return;
@@ -972,7 +1046,7 @@
         // PULL DATA FROM SHEETS
         pullBtn.addEventListener('click', async () => {
             let url = webhookInput.value.trim();
-            if (!url || url === "PASTE_YOUR_LINK_HERE") return alert("Please enter a valid Webhook URL first.");
+            if (!url || url === "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") return alert("Please enter a valid Webhook URL first.");
             pullBtn.disabled = true; pullBtn.textContent = "Pulling...";
 
             if (url.includes("script.google.com") && !url.includes("/a/*/")) {
@@ -1006,7 +1080,7 @@
         setInterval(async () => {
             if (editIdInput.value !== "") return;
             let url = webhookInput.value.trim();
-            if (!url || url === "" || url === "PASTE_YOUR_LINK_HERE") return;
+            if (!url || url === "" || url === "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") return;
             if (url.includes("script.google.com") && !url.includes("/a/*/")) url = url.replace("script.google.com/", "script.google.com/a/*/");
 
             try {
