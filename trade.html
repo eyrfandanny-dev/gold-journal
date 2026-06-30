@@ -282,7 +282,7 @@
         targetInput.value = accountMeta.target || 1000;
         
         // Populate and lock down ONLY if a valid link exists in the code layout
-        if (FIXED_WEBHOOK_URL && FIXED_WEBHOOK_URL.trim() !== "" && FIXED_WEBHOOK_URL !== "PASTE_YOUR_LINK_HERE") {
+        if (FIXED_WEBHOOK_URL && FIXED_WEBHOOK_URL.trim() !== "" && FIXED_WEBHOOK_URL !== "https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec") {
             webhookInput.value = FIXED_WEBHOOK_URL;
             webhookInput.readOnly = true;
         } else {
