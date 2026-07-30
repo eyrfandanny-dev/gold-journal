@@ -363,8 +363,14 @@
             document.getElementById('lblAccountBalance').innerText = '$' + finalAccountBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             document.getElementById('lblTotalWithdrawals').innerText = '$' + totalWithdrawals.toFixed(2);
 
-            let weekPnl = (curAccount.metadata.weekPnl !== undefined && curAccount.metadata.weekPnl !== null) ? curAccount.metadata.weekPnl : computedWeeklyPnl;
-            let monthPnl = (curAccount.metadata.monthPnl !== undefined && curAccount.metadata.monthPnl !== null) ? curAccount.metadata.monthPnl : computedMonthlyPnl;
+            // Use direct MT5 EA metadata values if present, otherwise fallback to local calculation
+            let weekPnl = (curAccount.metadata && curAccount.metadata.weekPnl !== undefined && curAccount.metadata.weekPnl !== null) 
+                ? curAccount.metadata.weekPnl 
+                : computedWeeklyPnl;
+
+            let monthPnl = (curAccount.metadata && curAccount.metadata.monthPnl !== undefined && curAccount.metadata.monthPnl !== null) 
+                ? curAccount.metadata.monthPnl 
+                : computedMonthlyPnl;
 
             let elWeek = document.getElementById('lblWeekPnl');
             elWeek.innerText = (weekPnl >= 0 ? '+$' : '-$') + Math.abs(weekPnl).toFixed(2);
