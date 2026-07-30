@@ -28,6 +28,7 @@
         <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
             <label class="text-xs font-bold text-zinc-400 uppercase">Active Account:</label>
             <select id="selAccount" onchange="switchAccount()" class="bg-zinc-900 border border-zinc-700 text-amber-400 font-bold text-xs rounded p-2 outline-none focus:border-amber-500 flex-1 md:flex-initial">
+                <option value="CENTS ACCOUNT">CENTS ACCOUNT</option>
                 <option value="DEFAULT ACCOUNT">DEFAULT ACCOUNT</option>
             </select>
             <button onclick="promptCreateAccount()" class="bg-amber-500/20 text-amber-400 border border-amber-500/30 font-semibold text-xs px-3 py-2 rounded hover:bg-amber-500/30">
@@ -75,6 +76,9 @@
             </button>
             <button id="btnPush" onclick="pushToSheets()" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-zinc-700 font-semibold text-xs py-2.5 rounded transition">
                 🔗 FORCE PUSH
+            </button>
+            <button onclick="clearAppCache()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 font-semibold text-xs px-3 py-2.5 rounded transition">
+                🧹 Clear Cache
             </button>
         </div>
     </div>
@@ -149,16 +153,15 @@
     </div>
 
     <script>
-        // Store all account datasets locally by prefix name
         let allAccountsData = JSON.parse(localStorage.getItem('obsidian_trading_journal_accounts')) || {
-            "DEFAULT ACCOUNT": {
-                metadata: { deposit: 0, bonus: 0, target: 1000, weekPnl: null, monthPnl: null },
+            "CENTS ACCOUNT": {
+                metadata: { deposit: 3134.33, bonus: 0, target: 1000, weekPnl: 1376.56, monthPnl: 2990.58, balance: 6122.07 },
                 ledger: [],
                 withdrawals: []
             }
         };
 
-        let activeAccountPrefix = localStorage.getItem('obsidian_active_account') || "DEFAULT ACCOUNT";
+        let activeAccountPrefix = localStorage.getItem('obsidian_active_account') || "CENTS ACCOUNT";
         let chartInstance = null;
         let calendarDate = new Date();
 
@@ -171,6 +174,12 @@
             }
             let d = new Date(formatted);
             return isNaN(d.getTime()) ? new Date() : d;
+        }
+
+        function clearAppCache() {
+            localStorage.removeItem('obsidian_trading_journal_accounts');
+            localStorage.removeItem('obsidian_active_account');
+            location.reload();
         }
 
         function updateAccountDropdown() {
@@ -200,7 +209,7 @@
         }
 
         function promptCreateAccount() {
-            let name = prompt("Enter new Account Name / Prefix (e.g., FTMO_100K or PROP_ACCOUNT):");
+            let name = prompt("Enter new Account Name / Prefix:");
             if (!name) return;
             name = name.trim().toUpperCase();
             if (allAccountsData[name]) return alert("Account name already exists!");
@@ -258,8 +267,9 @@
                         allAccountsData[activeAccountPrefix].metadata.deposit = parseFloat(data.metadata.deposit) || 0;
                         allAccountsData[activeAccountPrefix].metadata.bonus = parseFloat(data.metadata.bonus) || 0;
                         allAccountsData[activeAccountPrefix].metadata.target = parseFloat(data.metadata.target) || 1000;
-                        allAccountsData[activeAccountPrefix].metadata.weekPnl = (data.metadata.weekPnl !== undefined && data.metadata.weekPnl !== null && !isNaN(parseFloat(data.metadata.weekPnl))) ? parseFloat(data.metadata.weekPnl) : null;
-                        allAccountsData[activeAccountPrefix].metadata.monthPnl = (data.metadata.monthPnl !== undefined && data.metadata.monthPnl !== null && !isNaN(parseFloat(data.metadata.monthPnl))) ? parseFloat(data.metadata.monthPnl) : null;
+                        allAccountsData[activeAccountPrefix].metadata.weekPnl = (data.metadata.weekPnl !== undefined && data.metadata.weekPnl !== null) ? parseFloat(data.metadata.weekPnl) : null;
+                        allAccountsData[activeAccountPrefix].metadata.monthPnl = (data.metadata.monthPnl !== undefined && data.metadata.monthPnl !== null) ? parseFloat(data.metadata.monthPnl) : null;
+                        allAccountsData[activeAccountPrefix].metadata.balance = (data.metadata.balance !== undefined && data.metadata.balance !== null) ? parseFloat(data.metadata.balance) : null;
                     }
 
                     document.getElementById('txtDeposit').value = allAccountsData[activeAccountPrefix].metadata.deposit.toFixed(2);
@@ -357,10 +367,9 @@
                 chartLabels.push('T#' + (index + 1));
             });
 
-            // Total Withdrawals
             let totalWithdrawals = withdrawalsList.reduce((sum, w) => sum + (parseFloat(w.amount) || 0), 0);
             
-            // Prefer live MT5 balance if present
+            // Explicitly force live account balance & metadata values
             let finalAccountBalance = (curAccount.metadata && curAccount.metadata.balance) 
                 ? curAccount.metadata.balance 
                 : (runningBalance - totalWithdrawals);
@@ -368,7 +377,6 @@
             document.getElementById('lblAccountBalance').innerText = '$' + finalAccountBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             document.getElementById('lblTotalWithdrawals').innerText = '$' + totalWithdrawals.toFixed(2);
 
-            // Prefer direct MT5 server values for period PnL
             let weekPnl = (curAccount.metadata && curAccount.metadata.weekPnl !== undefined && curAccount.metadata.weekPnl !== null) 
                 ? curAccount.metadata.weekPnl 
                 : computedWeeklyPnl;
