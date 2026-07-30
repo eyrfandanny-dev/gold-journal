@@ -37,36 +37,38 @@
         </div>
     </div>
 
-    <!-- HEADER / ACCOUNT METRICS -->
-    <div class="card p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-l-4 border-l-amber-500">
+    <!-- MAIN HEADER: ACCOUNT BALANCE & METRICS -->
+    <div class="card p-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 border-l-4 border-l-amber-500">
         <div>
             <p class="text-xs font-semibold text-zinc-400 tracking-wider uppercase">Account Balance</p>
-            <h1 id="lblAccountBalance" class="text-3xl font-bold text-amber-400">$0.00</h1>
+            <h1 id="lblAccountBalance" class="text-3xl md:text-4xl font-bold text-amber-400 mt-1">$0.00</h1>
         </div>
-        <div class="flex flex-wrap gap-4 text-sm">
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full lg:w-auto">
             <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800">
-                <p class="text-xs text-zinc-500">Total Cash Deposits</p>
-                <input id="txtDeposit" type="number" step="0.01" class="bg-transparent font-bold text-zinc-200 outline-none w-28" value="0.00" onchange="saveCurrentAccountData()">
+                <p class="text-[11px] text-zinc-500 font-medium uppercase">Total Deposits</p>
+                <input id="txtDeposit" type="number" step="0.01" class="bg-transparent font-bold text-sm text-zinc-200 outline-none w-full mt-1" value="0.00" onchange="saveCurrentAccountData()">
             </div>
             <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800">
-                <p class="text-xs text-zinc-500">Total Withdrawals</p>
-                <h3 id="lblTotalWithdrawals" class="font-bold text-rose-400 mt-1">$0.00</h3>
+                <p class="text-[11px] text-zinc-500 font-medium uppercase">Withdrawals</p>
+                <h3 id="lblTotalWithdrawals" class="font-bold text-sm text-rose-400 mt-1">$0.00</h3>
             </div>
             <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800">
-                <p class="text-xs text-zinc-500">Active Bonus</p>
-                <input id="txtBonus" type="number" step="0.01" class="bg-transparent font-bold text-zinc-200 outline-none w-24" value="0.00" onchange="saveCurrentAccountData()">
+                <p class="text-[11px] text-zinc-500 font-medium uppercase">Active Bonus</p>
+                <input id="txtBonus" type="number" step="0.01" class="bg-transparent font-bold text-sm text-zinc-200 outline-none w-full mt-1" value="0.00" onchange="saveCurrentAccountData()">
             </div>
-            <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800 space-y-1.5 min-w-[140px]">
+            <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800 space-y-1">
                 <div class="flex justify-between items-center">
-                    <p class="text-xs text-zinc-500 font-semibold">Target Balance</p>
+                    <p class="text-[11px] text-zinc-500 font-medium uppercase">Target</p>
                     <span id="lblTargetProgressPct" class="text-[10px] font-bold text-amber-400">0%</span>
                 </div>
-                <input id="txtTarget" type="number" step="0.01" class="bg-transparent font-bold text-zinc-200 outline-none w-28" value="1000.00" onchange="saveCurrentAccountData()">
-                <!-- PROGRESS BAR TRACK -->
-                <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                <input id="txtTarget" type="number" step="0.01" class="bg-transparent font-bold text-sm text-zinc-200 outline-none w-full" value="1000.00" onchange="saveCurrentAccountData()">
+                <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden mt-1">
                     <div id="barTargetProgress" class="bg-amber-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                 </div>
             </div>
+        </div>
+    </div>
 
     <!-- WEBHOOK & SYNC CONTROLS -->
     <div class="card p-4 space-y-3">
@@ -75,14 +77,14 @@
             <span id="syncStatus" class="text-xs text-zinc-500">● READY</span>
         </div>
         <input id="txtWebhookURL" type="text" class="w-full bg-zinc-900 border border-zinc-800 rounded p-2.5 text-xs text-zinc-300 outline-none focus:border-amber-500" value="https://script.google.com/macros/s/AKfycbxf15CvmK0zA_futWrnw6qFHA6EJ7m5YHiISi2bSkiGoHtzxcv1_4P6_5McYYOQ7O1_/exec">
-        <div class="flex gap-3">
+        <div class="flex flex-wrap md:flex-nowrap gap-3">
             <button id="btnPull" onclick="pullFromSheets()" class="flex-1 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 font-semibold text-xs py-2.5 rounded transition">
                 📥 PULL FROM SHEETS
             </button>
             <button id="btnPush" onclick="pushToSheets()" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-zinc-700 font-semibold text-xs py-2.5 rounded transition">
                 🔗 FORCE PUSH
             </button>
-            <button onclick="clearAppCache()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 font-semibold text-xs px-3 py-2.5 rounded transition">
+            <button onclick="clearAppCache()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 font-semibold text-xs px-4 py-2.5 rounded transition">
                 🧹 Clear Cache
             </button>
         </div>
@@ -144,7 +146,7 @@
 
     </div>
 
-    <!-- MAIN DASHBOARD GRID -->
+    <!-- MAIN PERFORMANCE DASHBOARD -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         <!-- EQUITY CURVE -->
@@ -175,9 +177,9 @@
         </div>
     </div>
 
-    <!-- HISTORICAL PERIODIC BREAKDOWN (PREVIOUS WEEKS & MONTHS) -->
+    <!-- HISTORICAL PERIODIC BREAKDOWN -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- PREVIOUS MONTHS BREAKDOWN -->
+        <!-- PREVIOUS MONTHS -->
         <div class="card p-5 space-y-4">
             <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Monthly Profit History</h2>
             <div class="overflow-x-auto max-h-52 overflow-y-auto">
@@ -195,14 +197,14 @@
             </div>
         </div>
 
-        <!-- PREVIOUS WEEKS BREAKDOWN -->
+        <!-- PREVIOUS WEEKS (WEEK 1, WEEK 2, ETC.) -->
         <div class="card p-5 space-y-4">
             <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Weekly Profit History</h2>
             <div class="overflow-x-auto max-h-52 overflow-y-auto">
                 <table class="w-full text-left text-xs text-zinc-300">
                     <thead class="text-zinc-500 uppercase bg-zinc-900/80 sticky top-0 border-b border-zinc-800">
                         <tr>
-                            <th class="p-2">Week Starting</th>
+                            <th class="p-2">Week</th>
                             <th class="p-2 text-center">Trades</th>
                             <th class="p-2 text-center">Win Rate</th>
                             <th class="p-2 text-right">Net P&L ($)</th>
@@ -263,7 +265,7 @@
             <div id="gridCalendar" class="grid grid-cols-7 gap-1.5 text-center text-xs"></div>
         </div>
 
-        <!-- EXECUTION FEED LOG (CLEANED UP - MT5 AUTOMATED ONLY) -->
+        <!-- EXECUTION FEED LOG (MT5 AUTOMATED ONLY) -->
         <div class="card p-5 lg:col-span-2 space-y-4">
             <div class="flex justify-between items-center">
                 <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Execution Feed Log (MT5 Automated)</h2>
@@ -528,18 +530,15 @@
             let weekMap = {};
 
             if (trades.length > 0) {
-                // 1. Sort trades chronologically to find account inception date
                 let sortedTrades = trades.slice().sort((a, b) => parseSafeDate(a.dateISO) - parseSafeDate(b.dateISO));
-
-                // 2. Find Monday of the first trade week (Account Start Week)
                 let firstTradeDate = parseSafeDate(sortedTrades[0].dateISO);
+                
                 let startMonday = new Date(firstTradeDate);
                 let day = startMonday.getDay();
-                let diff = startMonday.getDate() - day + (day === 0 ? -6 : 1); // Get Monday
+                let diff = startMonday.getDate() - day + (day === 0 ? -6 : 1);
                 startMonday.setDate(diff);
                 startMonday.setHours(0, 0, 0, 0);
 
-                // 3. Process Trades into Monthly and Relative Weekly buckets
                 trades.forEach(t => {
                     let pnl = parseFloat(t.pnl) || 0;
                     let d = parseSafeDate(t.dateISO);
@@ -551,14 +550,13 @@
                     monthMap[monthKey].trades++;
                     if (pnl > 0) monthMap[monthKey].wins++;
 
-                    // Weekly Grouping (Calculates Week 1, Week 2, Week 3 relative to account start)
+                    // Weekly Grouping
                     let currentMonday = new Date(d);
                     let curDay = currentMonday.getDay();
                     let curDiff = currentMonday.getDate() - curDay + (curDay === 0 ? -6 : 1);
                     currentMonday.setDate(curDiff);
                     currentMonday.setHours(0, 0, 0, 0);
 
-                    // Difference in milliseconds converted to weeks
                     let weekNum = Math.floor((currentMonday - startMonday) / (1000 * 60 * 60 * 24 * 7)) + 1;
                     let weekKey = `Week ${weekNum}`;
 
@@ -591,7 +589,7 @@
                 });
             }
 
-            // Render Weekly History (Week 1, Week 2, etc. starting newest first)
+            // Render Weekly History
             let tblWeek = document.getElementById('tblWeeklyHistory');
             tblWeek.innerHTML = '';
             let sortedWeeks = Object.values(weekMap).sort((a, b) => b.weekNum - a.weekNum);
@@ -666,14 +664,12 @@
             document.getElementById('lblAccountBalance').innerText = '$' + finalAccountBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             document.getElementById('lblTotalWithdrawals').innerText = '$' + totalWithdrawals.toFixed(2);
 
-            // CALCULATE TARGET BALANCE PROGRESS
             let targetBal = parseFloat(document.getElementById('txtTarget').value) || 1000;
             let progressPct = targetBal > 0 ? Math.min(Math.max((finalAccountBalance / targetBal) * 100, 0), 100).toFixed(1) : 0;
 
             document.getElementById('lblTargetProgressPct').innerText = progressPct + '%';
             document.getElementById('barTargetProgress').style.width = progressPct + '%';
             
-            // Turn emerald when target is reached!
             if (progressPct >= 100) {
                 document.getElementById('barTargetProgress').className = 'bg-emerald-400 h-full rounded-full transition-all duration-500';
                 document.getElementById('lblTargetProgressPct').className = 'text-[10px] font-bold text-emerald-400';
@@ -710,7 +706,7 @@
             renderHistoricalTables(trades);
         }
 
-        // --- EXECUTION FEED TABLE (READ ONLY - NO ACTION COLUMN / NO MANUAL ADD) ---
+        // --- EXECUTION FEED TABLE (AUTOMATED READ-ONLY) ---
         function renderTableLogs(trades) {
             let tbody = document.getElementById('tblTradeLogs');
             tbody.innerHTML = '';
