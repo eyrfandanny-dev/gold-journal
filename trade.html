@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>XAUUSD Obsidian Trading Journal</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { background-color: #09090b; color: #f4f4f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -12,6 +14,27 @@
     </style>
 </head>
 <body class="p-4 md:p-8 max-w-7xl mx-auto space-y-6 pb-20">
+
+    <!-- TOP NAVIGATION & ACCOUNT SELECTOR -->
+    <div class="card p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div class="flex items-center gap-3">
+            <span class="text-xl">🏆</span>
+            <div>
+                <h1 class="text-sm font-bold text-zinc-200 uppercase tracking-wider">Trading Journal Engine</h1>
+                <p class="text-xs text-zinc-500">Multi-Account Management</p>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+            <label class="text-xs font-bold text-zinc-400 uppercase">Active Account:</label>
+            <select id="selAccount" onchange="switchAccount()" class="bg-zinc-900 border border-zinc-700 text-amber-400 font-bold text-xs rounded p-2 outline-none focus:border-amber-500 flex-1 md:flex-initial">
+                <option value="DEFAULT ACCOUNT">DEFAULT ACCOUNT</option>
+            </select>
+            <button onclick="promptCreateAccount()" class="bg-amber-500/20 text-amber-400 border border-amber-500/30 font-semibold text-xs px-3 py-2 rounded hover:bg-amber-500/30">
+                + New Account
+            </button>
+        </div>
+    </div>
 
     <!-- HEADER / ACCOUNT METRICS -->
     <div class="card p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-l-4 border-l-amber-500">
@@ -22,7 +45,7 @@
         <div class="flex flex-wrap gap-4 text-sm">
             <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800">
                 <p class="text-xs text-zinc-500">Total Cash Deposits</p>
-                <input id="txtDeposit" type="number" step="0.01" class="bg-transparent font-bold text-zinc-200 outline-none w-28" value="0.00" onchange="renderJournal()">
+                <input id="txtDeposit" type="number" step="0.01" class="bg-transparent font-bold text-zinc-200 outline-none w-28" value="0.00" onchange="saveCurrentAccountData()">
             </div>
             <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800">
                 <p class="text-xs text-zinc-500">Total Withdrawals</p>
@@ -30,7 +53,11 @@
             </div>
             <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800">
                 <p class="text-xs text-zinc-500">Active Bonus</p>
-                <input id="txtBonus" type="number" step="0.01" class="bg-transparent font-bold text-zinc-200 outline-none w-24" value="0.00" onchange="renderJournal()">
+                <input id="txtBonus" type="number" step="0.01" class="bg-transparent font-bold text-zinc-200 outline-none w-24" value="0.00" onchange="saveCurrentAccountData()">
+            </div>
+            <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800">
+                <p class="text-xs text-zinc-500">Target Balance</p>
+                <input id="txtTarget" type="number" step="0.01" class="bg-transparent font-bold text-zinc-200 outline-none w-28" value="1000.00" onchange="saveCurrentAccountData()">
             </div>
         </div>
     </div>
@@ -54,6 +81,8 @@
 
     <!-- MAIN DASHBOARD GRID -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- EQUITY CURVE -->
         <div class="card p-5 lg:col-span-2 space-y-4">
             <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Performance Equity Curve</h2>
             <div class="h-64 relative">
@@ -61,6 +90,7 @@
             </div>
         </div>
 
+        <!-- PERIODIC PERFORMANCE -->
         <div class="card p-5 space-y-4 flex flex-col justify-between">
             <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Periodic Performance</h2>
             <div class="space-y-4">
@@ -97,6 +127,9 @@
         <div class="card p-5 lg:col-span-2 space-y-4">
             <div class="flex justify-between items-center">
                 <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Execution Feed Log</h2>
+                <button onclick="addManualTrade()" class="text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1 rounded font-semibold hover:bg-amber-500/30">
+                    + Add Trade
+                </button>
             </div>
             <div class="overflow-x-auto max-h-80 overflow-y-auto">
                 <table class="w-full text-left text-xs text-zinc-300">
@@ -106,6 +139,7 @@
                             <th class="p-2">ID / Symbol</th>
                             <th class="p-2">Dir</th>
                             <th class="p-2 text-right">P&L ($)</th>
+                            <th class="p-2 text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody id="tblTradeLogs" class="divide-y divide-zinc-800/50"></tbody>
@@ -115,12 +149,16 @@
     </div>
 
     <script>
-        let currentAccountData = {
-            metadata: { deposit: 0, bonus: 0, target: 1000, weekPnl: null, monthPnl: null },
-            ledger: [],
-            withdrawals: []
+        // Store all account datasets locally by prefix name
+        let allAccountsData = JSON.parse(localStorage.getItem('obsidian_trading_journal_accounts')) || {
+            "DEFAULT ACCOUNT": {
+                metadata: { deposit: 0, bonus: 0, target: 1000, weekPnl: null, monthPnl: null },
+                ledger: [],
+                withdrawals: []
+            }
         };
 
+        let activeAccountPrefix = localStorage.getItem('obsidian_active_account') || "DEFAULT ACCOUNT";
         let chartInstance = null;
         let calendarDate = new Date();
 
@@ -135,6 +173,64 @@
             return isNaN(d.getTime()) ? new Date() : d;
         }
 
+        function updateAccountDropdown() {
+            let sel = document.getElementById('selAccount');
+            sel.innerHTML = '';
+            Object.keys(allAccountsData).forEach(prefix => {
+                let opt = document.createElement('option');
+                opt.value = prefix;
+                opt.innerText = prefix;
+                if (prefix === activeAccountPrefix) opt.selected = true;
+                sel.appendChild(opt);
+            });
+        }
+
+        function switchAccount() {
+            activeAccountPrefix = document.getElementById('selAccount').value;
+            localStorage.setItem('obsidian_active_account', activeAccountPrefix);
+            
+            if (!allAccountsData[activeAccountPrefix]) {
+                allAccountsData[activeAccountPrefix] = {
+                    metadata: { deposit: 0, bonus: 0, target: 1000, weekPnl: null, monthPnl: null },
+                    ledger: [],
+                    withdrawals: []
+                };
+            }
+            pullFromSheets();
+        }
+
+        function promptCreateAccount() {
+            let name = prompt("Enter new Account Name / Prefix (e.g., FTMO_100K or PROP_ACCOUNT):");
+            if (!name) return;
+            name = name.trim().toUpperCase();
+            if (allAccountsData[name]) return alert("Account name already exists!");
+
+            allAccountsData[name] = {
+                metadata: { deposit: 0, bonus: 0, target: 1000, weekPnl: null, monthPnl: null },
+                ledger: [],
+                withdrawals: []
+            };
+
+            activeAccountPrefix = name;
+            localStorage.setItem('obsidian_active_account', activeAccountPrefix);
+            saveToLocalStorage();
+            updateAccountDropdown();
+            renderJournal();
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('obsidian_trading_journal_accounts', JSON.stringify(allAccountsData));
+        }
+
+        function saveCurrentAccountData() {
+            if (!allAccountsData[activeAccountPrefix]) return;
+            allAccountsData[activeAccountPrefix].metadata.deposit = parseFloat(document.getElementById('txtDeposit').value) || 0;
+            allAccountsData[activeAccountPrefix].metadata.bonus = parseFloat(document.getElementById('txtBonus').value) || 0;
+            allAccountsData[activeAccountPrefix].metadata.target = parseFloat(document.getElementById('txtTarget').value) || 1000;
+            saveToLocalStorage();
+            renderJournal();
+        }
+
         async function pullFromSheets() {
             let url = document.getElementById('txtWebhookURL').value.trim();
             if (!url) return alert('Please enter Webhook URL.');
@@ -146,24 +242,31 @@
             status.className = 'text-xs text-amber-400 animate-pulse';
 
             try {
-                let response = await fetch(url + '?accountPrefix=DEFAULT ACCOUNT');
+                let response = await fetch(url + '?accountPrefix=' + encodeURIComponent(activeAccountPrefix));
                 if (!response.ok) throw new Error('Network error');
                 
                 let data = await response.json();
                 if (data && typeof data === 'object') {
-                    currentAccountData.ledger = Array.isArray(data.ledger) ? data.ledger : [];
-                    currentAccountData.withdrawals = Array.isArray(data.withdrawals) ? data.withdrawals : [];
-                    
-                    if (data.metadata) {
-                        currentAccountData.metadata.deposit = parseFloat(data.metadata.deposit) || 0;
-                        currentAccountData.metadata.bonus = parseFloat(data.metadata.bonus) || 0;
-                        currentAccountData.metadata.weekPnl = (data.metadata.weekPnl !== undefined && data.metadata.weekPnl !== null && !isNaN(parseFloat(data.metadata.weekPnl))) ? parseFloat(data.metadata.weekPnl) : null;
-                        currentAccountData.metadata.monthPnl = (data.metadata.monthPnl !== undefined && data.metadata.monthPnl !== null && !isNaN(parseFloat(data.metadata.monthPnl))) ? parseFloat(data.metadata.monthPnl) : null;
+                    if (!allAccountsData[activeAccountPrefix]) {
+                        allAccountsData[activeAccountPrefix] = { metadata: {}, ledger: [], withdrawals: [] };
                     }
 
-                    document.getElementById('txtDeposit').value = currentAccountData.metadata.deposit.toFixed(2);
-                    document.getElementById('txtBonus').value = currentAccountData.metadata.bonus.toFixed(2);
+                    allAccountsData[activeAccountPrefix].ledger = Array.isArray(data.ledger) ? data.ledger : [];
+                    allAccountsData[activeAccountPrefix].withdrawals = Array.isArray(data.withdrawals) ? data.withdrawals : [];
+                    
+                    if (data.metadata) {
+                        allAccountsData[activeAccountPrefix].metadata.deposit = parseFloat(data.metadata.deposit) || 0;
+                        allAccountsData[activeAccountPrefix].metadata.bonus = parseFloat(data.metadata.bonus) || 0;
+                        allAccountsData[activeAccountPrefix].metadata.target = parseFloat(data.metadata.target) || 1000;
+                        allAccountsData[activeAccountPrefix].metadata.weekPnl = (data.metadata.weekPnl !== undefined && data.metadata.weekPnl !== null && !isNaN(parseFloat(data.metadata.weekPnl))) ? parseFloat(data.metadata.weekPnl) : null;
+                        allAccountsData[activeAccountPrefix].metadata.monthPnl = (data.metadata.monthPnl !== undefined && data.metadata.monthPnl !== null && !isNaN(parseFloat(data.metadata.monthPnl))) ? parseFloat(data.metadata.monthPnl) : null;
+                    }
 
+                    document.getElementById('txtDeposit').value = allAccountsData[activeAccountPrefix].metadata.deposit.toFixed(2);
+                    document.getElementById('txtBonus').value = allAccountsData[activeAccountPrefix].metadata.bonus.toFixed(2);
+                    document.getElementById('txtTarget').value = allAccountsData[activeAccountPrefix].metadata.target.toFixed(2);
+
+                    saveToLocalStorage();
                     renderJournal();
                     status.innerText = '● UPDATED';
                     status.className = 'text-xs text-emerald-400';
@@ -177,12 +280,48 @@
             }
         }
 
+        async function pushToSheets() {
+            let url = document.getElementById('txtWebhookURL').value.trim();
+            if (!url) return alert('Please enter Webhook URL.');
+
+            let btnPush = document.getElementById('btnPush');
+            btnPush.innerText = 'PUSHING...';
+
+            let curData = allAccountsData[activeAccountPrefix] || { metadata: {}, ledger: [], withdrawals: [] };
+
+            let payload = {
+                accountPrefix: activeAccountPrefix,
+                metadata: {
+                    deposit: parseFloat(document.getElementById('txtDeposit').value) || 0,
+                    bonus: parseFloat(document.getElementById('txtBonus').value) || 0,
+                    target: parseFloat(document.getElementById('txtTarget').value) || 1000
+                },
+                ledger: curData.ledger,
+                withdrawals: curData.withdrawals
+            };
+
+            try {
+                let res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(payload)
+                });
+                alert(`✅ Successfully pushed data for account: ${activeAccountPrefix}`);
+            } catch (err) {
+                alert('❌ Push Error: ' + err.message);
+            } finally {
+                btnPush.innerText = '🔗 FORCE PUSH';
+            }
+        }
+
         function renderJournal() {
+            let curAccount = allAccountsData[activeAccountPrefix] || { metadata: {}, ledger: [], withdrawals: [] };
+
             let deposit = parseFloat(document.getElementById('txtDeposit').value) || 0;
             let bonus = parseFloat(document.getElementById('txtBonus').value) || 0;
 
-            let trades = currentAccountData.ledger || [];
-            let withdrawals = currentAccountData.withdrawals || [];
+            let trades = curAccount.ledger || [];
+            let withdrawals = curAccount.withdrawals || [];
 
             let totalPnl = 0;
             let wins = 0;
@@ -218,16 +357,14 @@
                 chartLabels.push('T#' + (index + 1));
             });
 
-            // Calculate exact total withdrawals
             let totalWithdrawals = withdrawals.reduce((sum, w) => sum + (parseFloat(w.amount) || 0), 0);
             let finalAccountBalance = runningBalance - totalWithdrawals;
 
             document.getElementById('lblAccountBalance').innerText = '$' + finalAccountBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             document.getElementById('lblTotalWithdrawals').innerText = '$' + totalWithdrawals.toFixed(2);
 
-            // Use direct MT5 calculated values if available from payload metadata
-            let weekPnl = (currentAccountData.metadata.weekPnl !== null) ? currentAccountData.metadata.weekPnl : computedWeeklyPnl;
-            let monthPnl = (currentAccountData.metadata.monthPnl !== null) ? currentAccountData.metadata.monthPnl : computedMonthlyPnl;
+            let weekPnl = (curAccount.metadata.weekPnl !== undefined && curAccount.metadata.weekPnl !== null) ? curAccount.metadata.weekPnl : computedWeeklyPnl;
+            let monthPnl = (curAccount.metadata.monthPnl !== undefined && curAccount.metadata.monthPnl !== null) ? curAccount.metadata.monthPnl : computedMonthlyPnl;
 
             let elWeek = document.getElementById('lblWeekPnl');
             elWeek.innerText = (weekPnl >= 0 ? '+$' : '-$') + Math.abs(weekPnl).toFixed(2);
@@ -251,11 +388,12 @@
             tbody.innerHTML = '';
 
             if (trades.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-zinc-600">No trades recorded yet.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-zinc-600">No trades recorded yet.</td></tr>`;
                 return;
             }
 
-            trades.slice().reverse().forEach((t) => {
+            trades.slice().reverse().forEach((t, i) => {
+                let actualIndex = trades.length - 1 - i;
                 let pnl = parseFloat(t.pnl) || 0;
                 let tr = document.createElement('tr');
                 tr.className = 'hover:bg-zinc-900/60 transition';
@@ -264,6 +402,7 @@
                     <td class="p-2 font-mono text-zinc-200">${t.notes || t.id || 'Trade'}</td>
                     <td class="p-2"><span class="px-1.5 py-0.5 text-[10px] font-bold rounded ${t.direction === 'LONG' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'}">${t.direction || 'BUY'}</span></td>
                     <td class="p-2 text-right font-bold ${pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${pnl >= 0 ? '+' : ''}$${pnl.toFixed(2)}</td>
+                    <td class="p-2 text-center"><button onclick="deleteTrade(${actualIndex})" class="text-zinc-600 hover:text-rose-400 text-xs">✕</button></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -318,7 +457,8 @@
             let daysInMonth = new Date(year, month + 1, 0).getDate();
 
             let dailyPnlMap = {};
-            (currentAccountData.ledger || []).forEach(t => {
+            let curAccount = allAccountsData[activeAccountPrefix] || { ledger: [] };
+            (curAccount.ledger || []).forEach(t => {
                 let d = parseSafeDate(t.dateISO);
                 if (d.getMonth() === month && d.getFullYear() === year) {
                     let dayKey = d.getDate();
@@ -348,7 +488,35 @@
             renderCalendar();
         }
 
+        function addManualTrade() {
+            let pnl = prompt("Enter P&L amount (e.g. 25.50 or -10.00):");
+            if (pnl === null || pnl === "") return;
+            
+            let now = new Date();
+            if (!allAccountsData[activeAccountPrefix]) return;
+
+            allAccountsData[activeAccountPrefix].ledger.push({
+                id: "manual-" + Date.now(),
+                direction: parseFloat(pnl) >= 0 ? "LONG" : "SHORT",
+                pnl: parseFloat(pnl) || 0,
+                notes: "Manual Entry",
+                dateISO: now.toISOString(),
+                dateFormatted: now.toLocaleDateString() + ' ' + now.toLocaleTimeString()
+            });
+            saveToLocalStorage();
+            renderJournal();
+        }
+
+        function deleteTrade(index) {
+            if (confirm("Delete this trade log entry?")) {
+                allAccountsData[activeAccountPrefix].ledger.splice(index, 1);
+                saveToLocalStorage();
+                renderJournal();
+            }
+        }
+
         window.onload = function() {
+            updateAccountDropdown();
             renderJournal();
             pullFromSheets();
         };
