@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>XAUUSD Obsidian Trading Journal</title>
+    <title>XAUUSD Obsidian Trading Journal & Analytics</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
@@ -21,7 +21,7 @@
             <span class="text-xl">🏆</span>
             <div>
                 <h1 class="text-sm font-bold text-zinc-200 uppercase tracking-wider">Trading Journal Engine</h1>
-                <p class="text-xs text-zinc-500">Multi-Account Management</p>
+                <p class="text-xs text-zinc-500">Multi-Account & Plan Analytics</p>
             </div>
         </div>
 
@@ -83,6 +83,62 @@
         </div>
     </div>
 
+    <!-- NEW DASHBOARD METRICS: TARGET CARD & FX CONVERTER -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- TODAY'S DAILY PROFIT TARGET CARD -->
+        <div class="card p-5 space-y-4 border-l-4 border-l-emerald-500">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Today's Daily Target</h2>
+                <div class="flex items-center gap-1 bg-zinc-900 px-2 py-1 rounded border border-zinc-800">
+                    <label class="text-xs text-zinc-500 font-semibold">Target %:</label>
+                    <input id="numDailyPct" type="number" step="0.5" value="8" onchange="renderDailyTargetCard()" class="w-12 bg-transparent text-xs font-bold text-amber-400 outline-none text-right">%
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-zinc-900/80 p-3.5 rounded-lg border border-zinc-800">
+                    <p class="text-[11px] text-zinc-500 uppercase">Target Profit (USD)</p>
+                    <h3 id="lblTargetProfitUSD" class="text-xl font-bold text-emerald-400 mt-1">$0.00</h3>
+                </div>
+                <div class="bg-zinc-900/80 p-3.5 rounded-lg border border-zinc-800">
+                    <p class="text-[11px] text-zinc-500 uppercase">Target Balance (USD)</p>
+                    <h3 id="lblTargetBalanceUSD" class="text-xl font-bold text-amber-400 mt-1">$0.00</h3>
+                </div>
+            </div>
+            
+            <div class="pt-2 border-t border-zinc-800/80 flex justify-between text-xs text-zinc-400">
+                <span>Equivalent SGD Goal: <strong id="lblTargetProfitSGD" class="text-emerald-400">S$0.00</strong></span>
+                <span>Base Balance: <strong id="lblBaseBalance" class="text-zinc-200">$0.00</strong></span>
+            </div>
+        </div>
+
+        <!-- FX CURRENCY CONVERTER CARD (USD to SGD) -->
+        <div class="card p-5 space-y-4 border-l-4 border-l-blue-500">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">FX Converter (USD ⇄ SGD)</h2>
+                <div class="flex items-center gap-1 bg-zinc-900 px-2 py-1 rounded border border-zinc-800">
+                    <label class="text-xs text-zinc-500 font-semibold">Rate (USD/SGD):</label>
+                    <input id="numFxRate" type="number" step="0.01" value="1.34" onchange="convertCurrency(); renderDailyTargetCard();" class="w-16 bg-transparent text-xs font-bold text-blue-400 outline-none text-right">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800 space-y-1">
+                    <label class="text-[10px] text-zinc-500 uppercase font-bold">USD Amount</label>
+                    <input id="txtFxUsd" type="number" step="0.01" value="100.00" oninput="convertUsdToSgd()" class="w-full bg-transparent font-bold text-sm text-zinc-100 outline-none">
+                </div>
+                <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800 space-y-1">
+                    <label class="text-[10px] text-zinc-500 uppercase font-bold">SGD Amount</label>
+                    <input id="txtFxSgd" type="number" step="0.01" value="134.00" oninput="convertSgdToUsd()" class="w-full bg-transparent font-bold text-sm text-blue-400 outline-none">
+                </div>
+            </div>
+            
+            <p class="text-[11px] text-zinc-500 italic text-right">* Default Rate: 1.34 (Editable above)</p>
+        </div>
+
+    </div>
+
     <!-- MAIN DASHBOARD GRID -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -94,23 +150,58 @@
             </div>
         </div>
 
-        <!-- PERIODIC PERFORMANCE -->
+        <!-- HISTORICAL PERIODIC PERFORMANCE -->
         <div class="card p-5 space-y-4 flex flex-col justify-between">
-            <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Periodic Performance</h2>
-            <div class="space-y-4">
-                <div class="bg-zinc-900/80 p-4 rounded-lg border border-zinc-800">
+            <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Historical Periodic Performance</h2>
+            <div class="space-y-3">
+                <div class="bg-zinc-900/80 p-3.5 rounded-lg border border-zinc-800">
                     <p class="text-xs text-zinc-500 font-medium">CURRENT WEEK P&L (MON-FRI)</p>
-                    <h3 id="lblWeekPnl" class="text-2xl font-bold text-emerald-400 mt-1">+$0.00</h3>
+                    <h3 id="lblWeekPnl" class="text-xl font-bold text-emerald-400 mt-1">+$0.00</h3>
                 </div>
-                <div class="bg-zinc-900/80 p-4 rounded-lg border border-zinc-800">
+                <div class="bg-zinc-900/80 p-3.5 rounded-lg border border-zinc-800">
                     <p class="text-xs text-zinc-500 font-medium">CURRENT MONTH P&L</p>
-                    <h3 id="lblMonthPnl" class="text-2xl font-bold text-emerald-400 mt-1">+$0.00</h3>
+                    <h3 id="lblMonthPnl" class="text-xl font-bold text-emerald-400 mt-1">+$0.00</h3>
                 </div>
             </div>
             <div class="pt-2 border-t border-zinc-800/80 flex justify-between text-xs text-zinc-400">
                 <span>Total Trades: <strong id="lblTotalTrades" class="text-zinc-200">0</strong></span>
                 <span>Win Rate: <strong id="lblWinRate" class="text-amber-400">0%</strong></span>
             </div>
+        </div>
+    </div>
+
+    <!-- 20-DAY COMPOUNDING PLAN TABLE -->
+    <div class="card p-5 space-y-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">20-Day Compounding Growth Plan</h2>
+                <p class="text-xs text-zinc-500">Projected daily targets based on compounding profits</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="flex items-center gap-2 bg-zinc-900 p-2 rounded border border-zinc-800">
+                    <label class="text-xs text-zinc-400 font-bold uppercase">Start ($):</label>
+                    <input id="numCompStartBal" type="number" step="10" value="1000" onchange="renderCompoundingTable()" class="w-20 bg-transparent text-xs font-bold text-amber-400 outline-none">
+                </div>
+                <div class="flex items-center gap-2 bg-zinc-900 p-2 rounded border border-zinc-800">
+                    <label class="text-xs text-zinc-400 font-bold uppercase">Daily % Target:</label>
+                    <input id="numCompDailyPct" type="number" step="0.5" value="8" onchange="renderCompoundingTable()" class="w-16 bg-transparent text-xs font-bold text-emerald-400 outline-none">%
+                </div>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto max-h-96 overflow-y-auto">
+            <table class="w-full text-left text-xs text-zinc-300">
+                <thead class="text-zinc-500 uppercase bg-zinc-900/80 sticky top-0 border-b border-zinc-800">
+                    <tr>
+                        <th class="p-2.5">Day</th>
+                        <th class="p-2.5 text-right">Start Balance ($)</th>
+                        <th class="p-2.5 text-right">Daily Target ($)</th>
+                        <th class="p-2.5 text-right">End Balance ($)</th>
+                        <th class="p-2.5 text-right">Equivalent SGD Target</th>
+                    </tr>
+                </thead>
+                <tbody id="tblCompounding" class="divide-y divide-zinc-800/50"></tbody>
+            </table>
         </div>
     </div>
 
@@ -155,7 +246,7 @@
     <script>
         let allAccountsData = JSON.parse(localStorage.getItem('obsidian_trading_journal_accounts')) || {
             "CENTS ACCOUNT": {
-                metadata: { deposit: 3134.33, bonus: 0, target: 1000, weekPnl: 1376.56, monthPnl: 2990.58, balance: 6122.07 },
+                metadata: { deposit: 3134.33, bonus: 0, target: 1000, weekPnl: 1376.56, monthPnl: 2990.58, balance: 4624.91 },
                 ledger: [],
                 withdrawals: []
             }
@@ -200,7 +291,7 @@
             
             if (!allAccountsData[activeAccountPrefix]) {
                 allAccountsData[activeAccountPrefix] = {
-                    metadata: { deposit: 0, bonus: 0, target: 1000, weekPnl: null, monthPnl: null },
+                    metadata: { deposit: 0, bonus: 0, target: 1000, weekPnl: null, monthPnl: null, balance: null },
                     ledger: [],
                     withdrawals: []
                 };
@@ -215,7 +306,7 @@
             if (allAccountsData[name]) return alert("Account name already exists!");
 
             allAccountsData[name] = {
-                metadata: { deposit: 0, bonus: 0, target: 1000, weekPnl: null, monthPnl: null },
+                metadata: { deposit: 0, bonus: 0, target: 1000, weekPnl: null, monthPnl: null, balance: null },
                 ledger: [],
                 withdrawals: []
             };
@@ -324,6 +415,71 @@
             }
         }
 
+        // --- FX CONVERTER FUNCTIONS ---
+        function convertUsdToSgd() {
+            let usd = parseFloat(document.getElementById('txtFxUsd').value) || 0;
+            let rate = parseFloat(document.getElementById('numFxRate').value) || 1.34;
+            document.getElementById('txtFxSgd').value = (usd * rate).toFixed(2);
+        }
+
+        function convertSgdToUsd() {
+            let sgd = parseFloat(document.getElementById('txtFxSgd').value) || 0;
+            let rate = parseFloat(document.getElementById('numFxRate').value) || 1.34;
+            document.getElementById('txtFxUsd').value = rate > 0 ? (sgd / rate).toFixed(2) : '0.00';
+        }
+
+        function convertCurrency() {
+            convertUsdToSgd();
+        }
+
+        // --- TODAY'S DAILY TARGET CARD ---
+        function renderDailyTargetCard() {
+            let curAccount = allAccountsData[activeAccountPrefix] || { metadata: {}, ledger: [], withdrawals: [] };
+            let liveBalance = curAccount.metadata.balance || parseFloat(document.getElementById('txtDeposit').value) || 1000;
+            let dailyPct = parseFloat(document.getElementById('numDailyPct').value) || 8;
+            let fxRate = parseFloat(document.getElementById('numFxRate').value) || 1.34;
+
+            let targetProfitUSD = liveBalance * (dailyPct / 100);
+            let targetBalanceUSD = liveBalance + targetProfitUSD;
+            let targetProfitSGD = targetProfitUSD * fxRate;
+
+            document.getElementById('lblBaseBalance').innerText = '$' + liveBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('lblTargetProfitUSD').innerText = '+$' + targetProfitUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('lblTargetBalanceUSD').innerText = '$' + targetBalanceUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('lblTargetProfitSGD').innerText = 'S$' + targetProfitSGD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // --- 20-DAY COMPOUNDING TABLE ---
+        function renderCompoundingTable() {
+            let startBal = parseFloat(document.getElementById('numCompStartBal').value) || 1000;
+            let dailyPct = parseFloat(document.getElementById('numCompDailyPct').value) || 8;
+            let fxRate = parseFloat(document.getElementById('numFxRate').value) || 1.34;
+
+            let tbody = document.getElementById('tblCompounding');
+            tbody.innerHTML = '';
+
+            let currentBal = startBal;
+
+            for (let day = 1; day <= 20; day++) {
+                let dailyTargetUsd = currentBal * (dailyPct / 100);
+                let endBalUsd = currentBal + dailyTargetUsd;
+                let dailyTargetSgd = dailyTargetUsd * fxRate;
+
+                let tr = document.createElement('tr');
+                tr.className = 'hover:bg-zinc-900/60 transition';
+                tr.innerHTML = `
+                    <td class="p-2.5 font-bold text-amber-400">Day ${day}</td>
+                    <td class="p-2.5 text-right font-mono text-zinc-300">$${currentBal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td class="p-2.5 text-right font-mono text-emerald-400 font-bold">+$${dailyTargetUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td class="p-2.5 text-right font-mono text-zinc-100 font-bold">$${endBalUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td class="p-2.5 text-right font-mono text-blue-400 font-medium">+S$${dailyTargetSgd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                `;
+                tbody.appendChild(tr);
+
+                currentBal = endBalUsd; // Compound for next day
+            }
+        }
+
         function renderJournal() {
             let curAccount = allAccountsData[activeAccountPrefix] || { metadata: {}, ledger: [], withdrawals: [] };
 
@@ -369,7 +525,6 @@
 
             let totalWithdrawals = withdrawalsList.reduce((sum, w) => sum + (parseFloat(w.amount) || 0), 0);
             
-            // Explicitly force live account balance & metadata values
             let finalAccountBalance = (curAccount.metadata && curAccount.metadata.balance) 
                 ? curAccount.metadata.balance 
                 : (runningBalance - totalWithdrawals);
@@ -377,23 +532,21 @@
             document.getElementById('lblAccountBalance').innerText = '$' + finalAccountBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             document.getElementById('lblTotalWithdrawals').innerText = '$' + totalWithdrawals.toFixed(2);
 
-            // FORCE MT5 EA SERVER METADATA TO ALWAYS OVERRIDE LOCAL CALCULATION
-            let weekPnl = (curAccount.metadata && curAccount.metadata.weekPnl !== undefined && curAccount.metadata.weekPnl !== null && !isNaN(curAccount.metadata.weekPnl)) 
+            let weekPnl = (curAccount.metadata && curAccount.metadata.weekPnl !== undefined && curAccount.metadata.weekPnl !== null) 
                 ? curAccount.metadata.weekPnl 
                 : computedWeeklyPnl;
 
-            let monthPnl = (curAccount.metadata && curAccount.metadata.monthPnl !== undefined && curAccount.metadata.monthPnl !== null && !isNaN(curAccount.metadata.monthPnl)) 
+            let monthPnl = (curAccount.metadata && curAccount.metadata.monthPnl !== undefined && curAccount.metadata.monthPnl !== null) 
                 ? curAccount.metadata.monthPnl 
                 : computedMonthlyPnl;
 
-            // Update UI Elements
             let elWeek = document.getElementById('lblWeekPnl');
             elWeek.innerText = (weekPnl >= 0 ? '+$' : '-$') + Math.abs(weekPnl).toFixed(2);
-            elWeek.className = 'text-2xl font-bold mt-1 ' + (weekPnl >= 0 ? 'text-emerald-400' : 'text-rose-400');
+            elWeek.className = 'text-xl font-bold mt-1 ' + (weekPnl >= 0 ? 'text-emerald-400' : 'text-rose-400');
 
             let elMonth = document.getElementById('lblMonthPnl');
             elMonth.innerText = (monthPnl >= 0 ? '+$' : '-$') + Math.abs(monthPnl).toFixed(2);
-            elMonth.className = 'text-2xl font-bold mt-1 ' + (monthPnl >= 0 ? 'text-emerald-400' : 'text-rose-400');
+            elMonth.className = 'text-xl font-bold mt-1 ' + (monthPnl >= 0 ? 'text-emerald-400' : 'text-rose-400');
 
             document.getElementById('lblTotalTrades').innerText = trades.length;
             let winRate = trades.length > 0 ? ((wins / trades.length) * 100).toFixed(1) : 0;
@@ -402,6 +555,8 @@
             renderTableLogs(trades);
             renderEquityChart(chartLabels, equityData);
             renderCalendar();
+            renderDailyTargetCard();
+            renderCompoundingTable();
         }
 
         function renderTableLogs(trades) {
