@@ -377,14 +377,16 @@
             document.getElementById('lblAccountBalance').innerText = '$' + finalAccountBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             document.getElementById('lblTotalWithdrawals').innerText = '$' + totalWithdrawals.toFixed(2);
 
-            let weekPnl = (curAccount.metadata && curAccount.metadata.weekPnl !== undefined && curAccount.metadata.weekPnl !== null) 
+            // FORCE MT5 EA SERVER METADATA TO ALWAYS OVERRIDE LOCAL CALCULATION
+            let weekPnl = (curAccount.metadata && curAccount.metadata.weekPnl !== undefined && curAccount.metadata.weekPnl !== null && !isNaN(curAccount.metadata.weekPnl)) 
                 ? curAccount.metadata.weekPnl 
                 : computedWeeklyPnl;
 
-            let monthPnl = (curAccount.metadata && curAccount.metadata.monthPnl !== undefined && curAccount.metadata.monthPnl !== null) 
+            let monthPnl = (curAccount.metadata && curAccount.metadata.monthPnl !== undefined && curAccount.metadata.monthPnl !== null && !isNaN(curAccount.metadata.monthPnl)) 
                 ? curAccount.metadata.monthPnl 
                 : computedMonthlyPnl;
 
+            // Update UI Elements
             let elWeek = document.getElementById('lblWeekPnl');
             elWeek.innerText = (weekPnl >= 0 ? '+$' : '-$') + Math.abs(weekPnl).toFixed(2);
             elWeek.className = 'text-2xl font-bold mt-1 ' + (weekPnl >= 0 ? 'text-emerald-400' : 'text-rose-400');
