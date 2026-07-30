@@ -56,11 +56,17 @@
                 <p class="text-xs text-zinc-500">Active Bonus</p>
                 <input id="txtBonus" type="number" step="0.01" class="bg-transparent font-bold text-zinc-200 outline-none w-24" value="0.00" onchange="saveCurrentAccountData()">
             </div>
-            <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800">
-                <p class="text-xs text-zinc-500">Target Balance</p>
+            <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800 space-y-1.5 min-w-[140px]">
+                <div class="flex justify-between items-center">
+                    <p class="text-xs text-zinc-500 font-semibold">Target Balance</p>
+                    <span id="lblTargetProgressPct" class="text-[10px] font-bold text-amber-400">0%</span>
+                </div>
                 <input id="txtTarget" type="number" step="0.01" class="bg-transparent font-bold text-zinc-200 outline-none w-28" value="1000.00" onchange="saveCurrentAccountData()">
+                <!-- PROGRESS BAR TRACK -->
+                <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                    <div id="barTargetProgress" class="bg-amber-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
             </div>
-        </div>
     </div>
 
     <!-- WEBHOOK & SYNC CONTROLS -->
@@ -660,6 +666,22 @@
 
             document.getElementById('lblAccountBalance').innerText = '$' + finalAccountBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             document.getElementById('lblTotalWithdrawals').innerText = '$' + totalWithdrawals.toFixed(2);
+
+            // CALCULATE TARGET BALANCE PROGRESS
+            let targetBal = parseFloat(document.getElementById('txtTarget').value) || 1000;
+            let progressPct = targetBal > 0 ? Math.min(Math.max((finalAccountBalance / targetBal) * 100, 0), 100).toFixed(1) : 0;
+
+            document.getElementById('lblTargetProgressPct').innerText = progressPct + '%';
+            document.getElementById('barTargetProgress').style.width = progressPct + '%';
+            
+            // Turn emerald when target is reached!
+            if (progressPct >= 100) {
+                document.getElementById('barTargetProgress').className = 'bg-emerald-400 h-full rounded-full transition-all duration-500';
+                document.getElementById('lblTargetProgressPct').className = 'text-[10px] font-bold text-emerald-400';
+            } else {
+                document.getElementById('barTargetProgress').className = 'bg-amber-400 h-full rounded-full transition-all duration-500';
+                document.getElementById('lblTargetProgressPct').className = 'text-[10px] font-bold text-amber-400';
+            }
 
             let weekPnl = (curAccount.metadata && curAccount.metadata.weekPnl !== undefined && curAccount.metadata.weekPnl !== null) 
                 ? curAccount.metadata.weekPnl 
