@@ -321,7 +321,7 @@
             let bonus = parseFloat(document.getElementById('txtBonus').value) || 0;
 
             let trades = curAccount.ledger || [];
-            let withdrawals = curAccount.withdrawals || [];
+            let withdrawalsList = curAccount.withdrawals || [];
 
             let totalPnl = 0;
             let wins = 0;
@@ -357,13 +357,18 @@
                 chartLabels.push('T#' + (index + 1));
             });
 
-            let totalWithdrawals = withdrawals.reduce((sum, w) => sum + (parseFloat(w.amount) || 0), 0);
-            let finalAccountBalance = runningBalance - totalWithdrawals;
+            // Total Withdrawals
+            let totalWithdrawals = withdrawalsList.reduce((sum, w) => sum + (parseFloat(w.amount) || 0), 0);
+            
+            // Prefer live MT5 balance if present
+            let finalAccountBalance = (curAccount.metadata && curAccount.metadata.balance) 
+                ? curAccount.metadata.balance 
+                : (runningBalance - totalWithdrawals);
 
             document.getElementById('lblAccountBalance').innerText = '$' + finalAccountBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             document.getElementById('lblTotalWithdrawals').innerText = '$' + totalWithdrawals.toFixed(2);
 
-            // Use direct MT5 EA metadata values if present, otherwise fallback to local calculation
+            // Prefer direct MT5 server values for period PnL
             let weekPnl = (curAccount.metadata && curAccount.metadata.weekPnl !== undefined && curAccount.metadata.weekPnl !== null) 
                 ? curAccount.metadata.weekPnl 
                 : computedWeeklyPnl;
