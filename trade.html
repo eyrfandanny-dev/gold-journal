@@ -350,6 +350,25 @@
 
     <!-- Scripting Engine Logic Framework Block -->
     <script>
+
+
+
+        // Safari / iOS Safe Date Parser Helper
+        function parseSafeDate(dateStr) {
+            if (!dateStr) return new Date();
+            if (dateStr instanceof Date) return dateStr;
+            // 1. Replace dots or slashes with dashes (e.g. 2026.03.29 -> 2026-03-29)
+            let formatted = String(dateStr).trim().replace(/[.\/]/g, '-');
+            // 2. Replace space between Date and Time with ISO 'T' (e.g. 2026-03-29 14:30 -> 2026-03-29T14:30)
+            if (formatted.includes(' ') && !formatted.includes('T')) {
+                formatted = formatted.replace(' ', 'T');
+            }
+            let d = new Date(formatted);
+            // Fallback if parsing still fails
+            return isNaN(d.getTime()) ? new Date() : d;
+        }
+
+        
         // --- MULTI-ACCOUNT WORKSPACE ENGINE CORE ---
         let accountsList = ["Main Account"];
         let activeAccountName = "Main Account";
@@ -749,7 +768,7 @@
 
             let chronologicalTrades = [...trades].sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO));
             chronologicalTrades.forEach(t => {
-                let tradeDate = new Date(t.dateISO);
+                let tradeDate = parseSafeDate(t.dateISO);
                 let pnlFloat = parseFloat(t.pnl) || 0;
 
                 if (tradeDate >= currentMon && tradeDate <= currentFri) weeklyAccumulator += pnlFloat;
@@ -988,9 +1007,10 @@
             const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
 
             let dailyPnlMap = {};
-            trades.forEach(trade => {
+               trades.forEach(trade => {
                 if(!trade.dateISO) return;
-                let dateObj = new Date(trade.dateISO);
+                // ✅ Safari Safe Date Conversion
+                let dateObj = parseSafeDate(trade.dateISO);
                 if(dateObj.getMonth() === month && dateObj.getFullYear() === year) {
                     let key = dateObj.getDate();
                     dailyPnlMap[key] = (dailyPnlMap[key] || 0) + (parseFloat(trade.pnl) || 0);
