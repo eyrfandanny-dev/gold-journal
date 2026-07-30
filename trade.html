@@ -353,20 +353,28 @@
 
 
 
-        // Safari / iOS Safe Date Parser Helper
+                // Safari & Broker-Server-Time Aware Date Parser
         function parseSafeDate(dateStr) {
             if (!dateStr) return new Date();
             if (dateStr instanceof Date) return dateStr;
-            // 1. Replace dots or slashes with dashes (e.g. 2026.03.29 -> 2026-03-29)
+
+            // 1. Sanitize dots and spaces for cross-browser / Safari support
             let formatted = String(dateStr).trim().replace(/[.\/]/g, '-');
-            // 2. Replace space between Date and Time with ISO 'T' (e.g. 2026-03-29 14:30 -> 2026-03-29T14:30)
             if (formatted.includes(' ') && !formatted.includes('T')) {
                 formatted = formatted.replace(' ', 'T');
             }
+
+            // 2. Force parsing as Broker Server Time (GMT+3 / GMT+2)
+            // Appends '+03:00' offset so JavaScript doesn't assume local timezone
+            if (!formatted.includes('Z') && !formatted.includes('+') && !formatted.includes('-')) {
+                // If time is present, tag as GMT+3; otherwise treat as standard date
+                formatted += formatted.includes('T') ? '+03:00' : 'T00:00:00+03:00';
+            }
+
             let d = new Date(formatted);
-            // Fallback if parsing still fails
             return isNaN(d.getTime()) ? new Date() : d;
         }
+
 
         
         // --- MULTI-ACCOUNT WORKSPACE ENGINE CORE ---
@@ -750,18 +758,21 @@
             // Sort chronologically for logging view
             trades.sort((a, b) => new Date(b.dateISO) - new Date(a.dateISO));
 
-            // Periodic Performance Processing Engine
+                        // Periodic Performance Processing Engine (MT5 Server Time Match)
             let now = new Date();
-            let currentMonth = now.getMonth();
-            let currentYear = now.getFullYear();
+            // Convert current date reference to GMT+3 offset alignment
+            let currentMonth = now.getUTCMonth();
+            let currentYear = now.getUTCFullYear();
             
             let currentMon = new Date(now);
-            let dayOfWeek = currentMon.getDay();
-            currentMon.setDate(now.getDate() + (dayOfWeek === 0 ? -6 : 1 - dayOfWeek));
-            currentMon.setHours(0,0,0,0);
+            let dayOfWeek = currentMon.getUTCDay();
+            currentMon.setUTCDate(now.getUTCDate() + (dayOfWeek === 0 ? -6 : 1 - dayOfWeek));
+            currentMon.setUTCHours(0, 0, 0, 0);
+            
             let currentFri = new Date(currentMon);
-            currentFri.setDate(currentMon.getDate() + 4);
-            currentFri.setHours(23,59,59,999);
+            currentFri.setUTCDate(currentMon.getUTCDate() + 4);
+            currentFri.setUTCHours(23, 59, 59, 999);
+
 
             let weeklyAccumulator = 0; let monthlyAccumulator = 0;
             let historyWeeksBucketMap = {}; let historyMonthsBucketMap = {};
