@@ -4,30 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>XAUUSD Obsidian Trading Journal</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body {
-            background-color: #09090b;
-            color: #f4f4f5;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-        .card {
-            background-color: #18181b;
-            border: 1px solid #27272a;
-            border-radius: 0.75rem;
-        }
-        .accent-border {
-            border-color: #fbbf24;
-        }
-        .text-gold {
-            color: #fbbf24;
-        }
-        .bg-gold {
-            background-color: #fbbf24;
-        }
+        body { background-color: #09090b; color: #f4f4f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .card { background-color: #18181b; border: 1px solid #27272a; border-radius: 0.75rem; }
     </style>
 </head>
 <body class="p-4 md:p-8 max-w-7xl mx-auto space-y-6 pb-20">
@@ -40,16 +21,16 @@
         </div>
         <div class="flex flex-wrap gap-4 text-sm">
             <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800">
-                <p class="text-xs text-zinc-500">Initial Deposit</p>
-                <input id="txtDeposit" type="number" step="0.01" class="bg-transparent font-bold text-zinc-200 outline-none w-28" value="1000.00" onchange="renderJournal()">
+                <p class="text-xs text-zinc-500">Total Cash Deposits</p>
+                <input id="txtDeposit" type="number" step="0.01" class="bg-transparent font-bold text-zinc-200 outline-none w-28" value="0.00" onchange="renderJournal()">
+            </div>
+            <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800">
+                <p class="text-xs text-zinc-500">Total Withdrawals</p>
+                <h3 id="lblTotalWithdrawals" class="font-bold text-rose-400 mt-1">$0.00</h3>
             </div>
             <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800">
                 <p class="text-xs text-zinc-500">Active Bonus</p>
                 <input id="txtBonus" type="number" step="0.01" class="bg-transparent font-bold text-zinc-200 outline-none w-24" value="0.00" onchange="renderJournal()">
-            </div>
-            <div class="bg-zinc-900 p-3 rounded-lg border border-zinc-800">
-                <p class="text-xs text-zinc-500">Target Balance</p>
-                <input id="txtTarget" type="number" step="0.01" class="bg-transparent font-bold text-zinc-200 outline-none w-28" value="2000.00" onchange="renderJournal()">
             </div>
         </div>
     </div>
@@ -73,8 +54,6 @@
 
     <!-- MAIN DASHBOARD GRID -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-        <!-- EQUITY CURVE (2 COLUMNS) -->
         <div class="card p-5 lg:col-span-2 space-y-4">
             <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Performance Equity Curve</h2>
             <div class="h-64 relative">
@@ -82,22 +61,18 @@
             </div>
         </div>
 
-        <!-- PERIODIC PERFORMANCE (1 COLUMN) -->
         <div class="card p-5 space-y-4 flex flex-col justify-between">
             <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Periodic Performance</h2>
-            
             <div class="space-y-4">
                 <div class="bg-zinc-900/80 p-4 rounded-lg border border-zinc-800">
                     <p class="text-xs text-zinc-500 font-medium">CURRENT WEEK P&L (MON-FRI)</p>
                     <h3 id="lblWeekPnl" class="text-2xl font-bold text-emerald-400 mt-1">+$0.00</h3>
                 </div>
-                
                 <div class="bg-zinc-900/80 p-4 rounded-lg border border-zinc-800">
                     <p class="text-xs text-zinc-500 font-medium">CURRENT MONTH P&L</p>
                     <h3 id="lblMonthPnl" class="text-2xl font-bold text-emerald-400 mt-1">+$0.00</h3>
                 </div>
             </div>
-
             <div class="pt-2 border-t border-zinc-800/80 flex justify-between text-xs text-zinc-400">
                 <span>Total Trades: <strong id="lblTotalTrades" class="text-zinc-200">0</strong></span>
                 <span>Win Rate: <strong id="lblWinRate" class="text-amber-400">0%</strong></span>
@@ -107,8 +82,6 @@
 
     <!-- CALENDAR MAP & EXECUTION FEED -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        <!-- CALENDAR MAP (1 COLUMN) -->
         <div class="card p-5 space-y-4">
             <div class="flex justify-between items-center">
                 <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">P&L Calendar Map</h2>
@@ -118,20 +91,13 @@
                     <button onclick="changeMonth(1)" class="text-xs bg-zinc-800 hover:bg-zinc-700 p-1.5 rounded">▶</button>
                 </div>
             </div>
-            <div id="gridCalendar" class="grid grid-cols-7 gap-1.5 text-center text-xs">
-                <!-- Calendar dynamically generated -->
-            </div>
+            <div id="gridCalendar" class="grid grid-cols-7 gap-1.5 text-center text-xs"></div>
         </div>
 
-        <!-- EXECUTION FEED LOG (2 COLUMNS) -->
         <div class="card p-5 lg:col-span-2 space-y-4">
             <div class="flex justify-between items-center">
                 <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Execution Feed Log</h2>
-                <button onclick="addManualTrade()" class="text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1 rounded font-semibold hover:bg-amber-500/30">
-                    + Add Trade
-                </button>
             </div>
-            
             <div class="overflow-x-auto max-h-80 overflow-y-auto">
                 <table class="w-full text-left text-xs text-zinc-300">
                     <thead class="text-zinc-500 uppercase bg-zinc-900/50 sticky top-0">
@@ -140,21 +106,17 @@
                             <th class="p-2">ID / Symbol</th>
                             <th class="p-2">Dir</th>
                             <th class="p-2 text-right">P&L ($)</th>
-                            <th class="p-2 text-center">Action</th>
                         </tr>
                     </thead>
-                    <tbody id="tblTradeLogs" class="divide-y divide-zinc-800/50">
-                        <!-- Rows injected here -->
-                    </tbody>
+                    <tbody id="tblTradeLogs" class="divide-y divide-zinc-800/50"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT LOGIC -->
     <script>
         let currentAccountData = {
-            metadata: { deposit: 1000, bonus: 0, target: 2000, weekPnl: null, monthPnl: null },
+            metadata: { deposit: 0, bonus: 0, target: 1000, weekPnl: null, monthPnl: null },
             ledger: [],
             withdrawals: []
         };
@@ -162,11 +124,9 @@
         let chartInstance = null;
         let calendarDate = new Date();
 
-        // --- SAFARI & MOBILE SAFE DATE PARSER ---
         function parseSafeDate(dateStr) {
             if (!dateStr) return new Date();
             if (dateStr instanceof Date) return dateStr;
-
             let formatted = String(dateStr).trim().replace(/[.\/]/g, '-');
             if (formatted.includes(' ') && !formatted.includes('T')) {
                 formatted = formatted.replace(' ', 'T');
@@ -175,10 +135,9 @@
             return isNaN(d.getTime()) ? new Date() : d;
         }
 
-        // --- PULL FROM GOOGLE SHEETS ---
         async function pullFromSheets() {
             let url = document.getElementById('txtWebhookURL').value.trim();
-            if (!url) return alert('Please enter your Webhook URL.');
+            if (!url) return alert('Please enter Webhook URL.');
 
             let btnPull = document.getElementById('btnPull');
             let status = document.getElementById('syncStatus');
@@ -188,78 +147,36 @@
 
             try {
                 let response = await fetch(url + '?accountPrefix=DEFAULT ACCOUNT');
-                if (!response.ok) throw new Error('Network response was not ok');
+                if (!response.ok) throw new Error('Network error');
                 
                 let data = await response.json();
-                
-                // Bulletproof Fallback Handling
                 if (data && typeof data === 'object') {
                     currentAccountData.ledger = Array.isArray(data.ledger) ? data.ledger : [];
                     currentAccountData.withdrawals = Array.isArray(data.withdrawals) ? data.withdrawals : [];
                     
                     if (data.metadata) {
-                        currentAccountData.metadata.deposit = parseFloat(data.metadata.deposit) || 1000;
+                        currentAccountData.metadata.deposit = parseFloat(data.metadata.deposit) || 0;
                         currentAccountData.metadata.bonus = parseFloat(data.metadata.bonus) || 0;
-                        currentAccountData.metadata.target = parseFloat(data.metadata.target) || 2000;
-                        currentAccountData.metadata.weekPnl = (data.metadata.weekPnl !== undefined && !isNaN(parseFloat(data.metadata.weekPnl))) ? parseFloat(data.metadata.weekPnl) : null;
-                        currentAccountData.metadata.monthPnl = (data.metadata.monthPnl !== undefined && !isNaN(parseFloat(data.metadata.monthPnl))) ? parseFloat(data.metadata.monthPnl) : null;
+                        currentAccountData.metadata.weekPnl = (data.metadata.weekPnl !== undefined && data.metadata.weekPnl !== null && !isNaN(parseFloat(data.metadata.weekPnl))) ? parseFloat(data.metadata.weekPnl) : null;
+                        currentAccountData.metadata.monthPnl = (data.metadata.monthPnl !== undefined && data.metadata.monthPnl !== null && !isNaN(parseFloat(data.metadata.monthPnl))) ? parseFloat(data.metadata.monthPnl) : null;
                     }
 
-                    // Update Input Boxes
                     document.getElementById('txtDeposit').value = currentAccountData.metadata.deposit.toFixed(2);
                     document.getElementById('txtBonus').value = currentAccountData.metadata.bonus.toFixed(2);
-                    document.getElementById('txtTarget').value = currentAccountData.metadata.target.toFixed(2);
 
                     renderJournal();
                     status.innerText = '● UPDATED';
                     status.className = 'text-xs text-emerald-400';
-                } else {
-                    throw new Error('Invalid JSON structure');
                 }
             } catch (err) {
-                console.error('Pull Error:', err);
-                status.innerText = '● ERROR';
-                status.className = 'text-xs text-rose-400';
-                alert('Data pull complete with local fallback: ' + err.message);
+                console.error(err);
+                status.innerText = '● READY';
+                status.className = 'text-xs text-zinc-500';
             } finally {
                 btnPull.innerText = '📥 PULL FROM SHEETS';
             }
         }
 
-        // --- PUSH TO GOOGLE SHEETS ---
-        async function pushToSheets() {
-            let url = document.getElementById('txtWebhookURL').value.trim();
-            if (!url) return alert('Please enter your Webhook URL.');
-
-            let btnPush = document.getElementById('btnPush');
-            btnPush.innerText = 'PUSHING...';
-
-            let payload = {
-                accountPrefix: "DEFAULT ACCOUNT",
-                metadata: {
-                    deposit: parseFloat(document.getElementById('txtDeposit').value) || 1000,
-                    bonus: parseFloat(document.getElementById('txtBonus').value) || 0,
-                    target: parseFloat(document.getElementById('txtTarget').value) || 2000
-                },
-                ledger: currentAccountData.ledger,
-                withdrawals: currentAccountData.withdrawals
-            };
-
-            try {
-                let res = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify(payload)
-                });
-                alert('✅ Successfully pushed data to Google Sheets!');
-            } catch (err) {
-                alert('❌ Push Error: ' + err.message);
-            } finally {
-                btnPush.innerText = '🔗 FORCE PUSH';
-            }
-        }
-
-        // --- RENDER DASHBOARD & METRICS ---
         function renderJournal() {
             let deposit = parseFloat(document.getElementById('txtDeposit').value) || 0;
             let bonus = parseFloat(document.getElementById('txtBonus').value) || 0;
@@ -276,16 +193,11 @@
             let currentMonth = now.getMonth();
             let currentYear = now.getFullYear();
 
-            // Calculate Mon-Fri Week boundaries
             let startOfWeek = new Date(now);
             let day = startOfWeek.getDay();
             let diff = startOfWeek.getDate() - day + (day === 0 ? -6 : 1);
             startOfWeek.setDate(diff);
             startOfWeek.setHours(0, 0, 0, 0);
-
-            let endOfWeek = new Date(startOfWeek);
-            endOfWeek.setDate(startOfWeek.getDate() + 6);
-            endOfWeek.setHours(23, 59, 59, 999);
 
             let equityData = [];
             let chartLabels = [];
@@ -299,34 +211,23 @@
                 if (pnl > 0) wins++;
 
                 let tDate = parseSafeDate(t.dateISO);
-
-                // Local Periodic Accumulation Fallbacks
-                if (tDate >= startOfWeek && tDate <= endOfWeek) {
-                    computedWeeklyPnl += pnl;
-                }
-                if (tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear) {
-                    computedMonthlyPnl += pnl;
-                }
+                if (tDate >= startOfWeek) computedWeeklyPnl += pnl;
+                if (tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear) computedMonthlyPnl += pnl;
 
                 equityData.push(runningBalance);
                 chartLabels.push('T#' + (index + 1));
             });
 
-            // Total Withdrawals subtract from net balance
+            // Calculate exact total withdrawals
             let totalWithdrawals = withdrawals.reduce((sum, w) => sum + (parseFloat(w.amount) || 0), 0);
             let finalAccountBalance = runningBalance - totalWithdrawals;
 
-            // Render Metrics
             document.getElementById('lblAccountBalance').innerText = '$' + finalAccountBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            
-            // Prefer direct MT5 server values if available
-            let weekPnl = (currentAccountData.metadata && currentAccountData.metadata.weekPnl !== null && !isNaN(currentAccountData.metadata.weekPnl)) 
-                ? currentAccountData.metadata.weekPnl 
-                : computedWeeklyPnl;
+            document.getElementById('lblTotalWithdrawals').innerText = '$' + totalWithdrawals.toFixed(2);
 
-            let monthPnl = (currentAccountData.metadata && currentAccountData.metadata.monthPnl !== null && !isNaN(currentAccountData.metadata.monthPnl)) 
-                ? currentAccountData.metadata.monthPnl 
-                : computedMonthlyPnl;
+            // Use direct MT5 calculated values if available from payload metadata
+            let weekPnl = (currentAccountData.metadata.weekPnl !== null) ? currentAccountData.metadata.weekPnl : computedWeeklyPnl;
+            let monthPnl = (currentAccountData.metadata.monthPnl !== null) ? currentAccountData.metadata.monthPnl : computedMonthlyPnl;
 
             let elWeek = document.getElementById('lblWeekPnl');
             elWeek.innerText = (weekPnl >= 0 ? '+$' : '-$') + Math.abs(weekPnl).toFixed(2);
@@ -345,19 +246,16 @@
             renderCalendar();
         }
 
-        // --- RENDER TRADE TABLE LOGS ---
         function renderTableLogs(trades) {
             let tbody = document.getElementById('tblTradeLogs');
             tbody.innerHTML = '';
 
             if (trades.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-zinc-600">No trades recorded yet.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-zinc-600">No trades recorded yet.</td></tr>`;
                 return;
             }
 
-            // Display in reverse chronological order
-            trades.slice().reverse().forEach((t, i) => {
-                let actualIndex = trades.length - 1 - i;
+            trades.slice().reverse().forEach((t) => {
                 let pnl = parseFloat(t.pnl) || 0;
                 let tr = document.createElement('tr');
                 tr.className = 'hover:bg-zinc-900/60 transition';
@@ -366,13 +264,11 @@
                     <td class="p-2 font-mono text-zinc-200">${t.notes || t.id || 'Trade'}</td>
                     <td class="p-2"><span class="px-1.5 py-0.5 text-[10px] font-bold rounded ${t.direction === 'LONG' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'}">${t.direction || 'BUY'}</span></td>
                     <td class="p-2 text-right font-bold ${pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${pnl >= 0 ? '+' : ''}$${pnl.toFixed(2)}</td>
-                    <td class="p-2 text-center"><button onclick="deleteTrade(${actualIndex})" class="text-zinc-600 hover:text-rose-400 text-xs">✕</button></td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        // --- RENDER EQUITY CHART ---
         function renderEquityChart(labels, dataPoints) {
             let ctx = document.getElementById('chartEquity').getContext('2d');
             if (chartInstance) chartInstance.destroy();
@@ -383,7 +279,7 @@
                     labels: labels.length ? labels : ['Start'],
                     datasets: [{
                         label: 'Equity ($)',
-                        data: dataPoints.length ? dataPoints : [parseFloat(document.getElementById('txtDeposit').value) || 1000],
+                        data: dataPoints.length ? dataPoints : [parseFloat(document.getElementById('txtDeposit').value) || 0],
                         borderColor: '#fbbf24',
                         backgroundColor: 'rgba(251, 191, 36, 0.05)',
                         borderWidth: 2,
@@ -404,7 +300,6 @@
             });
         }
 
-        // --- RENDER CALENDAR ---
         function renderCalendar() {
             let grid = document.getElementById('gridCalendar');
             grid.innerHTML = '';
@@ -416,9 +311,7 @@
             document.getElementById('lblCalendarMonth').innerText = `${monthNames[month]} ${year}`;
 
             let daysHeader = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-            daysHeader.forEach(d => {
-                grid.innerHTML += `<div class="font-bold text-zinc-600 p-1">${d}</div>`;
-            });
+            daysHeader.forEach(d => { grid.innerHTML += `<div class="font-bold text-zinc-600 p-1">${d}</div>`; });
 
             let firstDay = new Date(year, month, 1).getDay();
             let offset = firstDay === 0 ? 6 : firstDay - 1;
@@ -433,9 +326,7 @@
                 }
             });
 
-            for (let i = 0; i < offset; i++) {
-                grid.innerHTML += `<div></div>`;
-            }
+            for (let i = 0; i < offset; i++) grid.innerHTML += `<div></div>`;
 
             for (let day = 1; day <= daysInMonth; day++) {
                 let pnl = dailyPnlMap[day];
@@ -457,30 +348,6 @@
             renderCalendar();
         }
 
-        function addManualTrade() {
-            let pnl = prompt("Enter P&L amount (e.g. 25.50 or -10.00):");
-            if (pnl === null || pnl === "") return;
-            
-            let now = new Date();
-            currentAccountData.ledger.push({
-                id: "manual-" + Date.now(),
-                direction: parseFloat(pnl) >= 0 ? "LONG" : "SHORT",
-                pnl: parseFloat(pnl) || 0,
-                notes: "Manual Entry",
-                dateISO: now.toISOString(),
-                dateFormatted: now.toLocaleDateString() + ' ' + now.toLocaleTimeString()
-            });
-            renderJournal();
-        }
-
-        function deleteTrade(index) {
-            if (confirm("Delete this trade log entry?")) {
-                currentAccountData.ledger.splice(index, 1);
-                renderJournal();
-            }
-        }
-
-        // Auto-run on startup
         window.onload = function() {
             renderJournal();
             pullFromSheets();
