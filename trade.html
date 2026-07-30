@@ -354,26 +354,17 @@
 
 
                 // Safari & Broker-Server-Time Aware Date Parser
-        function parseSafeDate(dateStr) {
+                function parseSafeDate(dateStr) {
             if (!dateStr) return new Date();
             if (dateStr instanceof Date) return dateStr;
-
-            // 1. Sanitize dots and spaces for cross-browser / Safari support
             let formatted = String(dateStr).trim().replace(/[.\/]/g, '-');
             if (formatted.includes(' ') && !formatted.includes('T')) {
                 formatted = formatted.replace(' ', 'T');
             }
-
-            // 2. Force parsing as Broker Server Time (GMT+3 / GMT+2)
-            // Appends '+03:00' offset so JavaScript doesn't assume local timezone
-            if (!formatted.includes('Z') && !formatted.includes('+') && !formatted.includes('-')) {
-                // If time is present, tag as GMT+3; otherwise treat as standard date
-                formatted += formatted.includes('T') ? '+03:00' : 'T00:00:00+03:00';
-            }
-
             let d = new Date(formatted);
             return isNaN(d.getTime()) ? new Date() : d;
         }
+
 
 
         
@@ -742,6 +733,16 @@
         cancelEditBtn.addEventListener('click', resetFormMode);
 
         function renderJournal() {
+                    // Use direct MT5 server values if provided by metadata backend, otherwise fallback to local loop
+        let weeklyPnl = (currentAccountData.metadata && currentAccountData.metadata.weekPnl !== null && !isNaN(currentAccountData.metadata.weekPnl)) 
+            ? currentAccountData.metadata.weekPnl 
+            : computedWeeklyPnl;
+
+        let monthlyPnl = (currentAccountData.metadata && currentAccountData.metadata.monthPnl !== null && !isNaN(currentAccountData.metadata.monthPnl)) 
+            ? currentAccountData.metadata.monthPnl 
+            : computedMonthlyPnl;
+
+            
             if(!logsContainer) return;
             logsContainer.innerHTML = '';
             if(withdrawalLedgerList) withdrawalLedgerList.innerHTML = '';
