@@ -83,7 +83,7 @@
         </div>
     </div>
 
-    <!-- NEW DASHBOARD METRICS: TARGET CARD & FX CONVERTER -->
+    <!-- DASHBOARD METRICS: TARGET CARD & FX CONVERTER -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         <!-- TODAY'S DAILY PROFIT TARGET CARD -->
@@ -150,9 +150,9 @@
             </div>
         </div>
 
-        <!-- HISTORICAL PERIODIC PERFORMANCE -->
+        <!-- CURRENT PERIOD PERFORMANCE -->
         <div class="card p-5 space-y-4 flex flex-col justify-between">
-            <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Historical Periodic Performance</h2>
+            <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Current Period Performance</h2>
             <div class="space-y-3">
                 <div class="bg-zinc-900/80 p-3.5 rounded-lg border border-zinc-800">
                     <p class="text-xs text-zinc-500 font-medium">CURRENT WEEK P&L (MON-FRI)</p>
@@ -166,6 +166,45 @@
             <div class="pt-2 border-t border-zinc-800/80 flex justify-between text-xs text-zinc-400">
                 <span>Total Trades: <strong id="lblTotalTrades" class="text-zinc-200">0</strong></span>
                 <span>Win Rate: <strong id="lblWinRate" class="text-amber-400">0%</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- HISTORICAL PERIODIC BREAKDOWN (PREVIOUS WEEKS & MONTHS) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- PREVIOUS MONTHS BREAKDOWN -->
+        <div class="card p-5 space-y-4">
+            <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Monthly Profit History</h2>
+            <div class="overflow-x-auto max-h-52 overflow-y-auto">
+                <table class="w-full text-left text-xs text-zinc-300">
+                    <thead class="text-zinc-500 uppercase bg-zinc-900/80 sticky top-0 border-b border-zinc-800">
+                        <tr>
+                            <th class="p-2">Month</th>
+                            <th class="p-2 text-center">Trades</th>
+                            <th class="p-2 text-center">Win Rate</th>
+                            <th class="p-2 text-right">Net P&L ($)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblMonthlyHistory" class="divide-y divide-zinc-800/50"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PREVIOUS WEEKS BREAKDOWN -->
+        <div class="card p-5 space-y-4">
+            <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Weekly Profit History</h2>
+            <div class="overflow-x-auto max-h-52 overflow-y-auto">
+                <table class="w-full text-left text-xs text-zinc-300">
+                    <thead class="text-zinc-500 uppercase bg-zinc-900/80 sticky top-0 border-b border-zinc-800">
+                        <tr>
+                            <th class="p-2">Week Starting</th>
+                            <th class="p-2 text-center">Trades</th>
+                            <th class="p-2 text-center">Win Rate</th>
+                            <th class="p-2 text-right">Net P&L ($)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblWeeklyHistory" class="divide-y divide-zinc-800/50"></tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -219,22 +258,20 @@
             <div id="gridCalendar" class="grid grid-cols-7 gap-1.5 text-center text-xs"></div>
         </div>
 
+        <!-- EXECUTION FEED LOG (CLEANED UP - MT5 AUTOMATED ONLY) -->
         <div class="card p-5 lg:col-span-2 space-y-4">
             <div class="flex justify-between items-center">
-                <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Execution Feed Log</h2>
-                <button onclick="addManualTrade()" class="text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1 rounded font-semibold hover:bg-amber-500/30">
-                    + Add Trade
-                </button>
+                <h2 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Execution Feed Log (MT5 Automated)</h2>
+                <span class="text-[10px] text-zinc-500 uppercase font-semibold">Live Sync Active</span>
             </div>
             <div class="overflow-x-auto max-h-80 overflow-y-auto">
                 <table class="w-full text-left text-xs text-zinc-300">
                     <thead class="text-zinc-500 uppercase bg-zinc-900/50 sticky top-0">
                         <tr>
-                            <th class="p-2">Date</th>
-                            <th class="p-2">ID / Symbol</th>
-                            <th class="p-2">Dir</th>
-                            <th class="p-2 text-right">P&L ($)</th>
-                            <th class="p-2 text-center">Action</th>
+                            <th class="p-2.5">Date</th>
+                            <th class="p-2.5">ID / Symbol</th>
+                            <th class="p-2.5">Direction</th>
+                            <th class="p-2.5 text-right">P&L ($)</th>
                         </tr>
                     </thead>
                     <tbody id="tblTradeLogs" class="divide-y divide-zinc-800/50"></tbody>
@@ -415,7 +452,7 @@
             }
         }
 
-        // --- FX CONVERTER FUNCTIONS ---
+        // --- FX CONVERTER ---
         function convertUsdToSgd() {
             let usd = parseFloat(document.getElementById('txtFxUsd').value) || 0;
             let rate = parseFloat(document.getElementById('numFxRate').value) || 1.34;
@@ -476,7 +513,81 @@
                 `;
                 tbody.appendChild(tr);
 
-                currentBal = endBalUsd; // Compound for next day
+                currentBal = endBalUsd;
+            }
+        }
+
+        // --- HISTORICAL MONTHLY & WEEKLY P&L TABLES ---
+        function renderHistoricalTables(trades) {
+            let monthMap = {};
+            let weekMap = {};
+
+            trades.forEach(t => {
+                let pnl = parseFloat(t.pnl) || 0;
+                let d = parseSafeDate(t.dateISO);
+
+                // Group by Month (e.g., "2026-07")
+                let monthKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                if (!monthMap[monthKey]) monthMap[monthKey] = { pnl: 0, trades: 0, wins: 0, name: d.toLocaleString('default', { month: 'short', year: 'numeric' }) };
+                monthMap[monthKey].pnl += pnl;
+                monthMap[monthKey].trades++;
+                if (pnl > 0) monthMap[monthKey].wins++;
+
+                // Group by Week (Monday start)
+                let monday = new Date(d);
+                let day = monday.getDay();
+                let diff = monday.getDate() - day + (day === 0 ? -6 : 1);
+                monday.setDate(diff);
+                let weekKey = monday.toISOString().split('T')[0];
+
+                if (!weekMap[weekKey]) weekMap[weekKey] = { pnl: 0, trades: 0, wins: 0, label: monday.toLocaleDateString('default', { month: 'short', day: 'numeric', year: 'numeric' }) };
+                weekMap[weekKey].pnl += pnl;
+                weekMap[weekKey].trades++;
+                if (pnl > 0) weekMap[weekKey].wins++;
+            });
+
+            // Render Monthly History
+            let tblMonth = document.getElementById('tblMonthlyHistory');
+            tblMonth.innerHTML = '';
+            let sortedMonths = Object.keys(monthMap).sort().reverse();
+            if (sortedMonths.length === 0) {
+                tblMonth.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-zinc-600">No monthly history recorded.</td></tr>`;
+            } else {
+                sortedMonths.forEach(mKey => {
+                    let m = monthMap[mKey];
+                    let wr = m.trades > 0 ? ((m.wins / m.trades) * 100).toFixed(1) : '0.0';
+                    let tr = document.createElement('tr');
+                    tr.className = 'hover:bg-zinc-900/60 transition';
+                    tr.innerHTML = `
+                        <td class="p-2 font-bold text-zinc-200">${m.name}</td>
+                        <td class="p-2 text-center text-zinc-400">${m.trades}</td>
+                        <td class="p-2 text-center text-amber-400 font-semibold">${wr}%</td>
+                        <td class="p-2 text-right font-bold ${m.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${m.pnl >= 0 ? '+' : ''}$${m.pnl.toFixed(2)}</td>
+                    `;
+                    tblMonth.appendChild(tr);
+                });
+            }
+
+            // Render Weekly History
+            let tblWeek = document.getElementById('tblWeeklyHistory');
+            tblWeek.innerHTML = '';
+            let sortedWeeks = Object.keys(weekMap).sort().reverse();
+            if (sortedWeeks.length === 0) {
+                tblWeek.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-zinc-600">No weekly history recorded.</td></tr>`;
+            } else {
+                sortedWeeks.forEach(wKey => {
+                    let w = weekMap[wKey];
+                    let wr = w.trades > 0 ? ((w.wins / w.trades) * 100).toFixed(1) : '0.0';
+                    let tr = document.createElement('tr');
+                    tr.className = 'hover:bg-zinc-900/60 transition';
+                    tr.innerHTML = `
+                        <td class="p-2 font-bold text-zinc-200">${w.label}</td>
+                        <td class="p-2 text-center text-zinc-400">${w.trades}</td>
+                        <td class="p-2 text-center text-amber-400 font-semibold">${wr}%</td>
+                        <td class="p-2 text-right font-bold ${w.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${w.pnl >= 0 ? '+' : ''}$${w.pnl.toFixed(2)}</td>
+                    `;
+                    tblWeek.appendChild(tr);
+                });
             }
         }
 
@@ -557,28 +668,28 @@
             renderCalendar();
             renderDailyTargetCard();
             renderCompoundingTable();
+            renderHistoricalTables(trades);
         }
 
+        // --- EXECUTION FEED TABLE (READ ONLY - NO ACTION COLUMN / NO MANUAL ADD) ---
         function renderTableLogs(trades) {
             let tbody = document.getElementById('tblTradeLogs');
             tbody.innerHTML = '';
 
             if (trades.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-zinc-600">No trades recorded yet.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-zinc-600">No trades synced from MetaTrader 5 yet.</td></tr>`;
                 return;
             }
 
-            trades.slice().reverse().forEach((t, i) => {
-                let actualIndex = trades.length - 1 - i;
+            trades.slice().reverse().forEach((t) => {
                 let pnl = parseFloat(t.pnl) || 0;
                 let tr = document.createElement('tr');
                 tr.className = 'hover:bg-zinc-900/60 transition';
                 tr.innerHTML = `
-                    <td class="p-2 text-zinc-400">${t.dateFormatted || t.dateISO || ''}</td>
-                    <td class="p-2 font-mono text-zinc-200">${t.notes || t.id || 'Trade'}</td>
-                    <td class="p-2"><span class="px-1.5 py-0.5 text-[10px] font-bold rounded ${t.direction === 'LONG' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'}">${t.direction || 'BUY'}</span></td>
-                    <td class="p-2 text-right font-bold ${pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${pnl >= 0 ? '+' : ''}$${pnl.toFixed(2)}</td>
-                    <td class="p-2 text-center"><button onclick="deleteTrade(${actualIndex})" class="text-zinc-600 hover:text-rose-400 text-xs">✕</button></td>
+                    <td class="p-2.5 text-zinc-400 font-mono">${t.dateFormatted || t.dateISO || ''}</td>
+                    <td class="p-2.5 font-mono text-zinc-200">${t.notes || t.id || 'Trade'}</td>
+                    <td class="p-2.5"><span class="px-2 py-0.5 text-[10px] font-bold rounded ${t.direction === 'LONG' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'}">${t.direction || 'BUY'}</span></td>
+                    <td class="p-2.5 text-right font-bold font-mono ${pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${pnl >= 0 ? '+' : ''}$${pnl.toFixed(2)}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -662,33 +773,6 @@
         function changeMonth(delta) {
             calendarDate.setMonth(calendarDate.getMonth() + delta);
             renderCalendar();
-        }
-
-        function addManualTrade() {
-            let pnl = prompt("Enter P&L amount (e.g. 25.50 or -10.00):");
-            if (pnl === null || pnl === "") return;
-            
-            let now = new Date();
-            if (!allAccountsData[activeAccountPrefix]) return;
-
-            allAccountsData[activeAccountPrefix].ledger.push({
-                id: "manual-" + Date.now(),
-                direction: parseFloat(pnl) >= 0 ? "LONG" : "SHORT",
-                pnl: parseFloat(pnl) || 0,
-                notes: "Manual Entry",
-                dateISO: now.toISOString(),
-                dateFormatted: now.toLocaleDateString() + ' ' + now.toLocaleTimeString()
-            });
-            saveToLocalStorage();
-            renderJournal();
-        }
-
-        function deleteTrade(index) {
-            if (confirm("Delete this trade log entry?")) {
-                allAccountsData[activeAccountPrefix].ledger.splice(index, 1);
-                saveToLocalStorage();
-                renderJournal();
-            }
         }
 
         window.onload = function() {
