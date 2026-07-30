@@ -522,29 +522,47 @@
             let monthMap = {};
             let weekMap = {};
 
-            trades.forEach(t => {
-                let pnl = parseFloat(t.pnl) || 0;
-                let d = parseSafeDate(t.dateISO);
+            if (trades.length > 0) {
+                // 1. Sort trades chronologically to find account inception date
+                let sortedTrades = trades.slice().sort((a, b) => parseSafeDate(a.dateISO) - parseSafeDate(b.dateISO));
 
-                // Group by Month (e.g., "2026-07")
-                let monthKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-                if (!monthMap[monthKey]) monthMap[monthKey] = { pnl: 0, trades: 0, wins: 0, name: d.toLocaleString('default', { month: 'short', year: 'numeric' }) };
-                monthMap[monthKey].pnl += pnl;
-                monthMap[monthKey].trades++;
-                if (pnl > 0) monthMap[monthKey].wins++;
+                // 2. Find Monday of the first trade week (Account Start Week)
+                let firstTradeDate = parseSafeDate(sortedTrades[0].dateISO);
+                let startMonday = new Date(firstTradeDate);
+                let day = startMonday.getDay();
+                let diff = startMonday.getDate() - day + (day === 0 ? -6 : 1); // Get Monday
+                startMonday.setDate(diff);
+                startMonday.setHours(0, 0, 0, 0);
 
-                // Group by Week (Monday start)
-                let monday = new Date(d);
-                let day = monday.getDay();
-                let diff = monday.getDate() - day + (day === 0 ? -6 : 1);
-                monday.setDate(diff);
-                let weekKey = monday.toISOString().split('T')[0];
+                // 3. Process Trades into Monthly and Relative Weekly buckets
+                trades.forEach(t => {
+                    let pnl = parseFloat(t.pnl) || 0;
+                    let d = parseSafeDate(t.dateISO);
 
-                if (!weekMap[weekKey]) weekMap[weekKey] = { pnl: 0, trades: 0, wins: 0, label: monday.toLocaleDateString('default', { month: 'short', day: 'numeric', year: 'numeric' }) };
-                weekMap[weekKey].pnl += pnl;
-                weekMap[weekKey].trades++;
-                if (pnl > 0) weekMap[weekKey].wins++;
-            });
+                    // Monthly Grouping
+                    let monthKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                    if (!monthMap[monthKey]) monthMap[monthKey] = { pnl: 0, trades: 0, wins: 0, name: d.toLocaleString('default', { month: 'short', year: 'numeric' }) };
+                    monthMap[monthKey].pnl += pnl;
+                    monthMap[monthKey].trades++;
+                    if (pnl > 0) monthMap[monthKey].wins++;
+
+                    // Weekly Grouping (Calculates Week 1, Week 2, Week 3 relative to account start)
+                    let currentMonday = new Date(d);
+                    let curDay = currentMonday.getDay();
+                    let curDiff = currentMonday.getDate() - curDay + (curDay === 0 ? -6 : 1);
+                    currentMonday.setDate(curDiff);
+                    currentMonday.setHours(0, 0, 0, 0);
+
+                    // Difference in milliseconds converted to weeks
+                    let weekNum = Math.floor((currentMonday - startMonday) / (1000 * 60 * 60 * 24 * 7)) + 1;
+                    let weekKey = `Week ${weekNum}`;
+
+                    if (!weekMap[weekKey]) weekMap[weekKey] = { pnl: 0, trades: 0, wins: 0, weekNum: weekNum, dateLabel: currentMonday.toLocaleDateString('default', { month: 'short', day: 'numeric' }) };
+                    weekMap[weekKey].pnl += pnl;
+                    weekMap[weekKey].trades++;
+                    if (pnl > 0) weekMap[weekKey].wins++;
+                });
+            }
 
             // Render Monthly History
             let tblMonth = document.getElementById('tblMonthlyHistory');
@@ -568,20 +586,20 @@
                 });
             }
 
-            // Render Weekly History
+            // Render Weekly History (Week 1, Week 2, etc. starting newest first)
             let tblWeek = document.getElementById('tblWeeklyHistory');
             tblWeek.innerHTML = '';
-            let sortedWeeks = Object.keys(weekMap).sort().reverse();
+            let sortedWeeks = Object.values(weekMap).sort((a, b) => b.weekNum - a.weekNum);
+
             if (sortedWeeks.length === 0) {
                 tblWeek.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-zinc-600">No weekly history recorded.</td></tr>`;
             } else {
-                sortedWeeks.forEach(wKey => {
-                    let w = weekMap[wKey];
+                sortedWeeks.forEach(w => {
                     let wr = w.trades > 0 ? ((w.wins / w.trades) * 100).toFixed(1) : '0.0';
                     let tr = document.createElement('tr');
                     tr.className = 'hover:bg-zinc-900/60 transition';
                     tr.innerHTML = `
-                        <td class="p-2 font-bold text-zinc-200">${w.label}</td>
+                        <td class="p-2 font-bold text-zinc-200">Week ${w.weekNum} <span class="text-[10px] text-zinc-500 font-normal">(${w.dateLabel})</span></td>
                         <td class="p-2 text-center text-zinc-400">${w.trades}</td>
                         <td class="p-2 text-center text-amber-400 font-semibold">${wr}%</td>
                         <td class="p-2 text-right font-bold ${w.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${w.pnl >= 0 ? '+' : ''}$${w.pnl.toFixed(2)}</td>
